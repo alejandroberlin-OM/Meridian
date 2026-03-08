@@ -603,10 +603,15 @@ function genFinalLink(){
   const age=document.getElementById('f-age').value||'44';
   const sex=document.getElementById('f-sex').value||'M';
   const date=document.getElementById('f-date').value||new Date().toISOString().split('T')[0];
-  const clinNote=document.getElementById('edit-note').value;
-  const data={name,age,sex,date,clinNote,plans:editPlans};
+  const data={name,age,sex,date};
+  // Only embed clinNote/plans if they were manually edited (saves ~60% URL length)
+  const autoNote=buildNote(name,parseInt(age),cd().v,cd().ma);
+  const curNote=document.getElementById('edit-note').value;
+  if(curNote.trim()!==autoNote.trim()) data.clinNote=curNote;
+  const autoPlans=JSON.stringify(buildPlans(cd().v));
+  if(JSON.stringify(editPlans)!==autoPlans) data.plans=editPlans;
   MK.forEach(k=>{const v=document.getElementById('m-'+k)?.value;if(v)data[k]=v;});
-  const enc=btoa(encodeURIComponent(JSON.stringify(data)));
+  const enc=btoa(unescape(encodeURIComponent(JSON.stringify(data))));
   const base=window.location.href.replace('index.html','').replace(/\/$/,'');
   curURL=`${base}/report.html#${enc}`;
   const pc=Math.min(10,(parseInt(localStorage.getItem('m_pilot')||'0'))+1);

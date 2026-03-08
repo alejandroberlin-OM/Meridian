@@ -277,7 +277,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;align-i
   <div class="clinician-card">
     <div class="clin-header">
       <div class="clin-avatar">👨‍⚕️</div>
-      <div><div class="clin-name">Dr. Alejandro Berlin, MD, MSc</div><div class="clin-role">Meridian Chile</div></div>
+      <div><div class="clin-name">Dr. Alejandro Berlin, MD, MSc</div><div class="clin-role">Medicina de Longevidad · Meridian Chile</div></div>
     </div>
     <div class="clin-text" id="r-clin-text"></div>
   </div>
@@ -417,60 +417,96 @@ function renderReport(d){
 
   // Biomarker sections
   const sections=[
-    {id:'met',label:'Metabólico',rows:[
-      {name:'HbA1c',cat:'Glucosa',val:v.hba1c,unit:'%',lo:4.8,hi:5.4,lw:null,hw:6.4},
-      {name:'HOMA-IR',cat:'Insulina',val:v.homa,unit:'índice',lo:0.5,hi:1.5,lw:null,hw:2.5},
-      {name:'Glucosa (ayuno)',cat:'Metabólico',val:v.glu,unit:'mg/dL',lo:72,hi:90,lw:60,hw:100},
-      {name:'Insulina (ayuno)',cat:'Metabólico',val:v.ins,unit:'μUI/mL',lo:2,hi:7,lw:null,hw:10},
-      {name:'Ácido Úrico',cat:'Metabólico',val:v.ua,unit:'mg/dL',lo:3,hi:5.5,lw:2,hw:7},
-      {name:'GGT',cat:'Hígado/Metab.',val:v.ggt,unit:'U/L',lo:8,hi:25,lw:null,hw:40},
-      {name:'ALT',cat:'Hígado',val:v.alt,unit:'U/L',lo:5,hi:25,lw:null,hw:40},
+    {id:'met',label:'⚡ Metabólico',rows:[
+      {name:'Glucosa (ayuno)',cat:'Metabólico',val:v.glu,unit:'mg/dL',lo:72,hi:90,lw:60,hw:100,tip:'Glucosa en ayuno. Óptimo funcional 72–90. >100 sugiere prediabetes.'},
+      {name:'Insulina (ayuno)',cat:'Metabólico',val:v.ins,unit:'μUI/mL',lo:2,hi:7,lw:null,hw:12,tip:'Insulina basal. Óptimo <7. Elevada indica resistencia insulínica temprana.'},
+      {name:'HOMA-IR',cat:'Metabólico',val:v.homa,unit:'índice',lo:0.5,hi:1.5,lw:null,hw:2.5,tip:'Índice de resistencia a la insulina. Óptimo <1.5. >2.5 indica resistencia significativa.'},
+      {name:'HbA1c',cat:'Metabólico',val:v.hba1c,unit:'%',lo:4.8,hi:5.4,lw:null,hw:6.4,tip:'Hemoglobina glucosilada, refleja glucosa promedio 3 meses. Óptimo <5.4%.'},
     ]},
-    {id:'car',label:'Cardiovascular',rows:[
-      {name:'ApoB',cat:'Lípidos avanzados ★',val:v.apob,unit:'mg/dL',lo:50,hi:80,lw:null,hw:100},
-      {name:'Lp(a)',cat:'Riesgo genético ★',val:v.lpa,unit:'nmol/L',lo:0,hi:75,lw:null,hw:125},
-      {name:'LDL',cat:'Lípidos',val:v.ldl,unit:'mg/dL',lo:60,hi:100,lw:null,hw:130},
-      {name:'HDL',cat:'Lípidos',val:v.hdl,unit:'mg/dL',lo:60,hi:90,lw:40,hw:null},
-      {name:'Triglicéridos',cat:'Lípidos',val:v.trig,unit:'mg/dL',lo:50,hi:100,lw:null,hw:150},
-      {name:'Homocisteína',cat:'Cardiovascular',val:v.hcy,unit:'μmol/L',lo:6,hi:9,lw:null,hw:12},
-      {name:'Índice Omega-3',cat:'Ácidos grasos ★',val:v.o3,unit:'%',lo:8,hi:12,lw:4,hw:null},
-      {name:'Fibrinógeno',cat:'Coagulación',val:v.fib,unit:'mg/dL',lo:200,hi:350,lw:150,hw:450},
+    {id:'lip',label:'🩸 Lípidos',rows:[
+      {name:'Colesterol Total',cat:'Lípidos',val:v.tc,unit:'mg/dL',lo:150,hi:200,lw:null,hw:240,tip:'Colesterol total. Rango óptimo 150–200 mg/dL.'},
+      {name:'LDL',cat:'Lípidos',val:v.ldl,unit:'mg/dL',lo:50,hi:100,lw:null,hw:130,tip:'Colesterol LDL. Óptimo funcional <100. En riesgo cardiovascular <70.'},
+      {name:'HDL',cat:'Lípidos',val:v.hdl,unit:'mg/dL',lo:60,hi:90,lw:40,hw:null,tip:'Colesterol protector. Óptimo >60. <40 aumenta riesgo cardiovascular.'},
+      {name:'Triglicéridos',cat:'Lípidos',val:v.trig,unit:'mg/dL',lo:50,hi:100,lw:null,hw:150,tip:'Triglicéridos en ayuno. Óptimo <100. Elevado indica disfunción metabólica.'},
+      {name:'Non-HDL',cat:'Lípidos',val:v.nonhdl,unit:'mg/dL',lo:null,hi:130,lw:null,hw:160,tip:'Colesterol total menos HDL. Incluye todas las partículas aterogénicas. Óptimo <130.'},
+      {name:'ApoB ★',cat:'Lípidos avanzados',val:v.apob,unit:'mg/dL',lo:null,hi:80,lw:null,hw:100,tip:'Apolipoproteína B: el mejor predictor de riesgo cardiovascular. Cada partícula LDL tiene 1 ApoB. Óptimo <80.'},
+      {name:'Lp(a) ★',cat:'Lípidos avanzados',val:v.lpa,unit:'nmol/L',lo:null,hi:75,lw:null,hw:125,tip:'Lipoproteína(a): factor de riesgo genético. >75 nmol/L aumenta riesgo cardiovascular independientemente de LDL.'},
+      {name:'Homocisteína',cat:'Cardiovascular',val:v.hcy,unit:'μmol/L',lo:6,hi:9,lw:null,hw:15,tip:'Marcador inflamatorio y cardiovascular. Elevado por déficit de B12, B6, folato. Óptimo <9.'},
+      {name:'Índice Omega-3',cat:'Cardiovascular',val:v.o3,unit:'%',lo:8,hi:12,lw:5,hw:null,tip:'% de EPA+DHA en glóbulos rojos. Óptimo >8%. <4% alto riesgo cardiovascular e inflamatorio.'},
+      {name:'Fibrinógeno',cat:'Inflamación',val:v.fib,unit:'mg/dL',lo:200,hi:350,lw:null,hw:450,tip:'Proteína de coagulación y marcador inflamatorio. Elevado aumenta riesgo trombótico.'},
     ]},
-    {id:'hor',label:'Hormonas',rows:[
-      {name:'Testosterona Total',cat:'Andrógenos',val:v.ttt,unit:'ng/dL',lo:600,hi:900,lw:300,hw:1000},
-      {name:'Testosterona Libre',cat:'Andrógenos ★',val:v.tft,unit:'pg/mL',lo:10,hi:25,lw:5,hw:30},
-      {name:'SHBG',cat:'Hormonal',val:v.shbg,unit:'nmol/L',lo:20,hi:50,lw:10,hw:70},
-      {name:'DHEA-S',cat:'Adrenal',val:v.dhea,unit:'μg/dL',lo:150,hi:300,lw:80,hw:400},
-      {name:'Cortisol AM',cat:'Estrés',val:v.cort,unit:'μg/dL',lo:10,hi:18,lw:6,hw:22},
-      {name:'IGF-1',cat:'Longevidad ★',val:v.igf1,unit:'ng/mL',lo:150,hi:220,lw:100,hw:280},
-      {name:'TSH',cat:'Tiroides',val:v.tsh,unit:'mUI/L',lo:1.0,hi:2.5,lw:0.5,hw:4.0},
-      {name:'T3 Libre',cat:'Tiroides',val:v.ft3,unit:'pg/mL',lo:3.2,hi:4.2,lw:2.5,hw:5.0},
-      {name:'T4 Libre',cat:'Tiroides',val:v.ft4,unit:'ng/dL',lo:1.0,hi:1.5,lw:0.7,hw:1.8},
+    {id:'inf',label:'🔥 Inflamación',rows:[
+      {name:'hsCRP ★',cat:'Inflamación',val:v.crp,unit:'mg/L',lo:null,hi:0.8,lw:null,hw:3.0,tip:'PCR de alta sensibilidad. El mejor marcador de inflamación sistémica. Óptimo <0.8. >3.0 es riesgo alto.'},
+      {name:'IL-6',cat:'Inflamación',val:v.il6,unit:'pg/mL',lo:null,hi:1.8,lw:null,hw:3.0,tip:'Interleucina-6: citoquina proinflamatoria. Elevada crónica acelera envejecimiento (inflammaging). Óptimo <1.8.'},
+      {name:'VHS',cat:'Inflamación',val:v.vhs,unit:'mm/h',lo:null,hi:sex==='M'?15:20,lw:null,hw:sex==='M'?30:40,tip:'Velocidad de sedimentación: marcador inespecífico de inflamación. Útil para seguimiento.'},
     ]},
-    {id:'nut',label:'Nutrición',rows:[
-      {name:'Vitamina D (25-OH)',cat:'Vitaminas ★',val:v.vitd,unit:'ng/mL',lo:50,hi:70,lw:20,hw:100},
-      {name:'Vitamina B12',cat:'Vitaminas',val:v.b12,unit:'pg/mL',lo:400,hi:900,lw:200,hw:1200},
-      {name:'Folato',cat:'Vitaminas',val:v.fol,unit:'ng/mL',lo:10,hi:20,lw:5,hw:null},
-      {name:'Ferritina',cat:'Minerales',val:v.ferr,unit:'ng/mL',lo:70,hi:150,lw:30,hw:250},
-      {name:'Magnesio (RBC)',cat:'Minerales',val:v.mg,unit:'mg/dL',lo:5.5,hi:6.5,lw:4.5,hw:null},
-      {name:'Zinc',cat:'Minerales',val:v.zn,unit:'μg/dL',lo:80,hi:120,lw:60,hw:150},
+    {id:'hep',label:'🫀 Hígado & Riñón',rows:[
+      {name:'ALT',cat:'Hígado',val:v.alt,unit:'U/L',lo:null,hi:25,lw:null,hw:40,tip:'Alanina aminotransferasa. Enzima hepática. Óptimo <25. Elevada indica daño hepatocelular o hígado graso.'},
+      {name:'AST',cat:'Hígado',val:v.ast,unit:'U/L',lo:null,hi:25,lw:null,hw:40,tip:'Aspartato aminotransferasa. Si AST/ALT >2 sugiere origen alcohólico. Óptimo <25.'},
+      {name:'GGT',cat:'Hígado/Metab.',val:v.ggt,unit:'U/L',lo:null,hi:25,lw:null,hw:40,tip:'Gamma-glutamiltransferasa. Sensible a alcohol, estrés oxidativo e hígado graso. Óptimo <25.'},
+      {name:'Fosfatasa Alcalina',cat:'Hígado',val:v.alp,unit:'U/L',lo:40,hi:80,lw:null,hw:120,tip:'ALP elevada puede indicar colestasis, enfermedad ósea o hepática.'},
+      {name:'Bilirrubina Total',cat:'Hígado',val:v.bili,unit:'mg/dL',lo:null,hi:1.2,lw:null,hw:2.0,tip:'Producto de degradación de hemoglobina. Elevada puede indicar hemólisis o disfunción hepática.'},
+      {name:'Albumina',cat:'Hígado',val:v.alb,unit:'g/dL',lo:4.2,hi:5.0,lw:3.5,hw:null,tip:'Proteína hepática. Marcador de estado nutricional y función hepática. Óptimo 4.2–5.0 g/dL.'},
+      {name:'Creatinina',cat:'Riñón',val:v.cre,unit:'mg/dL',lo:0.7,hi:1.1,lw:null,hw:1.3,tip:'Producto de metabolismo muscular. Indicador de función renal. Óptimo 0.7–1.1 mg/dL.'},
+      {name:'eGFR',cat:'Riñón',val:v.egfr,unit:'ml/min/1.73m²',lo:90,hi:120,lw:60,hw:null,tip:'Tasa de filtración glomerular estimada. Óptimo >90. <60 indica enfermedad renal crónica.'},
+      {name:'BUN (Urea)',cat:'Riñón',val:v.bun,unit:'mg/dL',lo:7,hi:20,lw:null,hw:30,tip:'Nitrógeno ureico en sangre. Elevado puede indicar deshidratación, daño renal o alta ingesta proteica.'},
+      {name:'Ácido Úrico',cat:'Metabólico',val:v.ua,unit:'mg/dL',lo:3.0,hi:5.5,lw:2.0,hw:7.0,tip:'Elevado (hiperuricemia) aumenta riesgo de gota, enfermedad renal y síndrome metabólico.'},
     ]},
-    {id:'inf',label:'Inflamación',rows:[
-      {name:'hsCRP',cat:'Inflamación ★',val:v.hscrp,unit:'mg/L',lo:0,hi:0.8,lw:null,hw:3.0},
-      {name:'IL-6',cat:'Inflammaging ★',val:v.il6,unit:'pg/mL',lo:0,hi:1.8,lw:null,hw:3.5},
-      {name:'VHS',cat:'Inflamación',val:v.vhs,unit:'mm/h',lo:0,hi:15,lw:null,hw:25},
-      {name:'Anticuerpos TPO',cat:'Autoinmune',val:v.tpo,unit:'UI/mL',lo:0,hi:35,lw:null,hw:60},
+    {id:'hem',label:'🧫 Hemograma',rows:[
+      {name:'Leucocitos (WBC)',cat:'CBC',val:v.wbc,unit:'10³/μL',lo:4.0,hi:7.0,lw:3.5,hw:10,tip:'Glóbulos blancos totales. Óptimo funcional 4–7. Elevado puede indicar infección o inflamación.'},
+      {name:'Eritrocitos (RBC)',cat:'CBC',val:v.rbc,unit:'10⁶/μL',lo:sex==='M'?4.5:4.0,hi:sex==='M'?5.9:5.4,lw:null,hw:null,tip:'Glóbulos rojos. Transportan oxígeno. Rangos difieren entre sexos.'},
+      {name:'Plaquetas',cat:'CBC',val:v.plt,unit:'10³/μL',lo:150,hi:400,lw:100,hw:450,tip:'Células de coagulación. <150 trombocitopenia, >450 trombocitosis.'},
+      {name:'VCM (MCV)',cat:'CBC',val:v.mcv,unit:'fL',lo:82,hi:92,lw:70,hw:100,tip:'Volumen corpuscular medio. Bajo sugiere déficit de hierro, alto sugiere déficit de B12/folato.'},
+      {name:'ADE (RDW)',cat:'CBC',val:v.rdw,unit:'%',lo:null,hi:13.0,lw:null,hw:14.5,tip:'Ancho de distribución eritrocitaria. >13% indica variabilidad en tamaño de glóbulos rojos — marcador de inflamación.'},
+      {name:'Linfocitos %',cat:'CBC',val:v.lym,unit:'%',lo:25,hi:40,lw:15,hw:50,tip:'% de linfocitos (defensa específica). <20% puede indicar inmunosupresión. Óptimo 25–40%.'},
+      {name:'Neutrófilos %',cat:'CBC',val:v.neut,unit:'%',lo:40,hi:65,lw:35,hw:75,tip:'% de neutrófilos (defensa inespecífica). Elevado en infecciones bacterianas o estrés.'},
     ]},
-    {id:'per',label:'Performance',rows:[
-      {name:'VO₂ Max',cat:'Fitness cardiovascular ★',val:v.vo2,unit:'ml/kg/min',lo:45,hi:60,lw:35,hw:null},
-      {name:'Grasa Corporal',cat:'DEXA',val:v.bf,unit:'%',lo:10,hi:20,lw:5,hw:28},
-      {name:'Grasa Visceral',cat:'DEXA ★',val:v.vat,unit:'g',lo:0,hi:500,lw:null,hw:1000},
-      {name:'ALMI (Masa Muscular)',cat:'DEXA',val:v.almi,unit:'kg/m²',lo:8.0,hi:12.0,lw:6.5,hw:null},
-      {name:'Densidad Ósea (T-score)',cat:'DEXA',val:v.bmd,unit:'SD',lo:-1.0,hi:1.5,lw:-2.5,hw:null},
+    {id:'tir',label:'🦋 Tiroides',rows:[
+      {name:'TSH',cat:'Tiroides',val:v.tsh,unit:'mUI/L',lo:1.0,hi:2.5,lw:0.4,hw:4.0,tip:'Hormona estimulante de tiroides. Óptimo funcional 1.0–2.5. Elevado indica hipotiroidismo.'},
+      {name:'T3 Libre',cat:'Tiroides',val:v.ft3,unit:'pg/mL',lo:3.2,hi:4.2,lw:2.3,hw:4.5,tip:'Hormona tiroidea activa. T3 bajo puede explicar fatiga, frío, depresión incluso con TSH normal.'},
+      {name:'T4 Libre',cat:'Tiroides',val:v.ft4,unit:'ng/dL',lo:1.0,hi:1.5,lw:0.8,hw:1.8,tip:'Precursor hormona tiroidea. Se convierte a T3 en tejidos periféricos.'},
+      {name:'Anticuerpos TPO',cat:'Tiroides',val:v.tpo,unit:'UI/mL',lo:null,hi:35,lw:null,hw:100,tip:'Anticuerpos antiperoxidasa tiroidea. Elevados indican tiroiditis autoinmune (Hashimoto). Óptimo <35.'},
+    ]},
+    {id:'hor',label:'🔬 Hormonas',rows:[
+      {name:'Testosterona Total',cat:'Hormonas',val:v.ttt,unit:'ng/dL',lo:sex==='M'?600:15,hi:sex==='M'?900:70,lw:sex==='M'?350:10,hw:sex==='M'?1100:80,tip:sex==='M'?'Testosterona total masculina. Óptimo funcional 600–900. <400 asociado a fatiga, baja libido, pérdida muscular.':'Testosterona total femenina. Óptimo funcional 15–70. Importante para libido, energía y masa muscular.'},
+      {name:'Testosterona Libre',cat:'Hormonas',val:v.tft,unit:'pg/mL',lo:sex==='M'?10:1.0,hi:sex==='M'?25:4.0,lw:sex==='M'?5:0.5,hw:sex==='M'?35:8.0,tip:sex==='M'?'Testosterona biodisponible. Óptimo 10–25 pg/mL. Mejor reflejo del estado androgénico que total.':'Testosterona libre femenina. Óptimo 1–4 pg/mL. Baja contribuye a fatiga y pérdida de libido.'},
+      {name:'SHBG',cat:'Hormonas',val:v.shbg,unit:'nmol/L',lo:20,hi:50,lw:10,hw:70,tip:'Proteína transportadora de hormonas sexuales. SHBG alta = menos testosterona libre biodisponible.'},
+      {name:'DHEA-S',cat:'Hormonas',val:v.dhea,unit:'μg/dL',lo:sex==='M'?150:80,hi:sex==='M'?400:280,lw:null,hw:null,tip:'Precursor androgénico adrenal. Declina ~1%/año tras los 30. Refleja reserva adrenal y vitalidad.'},
+      {name:'Cortisol AM',cat:'Hormonas',val:v.cort,unit:'μg/dL',lo:10,hi:18,lw:6,hw:25,tip:'Cortisol matutino (8am). Refleja función adrenal. Crónico elevado acelera envejecimiento y suprime otras hormonas.'},
+      {name:'IGF-1 ★',cat:'Hormonas',val:v.igf1,unit:'ng/mL',lo:sex==='M'?150:120,hi:sex==='M'?250:200,lw:null,hw:null,tip:'Factor de crecimiento insulínico. Proxy de GH. Declina con edad. Óptimo para longevidad: mitad-alta del rango normal.'},
+      {name:'LH',cat:'Hormonas',val:v.lh,unit:'mUI/mL',lo:2,hi:9,lw:null,hw:null,tip:'Hormona luteinizante. En hombres estimula producción de testosterona. En mujeres regula ovulación.'},
+      {name:'FSH',cat:'Hormonas',val:v.fsh,unit:'mUI/mL',lo:2,hi:12,lw:null,hw:null,tip:'Hormona foliculoestimulante. FSH elevada en hombres indica fallo testicular primario. En mujeres, refleja reserva ovárica.'},
+      {name:'Prolactina',cat:'Hormonas',val:v.prl,unit:'ng/mL',lo:null,hi:sex==='M'?15:25,lw:null,hw:sex==='M'?20:30,tip:'Elevada puede suprimir testosterona/estrógeno y causar disfunción sexual. Óptimo bajo-normal.'},
+    ]},
+    {id:'nut',label:'🌿 Nutrición',rows:[
+      {name:'Vitamina D ★',cat:'Vitaminas',val:v.vitd,unit:'ng/mL',lo:50,hi:70,lw:30,hw:100,tip:'Vitamina/hormona clave. <30 es déficit. Óptimo funcional 50–70. Afecta inmunidad, hueso, ánimo y longevidad.'},
+      {name:'Vitamina B12',cat:'Vitaminas',val:v.b12,unit:'pg/mL',lo:400,hi:900,lw:200,hw:null,tip:'Esencial para nervios, ADN y glóbulos rojos. <300 puede causar neuropatía y anemia macrocítica.'},
+      {name:'Folato',cat:'Vitaminas',val:v.fol,unit:'ng/mL',lo:10,hi:20,lw:4,hw:null,tip:'Vitamina B9. Crucial para metilación del ADN. Bajo aumenta homocisteína y riesgo de defectos del tubo neural.'},
+      {name:'Ferritina',cat:'Minerales',val:v.ferr,unit:'ng/mL',lo:sex==='M'?70:30,hi:sex==='M'?200:100,lw:null,hw:300,tip:sex==='M'?'Reserva de hierro. Óptimo H: 70–200. <30 indica déficit, >300 puede indicar inflamación o hemocromatosis.':'Reserva de hierro. Óptimo M: 30–100. Común en mujeres déficit. Afecta energía, cabello y cognición.'},
+      {name:'Magnesio (RBC)',cat:'Minerales',val:v.mg,unit:'mg/dL',lo:5.5,hi:6.5,lw:4.5,hw:null,tip:'Magnesio intracelular (más preciso que sérico). Involucrado en >300 reacciones enzimáticas. Óptimo 5.5–6.5.'},
+      {name:'Zinc',cat:'Minerales',val:v.zn,unit:'μg/dL',lo:80,hi:120,lw:60,hw:150,tip:'Esencial para sistema inmune, síntesis de testosterona, cicatrización y metabolismo. Óptimo 80–120.'},
+    ]},
+    {id:'ele',label:'⚗️ Electrolitos',rows:[
+      {name:'Sodio',cat:'Electrolitos',val:v.na,unit:'mEq/L',lo:136,hi:145,lw:130,hw:150,tip:'Principal catión extracelular. Regula volumen plasmático. Hipo/hipernatremia pueden ser graves.'},
+      {name:'Potasio',cat:'Electrolitos',val:v.k,unit:'mEq/L',lo:3.5,hi:5.0,lw:3.0,hw:5.5,tip:'Esencial para función cardíaca y muscular. Desbalance puede causar arritmias.'},
+      {name:'Cloruro',cat:'Electrolitos',val:v.cl,unit:'mEq/L',lo:98,hi:107,lw:95,hw:110,tip:'Anión principal del fluido extracelular. Parte del equilibrio ácido-base.'},
+      {name:'Bicarbonato',cat:'Electrolitos',val:v.hco3,unit:'mEq/L',lo:22,hi:29,lw:18,hw:32,tip:'Tampón principal del equilibrio ácido-base. Bajo puede indicar acidosis metabólica.'},
+    ]},
+    {id:'onc',label:'🔍 Oncológico',rows:[
+      {name:'PSA',cat:'Oncológico',val:sex==='M'?v.psa:null,unit:'ng/mL',lo:null,hi:2.5,lw:null,hw:4.0,tip:'Antígeno prostático. Solo hombres. Óptimo <2.5. Elevado requiere evaluación urológica.'},
+      {name:'CEA',cat:'Oncológico',val:v.cea,unit:'ng/mL',lo:null,hi:3.0,lw:null,hw:5.0,tip:'Antígeno carcinoembrionario. Marcador colorrectal y otros tumores. Óptimo <3.0. No específico como screening.'},
+      {name:'AFP',cat:'Oncológico',val:v.afp,unit:'ng/mL',lo:null,hi:10,lw:null,hw:20,tip:'Alfafetoproteína. Marcador hepático y testicular. Óptimo <10. Elevado requiere imagen.'},
+    ]},
+    {id:'fit',label:'🏃 Performance',rows:[
+      {name:'VO₂ Max ★',cat:'Fitness',val:v.vo2,unit:'ml/kg/min',lo:sex==='M'?42:37,hi:sex==='M'?55:48,lw:null,hw:null,tip:'Capacidad aeróbica máxima. El predictor más robusto de mortalidad por todas las causas. Óptimo >42 (H), >37 (M).'},
+      {name:'Grasa Corporal',cat:'DEXA',val:v.bf,unit:'%',lo:sex==='M'?10:18,hi:sex==='M'?20:28,lw:null,hw:sex==='M'?25:35,tip:sex==='M'?'% grasa corporal (DEXA). Óptimo H: 10–20%. >25% aumenta riesgo metabólico y cardiovascular.':'% grasa corporal (DEXA). Óptimo M: 18–28%. >35% aumenta riesgo metabólico.'},
+      {name:'Grasa Visceral',cat:'DEXA',val:v.vat,unit:'g',lo:null,hi:500,lw:null,hw:1000,tip:'Grasa visceral (alrededor de órganos). Más peligrosa que la subcutánea. Óptimo <500g.'},
+      {name:'ALMI (Masa Muscular)',cat:'DEXA',val:v.almi,unit:'kg/m²',lo:sex==='M'?8.0:5.5,hi:sex==='M'?12.0:8.0,lw:sex==='M'?6.5:4.5,hw:null,tip:'Índice de masa muscular apendicular (DEXA). Sarcopenia si <7 (H) o <5.4 (M). Clave para longevidad.'},
+      {name:'Densidad Ósea (T-score)',cat:'DEXA',val:v.bmd,unit:'SD',lo:-1.0,hi:1.5,lw:-2.5,hw:null,tip:'T-score de densidad mineral ósea. Normal >-1.0. Osteopenia -1 a -2.5. Osteoporosis <-2.5.'},
     ]},
   ];
   const counted=sections.reduce((a,s)=>a+s.rows.filter(r=>r.val!==null).length,0);
-  document.getElementById('r-marker-count').textContent=`${counted} de 72 con resultados`;
+  document.getElementById('r-marker-count').textContent=`${counted} marcadores con resultados`;
 
   document.getElementById('r-bio-tabs').innerHTML=sections.map((s,i)=>
     `<button class="bio-tab ${i===0?'active':''}" onclick="switchTab(this,'bt-${s.id}')">${s.label}</button>`
@@ -478,14 +514,14 @@ function renderReport(d){
 
   document.getElementById('r-bio-tables').innerHTML=sections.map((s,i)=>{
     const rows=s.rows.map(r=>{
-      if(r.val===null)return`<div class="bio-row"><div><div class="bm-name">${r.name}</div><div class="bm-cat">${r.cat}</div></div><div class="bm-val" style="color:var(--text-dim)">—</div><div></div><div class="bm-status"><div class="s-dot" style="background:#444"></div><span style="color:var(--text-dim)">Pendiente</span></div></div>`;
+      if(r.val===null)return`<div class="bio-row"><div><div class="bm-name"${r.tip?` title="${r.tip}"`:""} style="cursor:${r.tip?"help":"default"}">${r.name}</div><div class="bm-cat">${r.cat}</div></div><div class="bm-val" style="color:var(--text-dim)">—</div><div></div><div class="bm-status"><div class="s-dot" style="background:#444"></div><span style="color:var(--text-dim)">Pendiente</span></div></div>`;
       const rng=r.hi-r.lo,minV=r.lo-rng*0.5,maxV=r.hi+rng*0.5;
       const pV=Math.max(5,Math.min(92,(r.val-minV)/(maxV-minV)*100));
       const pL=Math.max(0,(r.lo-minV)/(maxV-minV)*100);
       const pH=Math.max(0,(r.hi-minV)/(maxV-minV)*100);
       const st=getStatus(r.val,r.lo,r.hi,r.lw,r.hw);
       return`<div class="bio-row">
-        <div><div class="bm-name">${r.name}</div><div class="bm-cat">${r.cat}</div></div>
+        <div><div class="bm-name"${r.tip?` title="${r.tip}"`:""} style="cursor:${r.tip?"help":"default"}">${r.name}</div><div class="bm-cat">${r.cat}</div></div>
         <div class="bm-val" style="color:${st.color}">${r.val} <span style="font-size:10px;color:var(--text-dim)">${r.unit}</span></div>
         <div><div class="range-bar"><div class="range-opt" style="left:${pL}%;width:${pH-pL}%"></div><div class="range-dot" style="left:calc(${pV}% - 5px);background:${st.color}"></div></div></div>
         <div class="bm-status"><div class="s-dot" style="background:${st.color}"></div><span style="color:${st.color}">${st.label}</span></div>
@@ -558,7 +594,12 @@ window.addEventListener('load',()=>{
     return;
   }
   try{
-    const data=JSON.parse(decodeURIComponent(atob(hash)));
+    let data;
+      try {
+        const raw = atob(hash);
+        try { data = JSON.parse(decodeURIComponent(escape(raw))); }
+        catch(e2) { data = JSON.parse(decodeURIComponent(raw)); }
+      } catch(e3) { throw new Error('decode failed'); }
     renderReport(data);
     document.getElementById('loading').style.display='none';
   }catch(e){
