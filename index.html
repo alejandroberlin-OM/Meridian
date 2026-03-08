@@ -421,7 +421,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="pmac"><div class="pmbr">Meridian Age™</div><div class="pmage" id="pv-age">—</div><div class="pmun">años</div><div class="pmdl" id="pv-dl"></div><div class="pmws"><div class="pmw"><div class="pmwp">50%</div><div class="pmwl">PhenoAge</div></div><div class="pmw"><div class="pmwp">25%</div><div class="pmwl">Composición</div></div><div class="pmw"><div class="pmwp">25%</div><div class="pmwl">VO₂ Max</div></div></div></div>
     <div class="pv3" id="pv3"></div>
     <div class="plbl" style="margin-top:2px">Nota clínica</div>
-    <div class="pclin"><div class="pchdr"><div class="pcav">👨‍⚕️</div><div><div class="pcname">Dr. Alejandro Berlin, MD, MSc</div><div class="pcrole">Medicina de Longevidad · Meridian Chile</div></div></div><div class="pctxt" id="pv-clin"></div></div>
+    <div class="pclin"><div class="pchdr"><div class="pcav">👨‍⚕️</div><div><div class="pcname">Dr. Alejandro Berlin, MD, MSc</div><div class="pcrole">Meridian Chile</div></div></div><div class="pctxt" id="pv-clin"></div></div>
     <div class="plbl" style="margin-top:2px">Plan de acción</div>
     <div class="pvpl" id="pvpl"></div>
   </div>
@@ -636,7 +636,7 @@ function renderPT(pc){
 function cpLink(){navigator.clipboard.writeText(curURL).then(()=>{const e=document.getElementById('cc');e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2500);});}
 function opLink(){if(curURL)window.open(curURL,'_blank');}
 function sWA(){const n=document.getElementById('f-name').value||'';window.open('https://wa.me/?text='+encodeURIComponent(`Hola ${n.split(' ')[0]}, tu reporte de longevidad Meridian está listo 🧬\n\n${curURL}`),'_blank');}
-function sEmail(){const n=document.getElementById('f-name').value||'';const s=`Tu Reporte Meridian · ${new Date().getFullYear()}`;const b=`Hola ${n.split(' ')[0]},\n\nTu reporte está listo:\n\n${curURL}\n\nDr. Alejandro Berlin, MD, MSc\nMedicina de Longevidad · Meridian Chile`;window.open(`mailto:?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`);}
+function sEmail(){const n=document.getElementById('f-name').value||'';const s=`Tu Reporte Meridian · ${new Date().getFullYear()}`;const b=`Hola ${n.split(' ')[0]},\n\nTu reporte está listo:\n\n${curURL}\n\nDr. Alejandro Berlin, MD, MSc\nMeridian Chile`;window.open(`mailto:?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`);}
 function newRep(){document.getElementById('vDone').style.display='none';document.getElementById('vEntry').style.display='block';setStep(1);window.scrollTo(0,0);}
 
 // ── INIT ──
@@ -927,7 +927,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;align-i
   <div class="clinician-card">
     <div class="clin-header">
       <div class="clin-avatar">👨‍⚕️</div>
-      <div><div class="clin-name">Dr. Alejandro Berlin, MD, MSc</div><div class="clin-role">Medicina de Longevidad · Meridian Chile</div></div>
+      <div><div class="clin-name">Dr. Alejandro Berlin, MD, MSc</div><div class="clin-role">Meridian Chile</div></div>
     </div>
     <div class="clin-text" id="r-clin-text"></div>
   </div>
@@ -1219,7 +1219,7 @@ function renderReport(d){
   document.getElementById('r-plan-grid').innerHTML=planArr.map(p=>\`<div class="plan-card"><div class="plan-header"><div class="plan-icon">\${p.icon}</div><div><div class="plan-title">\${p.title}</div><div class="plan-priority \${prCls[p.pr]||'pr-lo'}">\${prLbl[p.pr]||'Mantener'}</div></div></div><ul class="plan-items">\${p.items.map(i=>\`<li class="plan-item">\${i}</li>\`).join('')}</ul></div>\`).join('');
 
   // Footer
-  document.getElementById('r-footer-note').textContent=\`Reporte generado el \${new Date().toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'})}. Revisado y firmado digitalmente por Dr. Alejandro Berlin, MD, MSc · Medicina de Longevidad · Meridian Chile. Este reporte es de carácter informativo — no reemplaza el diagnóstico médico de tu equipo clínico habitual.\`;
+  document.getElementById('r-footer-note').textContent=\`Reporte generado el \${new Date().toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'})}. Revisado y firmado digitalmente por Dr. Alejandro Berlin, MD, MSc · Meridian Chile. Este reporte es de carácter informativo — no reemplaza el diagnóstico médico de tu equipo clínico habitual.\`;
 
   // Show report
   document.getElementById('report-main').style.display='block';
@@ -1460,7 +1460,7 @@ function sEmail(){
   const fn=n.split(' ')[0];
   const ghURL=document.getElementById('dn-link').textContent;
   const s=`Tu Reporte Meridian · ${new Date().getFullYear()}`;
-  const b=`Hola ${fn},\n\nTu reporte de longevidad está listo:\n\n${ghURL}\n\nDr. Alejandro Berlin, MD, MSc\nMedicina de Longevidad · Meridian Chile`;
+  const b=`Hola ${fn},\n\nTu reporte de longevidad está listo:\n\n${ghURL}\n\nDr. Alejandro Berlin, MD, MSc\nMeridian Chile`;
   window.open(`mailto:?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`);
 }
 function newRep(){document.getElementById('vDone').style.display='none';document.getElementById('vEntry').style.display='block';setStep(1);window.scrollTo(0,0);}
