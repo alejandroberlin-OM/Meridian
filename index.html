@@ -733,6 +733,10 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;align-i
   .bio-th,.bio-row{grid-template-columns:2fr 1fr 0 1fr;}
   .bio-th span:nth-child(3),.bio-row>div:nth-child(3){display:none;}
 }
+
+.dom-tab-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.dom-tab-link{font-size:10px;font-family:'DM Mono',monospace;color:var(--green-light);background:rgba(45,106,79,.15);border:1px solid rgba(45,106,79,.3);border-radius:4px;padding:3px 8px;cursor:pointer;transition:background .2s;}
+.dom-tab-link:hover{background:rgba(45,106,79,.3);}
 </style>
 </head>
 <body>
@@ -807,7 +811,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;align-i
   <div class="divider"></div>
 
   <!-- BIOMARKERS -->
-  <div class="sec-header"><h2>Panel Tier 2 completo</h2><div class="sec-line"></div><span class="sec-count" id="r-marker-count"></span></div>
+  <div id="sec-bio" class="sec-header"><h2>Panel Tier 2 completo</h2><div class="sec-line"></div><span class="sec-count" id="r-marker-count"></span></div>
   <div class="bio-tabs" id="r-bio-tabs"></div>
   <div id="r-bio-tables"></div>
   <div class="divider"></div>
@@ -937,22 +941,38 @@ function renderReport(d){
 
   // Domains
   const domDefs=[
-    {name:'Salud Metabólica',sub:'HbA1c, HOMA-IR, glucosa, ácido úrico',opts:[[v.hba1c,4.8,5.4,2],[v.homa,0.5,1.5,2],[v.glu,72,90],[v.ua,3,5.5],[v.ggt,8,25]]},
-    {name:'Salud Cardiovascular',sub:'ApoB, Lp(a), homocisteína, Omega-3',opts:[[v.apob,50,80,2],[v.lpa,0,75],[v.hcy,6,9],[v.ldl,60,100],[v.hdl,60,90],[v.o3,8,12,2]]},
-    {name:'Hormonas & Vitalidad',sub:'Test. libre, IGF-1, DHEA-S, cortisol',opts:[[v.tft,sex==='M'?10:1,sex==='M'?25:4,2],[v.igf1,sex==='M'?150:120,sex==='M'?250:200,2],[v.dhea,sex==='M'?150:80,sex==='M'?400:280],[v.cort,10,18],[v.tsh,1,2.5]]},
-    {name:'Inflamación & Inmunidad',sub:'hsCRP, IL-6, VHS, anticuerpos',opts:[[v.hscrp,0,0.8,2],[v.il6,0,1.8,2],[v.vhs,0,15],[v.tpo,0,35]]},
-    {name:'Función Orgánica',sub:'Hígado, riñón, tiroides',opts:[[v.alb,4.2,5.0],[v.cre,0.7,1.1],[v.alp,40,80],[v.alt,5,25],[v.ft3,3.2,4.2]]},
-    {name:'Nutrición & Micronutrientes',sub:'Vit D, Omega-3, B12, ferritina',opts:[[v.vitd,50,70,2],[v.o3,8,12,2],[v.b12,400,900],[v.ferr,70,150],[v.mg,5.5,6.5]]},
+    {name:'Salud Metabólica',sub:'Glucosa, insulina, HOMA-IR, HbA1c',tabs:['met','hep'],tabLabels:['Metabólico','Hígado & Riñón'],opts:[[v.hba1c,4.8,5.4,2],[v.homa,0.5,1.5,2],[v.glu,72,90],[v.ua,3,5.5],[v.ggt,8,25],[v.alt,5,25],[v.alb,4.2,5.0]]},
+    {name:'Salud Cardiovascular',sub:'ApoB, Lp(a), lípidos, Omega-3',tabs:['lip'],tabLabels:['Lípidos'],opts:[[v.apob,50,80,2],[v.lpa,0,75],[v.hcy,6,9],[v.ldl,60,100],[v.hdl,60,90],[v.o3,8,12,2],[v.trig,50,100]]},
+    {name:'Hormonas & Vitalidad',sub:'Testosterona, IGF-1, DHEA-S, tiroides',tabs:['hor'],tabLabels:['Hormonas & Tiroides'],opts:[[v.tft,sex==='M'?10:1,sex==='M'?25:4,2],[v.igf1,sex==='M'?150:120,sex==='M'?250:200,2],[v.dhea,sex==='M'?150:80,sex==='M'?400:280],[v.cort,10,18],[v.tsh,1,2.5],[v.ft3,3.2,4.2]]},
+    {name:'Inflamación & Inmunidad',sub:'hsCRP, IL-6, hemograma, anticuerpos',tabs:['inf','hem'],tabLabels:['Inflamación','Hemograma'],opts:[[v.hscrp,0,0.8,2],[v.il6,0,1.8,2],[v.vhs,0,15],[v.wbc,4,7],[v.lym,25,40],[v.rdw,null,13,null,14.5]]},
+    {name:'Nutrición & Reservas',sub:'Vit D, B12, ferritina, minerales',tabs:['nut'],tabLabels:['Nutrición & Electrolitos'],opts:[[v.vitd,50,70,2],[v.b12,400,900],[v.ferr,sex==='M'?70:30,sex==='M'?200:100],[v.mg,5.5,6.5],[v.zn,80,120]]},
+    {name:'Performance & Composición',sub:'VO₂ Max, músculo, grasa, hueso',tabs:['fit'],tabLabels:['Performance'],opts:[[v.vo2,sex==='M'?42:37,sex==='M'?55:48,2],[v.bf,sex==='M'?10:18,sex==='M'?20:28],[v.almi,sex==='M'?8:5.5,sex==='M'?12:8]]},
   ];
   function dCls(s){if(!s)return's-wa';if(s>=85)return's-ex';if(s>=75)return's-go';if(s>=60)return's-wa';return's-lo';}
   function dColor(s){if(!s)return'#aaa';if(s>=85)return'linear-gradient(90deg,#2D6A4F,#74C69D)';if(s>=75)return'linear-gradient(90deg,#1a7a8a,#4bb8cc)';if(s>=60)return'linear-gradient(90deg,#C9A84C,#E8C97A)';return'linear-gradient(90deg,#c62828,#ff7b7b)';}
   function dNote(s){if(!s)return'⚪ Sin datos suficientes';if(s>=85)return'✓ Excelente';if(s>=75)return'✓ Dentro del rango óptimo';if(s>=60)return'⚠ Requiere atención';return'⚠ Prioridad alta';}
+  document.getElementById('r-domains').innerHTML=
+  function jumpTab(tabId){
+    document.getElementById('sec-bio').scrollIntoView({behavior:'smooth'});
+    setTimeout(()=>{
+      const b=document.querySelector('.bio-tab[data-tab="'+tabId+'"]');
+      if(b){
+        document.querySelectorAll('.bio-tab').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        document.querySelectorAll('.bio-table').forEach(x=>x.style.display='none');
+        document.getElementById(tabId).style.display='block';
+      }
+    },350);
+  }
   document.getElementById('r-domains').innerHTML=domDefs.map(d=>{
     const sc=domainScore(d.opts);
+    const tabLinks=d.tabs.map((t,i)=>'<button class="dom-tab-link" onclick="jumpTab(\\'bt-'+t+'\\')">'
+      +d.tabLabels[i]+'</button>').join('');
     return\`<div class="domain-card">
       <div class="domain-top"><div><div class="domain-name">\${d.name}</div><div class="domain-sub">\${d.sub}</div></div><div class="score-badge \${dCls(sc)}">\${sc||'—'}</div></div>
       <div class="domain-bar"><div class="domain-bar-fill" style="background:\${dColor(sc)}" data-target="\${sc||0}"></div></div>
       <div class="domain-note">\${dNote(sc)}</div>
+      <div class="dom-tab-links">\${tabLinks}</div>
     </div>\`;}).join('');
 
   // Biomarker sections
@@ -987,7 +1007,7 @@ function renderReport(d){
       {name:'Fosfatasa Alcalina',cat:'Hígado',val:v.alp,unit:'U/L',lo:40,hi:80,lw:null,hw:120,tip:'ALP elevada puede indicar colestasis, enfermedad ósea o hepática.'},
       {name:'Bilirrubina Total',cat:'Hígado',val:v.bili,unit:'mg/dL',lo:null,hi:1.2,lw:null,hw:2.0,tip:'Producto de degradación de hemoglobina. Elevada puede indicar hemólisis o disfunción hepática.'},
       {name:'Albumina',cat:'Hígado',val:v.alb,unit:'g/dL',lo:4.2,hi:5.0,lw:3.5,hw:null,tip:'Proteína hepática. Marcador de estado nutricional y función hepática. Óptimo 4.2–5.0 g/dL.'},
-      {name:'Creatinina',cat:'Riñón',val:v.cre,unit:'mg/dL',lo:0.7,hi:1.1,lw:null,hw:1.3,tip:'Producto de metabolismo muscular. Indicador de función renal. Óptimo 0.7–1.1 mg/dL.'},
+      {name:'Creatinina',cat:'Riñón',val:v.cre,unit:'mg/dL',lo:sex==='M'?0.7:0.5,hi:sex==='M'?1.1:0.9,lw:null,hw:sex==='M'?1.3:1.1,tip:'Producto de metabolismo muscular. Indicador de función renal. Óptimo H: 0.7–1.1, M: 0.5–0.9 mg/dL.'},
       {name:'eGFR',cat:'Riñón',val:v.egfr,unit:'ml/min/1.73m²',lo:90,hi:120,lw:60,hw:null,tip:'Tasa de filtración glomerular estimada. Óptimo >90. <60 indica enfermedad renal crónica.'},
       {name:'BUN (Urea)',cat:'Riñón',val:v.bun,unit:'mg/dL',lo:7,hi:20,lw:null,hw:30,tip:'Nitrógeno ureico en sangre. Elevado puede indicar deshidratación, daño renal o alta ingesta proteica.'},
       {name:'Ácido Úrico',cat:'Metabólico',val:v.ua,unit:'mg/dL',lo:3.0,hi:5.5,lw:2.0,hw:7.0,tip:'Elevado (hiperuricemia) aumenta riesgo de gota, enfermedad renal y síndrome metabólico.'},
@@ -1001,21 +1021,20 @@ function renderReport(d){
       {name:'Linfocitos %',cat:'CBC',val:v.lym,unit:'%',lo:25,hi:40,lw:15,hw:50,tip:'% de linfocitos (defensa específica). <20% puede indicar inmunosupresión. Óptimo 25–40%.'},
       {name:'Neutrófilos %',cat:'CBC',val:v.neut,unit:'%',lo:40,hi:65,lw:35,hw:75,tip:'% de neutrófilos (defensa inespecífica). Elevado en infecciones bacterianas o estrés.'},
     ]},
-    {id:'tir',label:'🦋 Tiroides',rows:[
+    
+    {id:'hor',label:'🔬 Hormonas & Tiroides',rows:[
       {name:'TSH',cat:'Tiroides',val:v.tsh,unit:'mUI/L',lo:1.0,hi:2.5,lw:0.4,hw:4.0,tip:'Hormona estimulante de tiroides. Óptimo funcional 1.0–2.5. Elevado indica hipotiroidismo.'},
       {name:'T3 Libre',cat:'Tiroides',val:v.ft3,unit:'pg/mL',lo:3.2,hi:4.2,lw:2.3,hw:4.5,tip:'Hormona tiroidea activa. T3 bajo puede explicar fatiga, frío, depresión incluso con TSH normal.'},
       {name:'T4 Libre',cat:'Tiroides',val:v.ft4,unit:'ng/dL',lo:1.0,hi:1.5,lw:0.8,hw:1.8,tip:'Precursor hormona tiroidea. Se convierte a T3 en tejidos periféricos.'},
       {name:'Anticuerpos TPO',cat:'Tiroides',val:v.tpo,unit:'UI/mL',lo:null,hi:35,lw:null,hw:100,tip:'Anticuerpos antiperoxidasa tiroidea. Elevados indican tiroiditis autoinmune (Hashimoto). Óptimo <35.'},
-    ]},
-    {id:'hor',label:'🔬 Hormonas',rows:[
       {name:'Testosterona Total',cat:'Hormonas',val:v.ttt,unit:'ng/dL',lo:sex==='M'?600:15,hi:sex==='M'?900:70,lw:sex==='M'?350:10,hw:sex==='M'?1100:80,tip:sex==='M'?'Testosterona total masculina. Óptimo funcional 600–900. <400 asociado a fatiga, baja libido, pérdida muscular.':'Testosterona total femenina. Óptimo funcional 15–70. Importante para libido, energía y masa muscular.'},
       {name:'Testosterona Libre',cat:'Hormonas',val:v.tft,unit:'pg/mL',lo:sex==='M'?10:1.0,hi:sex==='M'?25:4.0,lw:sex==='M'?5:0.5,hw:sex==='M'?35:8.0,tip:sex==='M'?'Testosterona biodisponible. Óptimo 10–25 pg/mL. Mejor reflejo del estado androgénico que total.':'Testosterona libre femenina. Óptimo 1–4 pg/mL. Baja contribuye a fatiga y pérdida de libido.'},
-      {name:'SHBG',cat:'Hormonas',val:v.shbg,unit:'nmol/L',lo:20,hi:50,lw:10,hw:70,tip:'Proteína transportadora de hormonas sexuales. SHBG alta = menos testosterona libre biodisponible.'},
+      {name:'SHBG',cat:'Hormonas',val:v.shbg,unit:'nmol/L',lo:sex==='M'?20:40,hi:sex==='M'?50:120,lw:sex==='M'?10:25,hw:sex==='M'?70:160,tip:'Proteína transportadora de hormonas sexuales. Rango femenino más amplio. SHBG alta reduce testosterona libre.'},
       {name:'DHEA-S',cat:'Hormonas',val:v.dhea,unit:'μg/dL',lo:sex==='M'?150:80,hi:sex==='M'?400:280,lw:null,hw:null,tip:'Precursor androgénico adrenal. Declina ~1%/año tras los 30. Refleja reserva adrenal y vitalidad.'},
       {name:'Cortisol AM',cat:'Hormonas',val:v.cort,unit:'μg/dL',lo:10,hi:18,lw:6,hw:25,tip:'Cortisol matutino (8am). Refleja función adrenal. Crónico elevado acelera envejecimiento y suprime otras hormonas.'},
       {name:'IGF-1 ★',cat:'Hormonas',val:v.igf1,unit:'ng/mL',lo:sex==='M'?150:120,hi:sex==='M'?250:200,lw:null,hw:null,tip:'Factor de crecimiento insulínico. Proxy de GH. Declina con edad. Óptimo para longevidad: mitad-alta del rango normal.'},
-      {name:'LH',cat:'Hormonas',val:v.lh,unit:'mUI/mL',lo:2,hi:9,lw:null,hw:null,tip:'Hormona luteinizante. En hombres estimula producción de testosterona. En mujeres regula ovulación.'},
-      {name:'FSH',cat:'Hormonas',val:v.fsh,unit:'mUI/mL',lo:2,hi:12,lw:null,hw:null,tip:'Hormona foliculoestimulante. FSH elevada en hombres indica fallo testicular primario. En mujeres, refleja reserva ovárica.'},
+      {name:'LH',cat:'Hormonas',val:v.lh,unit:'mUI/mL',lo:sex==='M'?2:2,hi:sex==='M'?9:15,lw:null,hw:null,tip:'Hormona luteinizante. Hombres: 2–9. Mujeres fase folicular: 2–15. Pico ovulatorio puede ser >20.'},
+      {name:'FSH',cat:'Hormonas',val:v.fsh,unit:'mUI/mL',lo:sex==='M'?2:3,hi:sex==='M'?12:10,lw:null,hw:sex==='M'?18:null,tip:'FSH. Hombres: 2–12. Mujeres fase folicular: 3–10. FSH >10 en mujer <40 sugiere reserva ovárica reducida.'},
       {name:'Prolactina',cat:'Hormonas',val:v.prl,unit:'ng/mL',lo:null,hi:sex==='M'?15:25,lw:null,hw:sex==='M'?20:30,tip:'Elevada puede suprimir testosterona/estrógeno y causar disfunción sexual. Óptimo bajo-normal.'},
     ]},
     {id:'nut',label:'🌿 Nutrición & Electrolitos',rows:[
@@ -1047,7 +1066,7 @@ function renderReport(d){
   document.getElementById('r-marker-count').textContent=\`\${counted} marcadores con resultados\`;
 
   document.getElementById('r-bio-tabs').innerHTML=sections.map((s,i)=>
-    \`<button class="bio-tab \${i===0?'active':''}" onclick="switchTab(this,'bt-\${s.id}')">\${s.label}</button>\`
+    \`<button class="bio-tab \${i===0?'active':''}" data-tab="bt-\${s.id}" onclick="switchTab(this,'bt-\${s.id}')">\${s.label}</button>\`
   ).join('');
 
   document.getElementById('r-bio-tables').innerHTML=sections.map((s,i)=>{
