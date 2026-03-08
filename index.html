@@ -238,9 +238,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <!-- LIPIDS STANDARD -->
     <div class="fs"><div class="fsh"><div class="fsi">🩸</div><div><div class="fst">Lípidos Estándar</div></div></div>
     <div class="mg">
-      <div class="mf"><div class="mn">Colesterol Total</div><div class="mu">mg/dL · ref: &lt;200</div><input class="mi" id="m-tc" placeholder="188" type="number"></div>
+      <div class="mf"><div class="mn">Colesterol Total</div><div class="mu">mg/dL · ref: &lt;200</div><input class="mi" id="m-tc" placeholder="188" type="number" oninput="calcNonHDL();lp()"></div>
       <div class="mf"><div class="mn">LDL</div><div class="mu">mg/dL · ópt: &lt;100</div><input class="mi" id="m-ldl" placeholder="102" type="number"></div>
-      <div class="mf"><div class="mn">HDL</div><div class="mu">mg/dL · ópt: &gt;60</div><input class="mi" id="m-hdl" placeholder="68" type="number"></div>
+      <div class="mf"><div class="mn">HDL</div><div class="mu">mg/dL · ópt: &gt;60</div><input class="mi" id="m-hdl" placeholder="68" type="number" oninput="calcNonHDL();lp()"></div>
       <div class="mf"><div class="mn">Triglicéridos</div><div class="mu">mg/dL · ópt: &lt;100</div><input class="mi" id="m-trig" placeholder="88" type="number"></div>
     </div></div>
 
@@ -421,7 +421,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="pmac"><div class="pmbr">Meridian Age™</div><div class="pmage" id="pv-age">—</div><div class="pmun">años</div><div class="pmdl" id="pv-dl"></div><div class="pmws"><div class="pmw"><div class="pmwp">50%</div><div class="pmwl">PhenoAge</div></div><div class="pmw"><div class="pmwp">25%</div><div class="pmwl">Composición</div></div><div class="pmw"><div class="pmwp">25%</div><div class="pmwl">VO₂ Max</div></div></div></div>
     <div class="pv3" id="pv3"></div>
     <div class="plbl" style="margin-top:2px">Nota clínica</div>
-    <div class="pclin"><div class="pchdr"><div class="pcav">👨‍⚕️</div><div><div class="pcname">Dr. Alejandro Berlin, MD, MSc</div><div class="pcrole">Medicina de Longevidad · Meridian Chile</div></div></div><div class="pctxt" id="pv-clin"></div></div>
+    <div class="pclin"><div class="pchdr"><div class="pcav">👨‍⚕️</div><div><div class="pcname">Dr. Alejandro Berlin, MD, MSc</div><div class="pcrole">Meridian Chile</div></div></div><div class="pctxt" id="pv-clin"></div></div>
     <div class="plbl" style="margin-top:2px">Plan de acción</div>
     <div class="pvpl" id="pvpl"></div>
   </div>
@@ -817,7 +817,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;align-i
   <div class="clinician-card">
     <div class="clin-header">
       <div class="clin-avatar">👨‍⚕️</div>
-      <div><div class="clin-name">Dr. Alejandro Berlin, MD, MSc</div><div class="clin-role">Medicina de Longevidad · Meridian Chile</div></div>
+      <div><div class="clin-name">Dr. Alejandro Berlin, MD, MSc</div><div class="clin-role">Meridian Chile</div></div>
     </div>
     <div class="clin-text" id="r-clin-text"></div>
   </div>
@@ -881,8 +881,8 @@ function renderReport(d){
   const age=parseInt(d.age)||44;
   const sex=d.sex||'M';
   const v={};
-  ['alb','cre','glu','crp','lym','mcv','rdw','alp','wbc','hba1c','ins','homa','ua','ggt','alt','tc','ldl','hdl','trig','apob','lpa','hcy','o3','fib','ttt','tft','shbg','dhea','cort','igf1','tsh','ft3','ft4','lh','fsh','prl','hscrp','il6','vhs','tpo','neut','vitd','b12','fol','ferr','mg','zn','psa','cea','afp','vo2','bf','vat','almi','bmd','bca'].forEach(k=>{
-    v[k]=d[k]?parseFloat(d[k]):null;
+  ['alb','cre','glu','crp','lym','mcv','rdw','alp','wbc','hba1c','ins','homa','ua','ggt','alt','ast','tc','ldl','hdl','nonhdl','trig','apob','lpa','hcy','o3','fib','bili','egfr','bun','rbc','plt','ttt','tft','shbg','dhea','cort','igf1','tsh','ft3','ft4','lh','fsh','prl','il6','vhs','tpo','neut','vitd','b12','fol','ferr','mg','zn','na','k','cl','hco3','psa','cea','afp','vo2','bf','vat','almi','bmd','bca'].forEach(k=>{
+    v[k]=d[k]!==undefined&&d[k]!==''?parseFloat(d[k]):null;
   });
 
   // Ages
@@ -939,7 +939,7 @@ function renderReport(d){
   const domDefs=[
     {name:'Salud Metabólica',sub:'HbA1c, HOMA-IR, glucosa, ácido úrico',opts:[[v.hba1c,4.8,5.4,2],[v.homa,0.5,1.5,2],[v.glu,72,90],[v.ua,3,5.5],[v.ggt,8,25]]},
     {name:'Salud Cardiovascular',sub:'ApoB, Lp(a), homocisteína, Omega-3',opts:[[v.apob,50,80,2],[v.lpa,0,75],[v.hcy,6,9],[v.ldl,60,100],[v.hdl,60,90],[v.o3,8,12,2]]},
-    {name:'Hormonas & Vitalidad',sub:'Test. libre, IGF-1, DHEA-S, cortisol',opts:[[v.tft,10,25,2],[v.igf1,150,220,2],[v.dhea,150,300],[v.cort,10,18],[v.tsh,1,2.5]]},
+    {name:'Hormonas & Vitalidad',sub:'Test. libre, IGF-1, DHEA-S, cortisol',opts:[[v.tft,sex==='M'?10:1,sex==='M'?25:4,2],[v.igf1,sex==='M'?150:120,sex==='M'?250:200,2],[v.dhea,sex==='M'?150:80,sex==='M'?400:280],[v.cort,10,18],[v.tsh,1,2.5]]},
     {name:'Inflamación & Inmunidad',sub:'hsCRP, IL-6, VHS, anticuerpos',opts:[[v.hscrp,0,0.8,2],[v.il6,0,1.8,2],[v.vhs,0,15],[v.tpo,0,35]]},
     {name:'Función Orgánica',sub:'Hígado, riñón, tiroides',opts:[[v.alb,4.2,5.0],[v.cre,0.7,1.1],[v.alp,40,80],[v.alt,5,25],[v.ft3,3.2,4.2]]},
     {name:'Nutrición & Micronutrientes',sub:'Vit D, Omega-3, B12, ferritina',opts:[[v.vitd,50,70,2],[v.o3,8,12,2],[v.b12,400,900],[v.ferr,70,150],[v.mg,5.5,6.5]]},
@@ -1018,15 +1018,13 @@ function renderReport(d){
       {name:'FSH',cat:'Hormonas',val:v.fsh,unit:'mUI/mL',lo:2,hi:12,lw:null,hw:null,tip:'Hormona foliculoestimulante. FSH elevada en hombres indica fallo testicular primario. En mujeres, refleja reserva ovárica.'},
       {name:'Prolactina',cat:'Hormonas',val:v.prl,unit:'ng/mL',lo:null,hi:sex==='M'?15:25,lw:null,hw:sex==='M'?20:30,tip:'Elevada puede suprimir testosterona/estrógeno y causar disfunción sexual. Óptimo bajo-normal.'},
     ]},
-    {id:'nut',label:'🌿 Nutrición',rows:[
+    {id:'nut',label:'🌿 Nutrición & Electrolitos',rows:[
       {name:'Vitamina D ★',cat:'Vitaminas',val:v.vitd,unit:'ng/mL',lo:50,hi:70,lw:30,hw:100,tip:'Vitamina/hormona clave. <30 es déficit. Óptimo funcional 50–70. Afecta inmunidad, hueso, ánimo y longevidad.'},
       {name:'Vitamina B12',cat:'Vitaminas',val:v.b12,unit:'pg/mL',lo:400,hi:900,lw:200,hw:null,tip:'Esencial para nervios, ADN y glóbulos rojos. <300 puede causar neuropatía y anemia macrocítica.'},
       {name:'Folato',cat:'Vitaminas',val:v.fol,unit:'ng/mL',lo:10,hi:20,lw:4,hw:null,tip:'Vitamina B9. Crucial para metilación del ADN. Bajo aumenta homocisteína y riesgo de defectos del tubo neural.'},
       {name:'Ferritina',cat:'Minerales',val:v.ferr,unit:'ng/mL',lo:sex==='M'?70:30,hi:sex==='M'?200:100,lw:null,hw:300,tip:sex==='M'?'Reserva de hierro. Óptimo H: 70–200. <30 indica déficit, >300 puede indicar inflamación o hemocromatosis.':'Reserva de hierro. Óptimo M: 30–100. Común en mujeres déficit. Afecta energía, cabello y cognición.'},
       {name:'Magnesio (RBC)',cat:'Minerales',val:v.mg,unit:'mg/dL',lo:5.5,hi:6.5,lw:4.5,hw:null,tip:'Magnesio intracelular (más preciso que sérico). Involucrado en >300 reacciones enzimáticas. Óptimo 5.5–6.5.'},
       {name:'Zinc',cat:'Minerales',val:v.zn,unit:'μg/dL',lo:80,hi:120,lw:60,hw:150,tip:'Esencial para sistema inmune, síntesis de testosterona, cicatrización y metabolismo. Óptimo 80–120.'},
-    ]},
-    {id:'ele',label:'⚗️ Electrolitos',rows:[
       {name:'Sodio',cat:'Electrolitos',val:v.na,unit:'mEq/L',lo:136,hi:145,lw:130,hw:150,tip:'Principal catión extracelular. Regula volumen plasmático. Hipo/hipernatremia pueden ser graves.'},
       {name:'Potasio',cat:'Electrolitos',val:v.k,unit:'mEq/L',lo:3.5,hi:5.0,lw:3.0,hw:5.5,tip:'Esencial para función cardíaca y muscular. Desbalance puede causar arritmias.'},
       {name:'Cloruro',cat:'Electrolitos',val:v.cl,unit:'mEq/L',lo:98,hi:107,lw:95,hw:110,tip:'Anión principal del fluido extracelular. Parte del equilibrio ácido-base.'},
@@ -1109,7 +1107,7 @@ function renderReport(d){
   document.getElementById('r-plan-grid').innerHTML=planArr.map(p=>\`<div class="plan-card"><div class="plan-header"><div class="plan-icon">\${p.icon}</div><div><div class="plan-title">\${p.title}</div><div class="plan-priority \${prCls[p.pr]||'pr-lo'}">\${prLbl[p.pr]||'Mantener'}</div></div></div><ul class="plan-items">\${p.items.map(i=>\`<li class="plan-item">\${i}</li>\`).join('')}</ul></div>\`).join('');
 
   // Footer
-  document.getElementById('r-footer-note').textContent=\`Reporte generado el \${new Date().toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'})}. Revisado y firmado digitalmente por Dr. Alejandro Berlin, MD, MSc · Medicina de Longevidad · Meridian Chile. Este reporte es de carácter informativo — no reemplaza el diagnóstico médico de tu equipo clínico habitual.\`;
+  document.getElementById('r-footer-note').textContent=\`Reporte generado el \${new Date().toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'})}. Revisado y firmado digitalmente por Dr. Alejandro Berlin, MD, MSc · Meridian Chile. Este reporte es de carácter informativo — no reemplaza el diagnóstico médico de tu equipo clínico habitual.\`;
 
   // Show report
   document.getElementById('report-main').style.display='block';
@@ -1242,7 +1240,7 @@ function sEmail(){
   const ghURL=document.getElementById('dn-link').textContent;
   const fn=(document.getElementById('f-name').value||'').split(' ')[0];
   const s=`Tu Reporte Meridian · ${new Date().getFullYear()}`;
-  const b=`Hola ${fn},\n\nTu reporte de longevidad está listo:\n\n${ghURL}\n\nDr. Alejandro Berlin, MD, MSc\nMedicina de Longevidad · Meridian Chile`;
+  const b=`Hola ${fn},\n\nTu reporte de longevidad está listo:\n\n${ghURL}\n\nDr. Alejandro Berlin, MD, MSc · Meridian Chile`;
   window.open(`mailto:?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`);
 }
 function newRep(){document.getElementById('vDone').style.display='none';document.getElementById('vEntry').style.display='block';setStep(1);window.scrollTo(0,0);}
@@ -1535,7 +1533,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;align-i
   <div class="clinician-card">
     <div class="clin-header">
       <div class="clin-avatar">👨‍⚕️</div>
-      <div><div class="clin-name">Dr. Alejandro Berlin, MD, MSc</div><div class="clin-role">Medicina de Longevidad · Meridian Chile</div></div>
+      <div><div class="clin-name">Dr. Alejandro Berlin, MD, MSc</div><div class="clin-role">Meridian Chile</div></div>
     </div>
     <div class="clin-text" id="r-clin-text"></div>
   </div>
@@ -1827,7 +1825,7 @@ function renderReport(d){
   document.getElementById('r-plan-grid').innerHTML=planArr.map(p=>\`<div class="plan-card"><div class="plan-header"><div class="plan-icon">\${p.icon}</div><div><div class="plan-title">\${p.title}</div><div class="plan-priority \${prCls[p.pr]||'pr-lo'}">\${prLbl[p.pr]||'Mantener'}</div></div></div><ul class="plan-items">\${p.items.map(i=>\`<li class="plan-item">\${i}</li>\`).join('')}</ul></div>\`).join('');
 
   // Footer
-  document.getElementById('r-footer-note').textContent=\`Reporte generado el \${new Date().toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'})}. Revisado y firmado digitalmente por Dr. Alejandro Berlin, MD, MSc · Medicina de Longevidad · Meridian Chile. Este reporte es de carácter informativo — no reemplaza el diagnóstico médico de tu equipo clínico habitual.\`;
+  document.getElementById('r-footer-note').textContent=\`Reporte generado el \${new Date().toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'})}. Revisado y firmado digitalmente por Dr. Alejandro Berlin, MD, MSc · Meridian Chile. Este reporte es de carácter informativo — no reemplaza el diagnóstico médico de tu equipo clínico habitual.\`;
 
   // Show report
   document.getElementById('report-main').style.display='block';
@@ -2068,7 +2066,7 @@ function sEmail(){
   const fn=n.split(' ')[0];
   const ghURL=document.getElementById('dn-link').textContent;
   const s=`Tu Reporte Meridian · ${new Date().getFullYear()}`;
-  const b=`Hola ${fn},\n\nTu reporte de longevidad está listo:\n\n${ghURL}\n\nDr. Alejandro Berlin, MD, MSc\nMedicina de Longevidad · Meridian Chile`;
+  const b=`Hola ${fn},\n\nTu reporte de longevidad está listo:\n\n${ghURL}\n\nDr. Alejandro Berlin, MD, MSc · Meridian Chile`;
   window.open(`mailto:?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`);
 }
 function newRep(){document.getElementById('vDone').style.display='none';document.getElementById('vEntry').style.display='block';setStep(1);window.scrollTo(0,0);}
