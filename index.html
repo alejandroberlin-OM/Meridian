@@ -215,7 +215,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <div class="fg"><div class="fl">Fecha de muestra</div><input class="fi" id="f-date" type="date"></div>
       </div>
     </div>
-    <div class="aprev"><div class="aplbl">Meridian Age™</div><div class="apnum" id="preview-age">—</div><div class="apsub">50% PhenoAge · 25% Composición · 25% VO₂</div></div>
+    <div class="aprev"><div class="aplbl">Meridian Age™</div><div class="apnum" id="preview-age">—</div><div class="apsub">Índice compuesto · Fórmula propietaria Meridian</div></div>
     <button class="btn-next" onclick="goToReview()">Continuar → Revisar reporte</button>
     <div style="font-size:11px;color:var(--text-dim);line-height:1.6">Campos vacíos se mostrarán como "Pendiente" en el reporte.</div>
   </div>
@@ -467,8 +467,9 @@ const BM=[
 // ── ALGORITHMS ──
 function calcPA(a,c,g,crp,l,m,r,alp,w){
   const xb=-19.9067+(-0.0336*a)+(0.0095*c)+(0.1953*g)+(0.0954*Math.log(Math.max(crp,0.01)))+(-0.012*l)+(0.0268*m)+(0.3306*r)+(0.0019*alp)+(0.0554*w);
-  const M=1-Math.exp(-Math.exp(xb)*(Math.exp(0.0553*120)-1)/0.0553);
-  return Math.round(Math.max(18,Math.min(100,141.50+Math.log(-0.00553*Math.log(1-M))/0.0553)));
+  const mort=1-Math.exp(-0.0076927*Math.exp(0.9901*xb));
+  const pa=(Math.log(-Math.log(1-mort))-(-3.4657))/0.0553;
+  return Math.round(Math.max(18,Math.min(100,pa)));
 }
 function vo2A(v2,age,sex){const m=sex==='M'?{20:52,30:48,40:42,50:37,60:32}:{20:46,30:42,40:37,50:32,60:27};let mv=m[40];for(let k of Object.keys(m).map(Number).sort((a,b)=>a-b)){if(age>=k)mv=m[k];}return Math.round(Math.max(18,Math.min(90,age-(v2-mv)*0.55)));}
 function bcA(f,age,sex){const hi=sex==='M'?20:28;return f<=hi?age-3:Math.round(Math.min(age+20,age+(f-hi)*0.7));}
