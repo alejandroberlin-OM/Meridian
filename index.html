@@ -6,537 +6,378 @@
 <title>Meridian — Sistema de Reporte Clínico</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy:#0B1628;--navy-mid:#112240;--navy-light:#1a3356;
-  --green:#2D6A4F;--green-mid:#40916C;--green-light:#74C69D;--green-pale:#B7E4C7;
-  --green-ghost:rgba(45,106,79,0.12);
-  --gold:#C9A84C;--gold-light:#E8C97A;
-  --cream:#F5F0E8;
-  --red:#ff7b7b;--teal:#4bb8cc;
-  --text-dim:rgba(245,240,232,0.45);--text-mid:rgba(245,240,232,0.72);
-  --border:rgba(245,240,232,0.07);--border-green:rgba(64,145,108,0.3);
-  --border-gold:rgba(201,168,76,0.3);
-}
+:root{--navy:#0B1628;--navy-mid:#112240;--green:#2D6A4F;--green-mid:#40916C;--green-light:#74C69D;--green-pale:#B7E4C7;--green-ghost:rgba(45,106,79,0.12);--gold-light:#E8C97A;--cream:#F5F0E8;--red:#ff7b7b;--text-dim:rgba(245,240,232,0.45);--text-mid:rgba(245,240,232,0.72);--border:rgba(245,240,232,0.07);--border-green:rgba(64,145,108,0.3);--border-gold:rgba(201,168,76,0.3);}
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--cream);min-height:100vh;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 10% 0%,rgba(45,106,79,0.16) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 90% 100%,rgba(45,106,79,0.10) 0%,transparent 60%);pointer-events:none;z-index:0;}
 
-.entry-wrap{position:relative;z-index:1;min-height:100vh;width:100%;display:flex;flex-direction:column;}
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 44px;background:rgba(11,22,40,0.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.logo{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;letter-spacing:.18em;display:flex;align-items:center;gap:9px;color:var(--cream);}
+.lm{width:24px;height:24px;border:1.5px solid var(--green-light);border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.lm::after{content:'';width:8px;height:1.5px;background:var(--green-light);position:absolute;}
+.lm::before{content:'';width:1.5px;height:8px;background:var(--green-light);position:absolute;}
+.logo sup{font-size:8px;color:var(--green-light);font-family:'DM Sans',sans-serif;font-weight:400;}
+.nav-steps{display:flex;align-items:center;gap:5px;}
+.sp{display:flex;align-items:center;gap:6px;padding:5px 13px;border-radius:100px;font-size:11px;border:1px solid var(--border);color:var(--text-dim);transition:all .3s;}
+.sp.act{border-color:var(--border-green);color:var(--green-light);background:var(--green-ghost);}
+.sp.done{border-color:rgba(116,198,157,.2);color:rgba(116,198,157,.45);}
+.sn{width:15px;height:15px;border-radius:50%;background:rgba(245,240,232,.05);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;transition:background .3s;}
+.sp.act .sn{background:var(--green);color:var(--cream);}
+.sp.done .sn{background:rgba(116,198,157,.25);}
+.step-sep{width:16px;height:1px;background:var(--border);}
+.nav-badge{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);border:1px solid var(--border);padding:5px 13px;border-radius:100px;}
 
-.entry-nav{display:flex;align-items:center;justify-content:space-between;padding:20px 48px;border-bottom:1px solid var(--border);background:rgba(11,22,40,0.9);backdrop-filter:blur(20px);}
-.logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;letter-spacing:.18em;display:flex;align-items:center;gap:10px;}
-.logo-mark{width:26px;height:26px;border:1.5px solid var(--green-light);border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;}
-.logo-mark::after{content:'';width:9px;height:1.5px;background:var(--green-light);position:absolute;}
-.logo-mark::before{content:'';width:1.5px;height:9px;background:var(--green-light);position:absolute;}
-.logo sup{font-size:9px;letter-spacing:.05em;color:var(--green-light);font-family:'DM Sans',sans-serif;font-weight:400;}
-.entry-badge{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim);border:1px solid var(--border);padding:5px 14px;border-radius:100px;}
+/* VIEWS */
+#vEntry,#vReview,#vDone{position:relative;z-index:1;}
+#vReview,#vDone{display:none;}
 
-.entry-body{flex:1;display:grid;grid-template-columns:340px 1fr;min-height:calc(100vh - 65px);}
+/* ── STEP 1: ENTRY ── */
+.ew{display:grid;grid-template-columns:310px 1fr;min-height:calc(100vh - 57px);}
+.esb{border-right:1px solid var(--border);padding:30px 24px;background:rgba(17,34,64,.45);display:flex;flex-direction:column;gap:20px;overflow-y:auto;max-height:calc(100vh - 57px);position:sticky;top:57px;}
+.etitle{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;line-height:1.2;}
+.esub{font-size:11px;color:var(--text-dim);line-height:1.6;}
+.slbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--green-light);margin-bottom:5px;}
+.fg{display:flex;flex-direction:column;gap:4px;}
+.fl{font-size:11px;color:var(--text-dim);}
+.fi{background:rgba(17,34,64,.7);border:1px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--cream);font-family:'DM Sans',sans-serif;transition:border-color .2s;outline:none;width:100%;}
+.fi:focus{border-color:var(--border-green);}
+.fi::placeholder{color:var(--text-dim);}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.aprev{background:var(--green-ghost);border:1px solid var(--border-green);border-radius:11px;padding:15px;text-align:center;}
+.aplbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--green-light);margin-bottom:4px;}
+.apnum{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;line-height:1;}
+.apsub{font-size:10px;color:var(--text-dim);margin-top:3px;line-height:1.5;}
+.btn-next{background:linear-gradient(135deg,var(--green),var(--green-mid));color:var(--cream);border:none;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:opacity .2s,transform .2s;}
+.btn-next:hover{opacity:.9;transform:translateY(-1px);}
+.em{padding:28px 38px;overflow-y:auto;}
+.fs{margin-bottom:26px;}
+.fsh{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--border);}
+.fsi{width:27px;height:27px;background:var(--green-ghost);border:1px solid var(--border-green);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.fst{font-size:13px;font-weight:500;}
+.fss{font-size:11px;color:var(--text-dim);}
+.mg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.mf{display:flex;flex-direction:column;gap:2px;}
+.mn{font-size:11px;color:var(--text-mid);font-weight:500;}
+.mu{font-size:10px;color:var(--text-dim);}
+.mi{background:rgba(17,34,64,.6);border:1px solid var(--border);border-radius:7px;padding:7px 9px;font-size:13px;font-family:'DM Mono',monospace;color:var(--cream);transition:border-color .2s;outline:none;width:100%;}
+.mi:focus{border-color:var(--border-green);}
+.mi::placeholder{color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:11px;}
+.mi[readonly]{opacity:.55;cursor:default;}
 
-.entry-sidebar{border-right:1px solid var(--border);padding:40px 32px;background:rgba(17,34,64,0.4);display:flex;flex-direction:column;gap:28px;overflow-y:auto;max-height:calc(100vh - 65px);}
-.sidebar-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;line-height:1.2;}
-.sidebar-sub{font-size:12px;color:var(--text-dim);line-height:1.6;}
-.sidebar-section-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-light);margin-bottom:6px;}
-.field-group{display:flex;flex-direction:column;gap:5px;}
-.field-label{font-size:11px;color:var(--text-dim);letter-spacing:.05em;}
-.field-input{background:rgba(17,34,64,0.7);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--cream);font-family:'DM Sans',sans-serif;transition:border-color .2s;outline:none;width:100%;}
-.field-input:focus{border-color:var(--border-green);}
-.field-input::placeholder{color:var(--text-dim);}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+/* ── STEP 2: REVIEW ── */
+.rw{display:grid;grid-template-columns:390px 1fr;min-height:calc(100vh - 57px);}
+.ep{border-right:1px solid var(--border);background:rgba(17,34,64,.5);display:flex;flex-direction:column;max-height:calc(100vh - 57px);position:sticky;top:57px;overflow:hidden;}
+.ept{padding:22px 22px 0;flex-shrink:0;}
+.ep-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:300;margin-bottom:3px;}
+.ep-sub{font-size:11px;color:var(--text-dim);line-height:1.5;margin-bottom:13px;}
+.ep-tabs{display:flex;gap:2px;background:rgba(17,34,64,.5);border:1px solid var(--border);border-radius:8px;padding:3px;}
+.ep-tab{flex:1;font-size:11px;padding:5px 4px;border-radius:5px;cursor:pointer;color:var(--text-dim);transition:all .2s;border:none;background:none;font-family:'DM Sans',sans-serif;text-align:center;}
+.ep-tab.active{background:var(--green-ghost);color:var(--green-light);border:1px solid var(--border-green);}
+.ep-body{flex:1;overflow-y:auto;padding:14px 22px;}
+.esec{display:none;}
+.esec.on{display:block;}
+.cta{width:100%;background:rgba(17,34,64,.7);border:1px solid var(--border);border-radius:9px;padding:11px;font-size:13px;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--cream);line-height:1.75;resize:vertical;min-height:145px;outline:none;transition:border-color .2s;}
+.cta:focus{border-color:var(--border-green);}
+.regen{background:none;border:1px solid var(--border);color:var(--text-dim);padding:5px 11px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;margin-top:6px;}
+.regen:hover{border-color:var(--border-green);color:var(--green-light);}
+.ped{display:flex;flex-direction:column;gap:10px;}
+.pec{background:rgba(17,34,64,.6);border:1px solid var(--border);border-radius:9px;padding:12px;}
+.pec-h{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
+.pico{width:27px;height:27px;background:rgba(17,34,64,.8);border:1px solid var(--border);border-radius:6px;text-align:center;font-size:14px;outline:none;color:var(--cream);}
+.ptw{flex:1;display:flex;flex-direction:column;gap:2px;}
+.ptin{background:none;border:none;border-bottom:1px solid var(--border);color:var(--cream);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;outline:none;padding:2px 0;width:100%;}
+.ppri{display:flex;gap:3px;margin-top:2px;}
+.ppb{font-size:9px;letter-spacing:.07em;text-transform:uppercase;padding:2px 6px;border-radius:100px;border:1px solid;background:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.ppb.hi{color:var(--red);border-color:rgba(255,123,123,.3);}
+.ppb.hi.sel{background:rgba(255,123,123,.15);}
+.ppb.me{color:var(--gold-light);border-color:var(--border-gold);}
+.ppb.me.sel{background:rgba(201,168,76,.1);}
+.ppb.lo{color:var(--green-light);border-color:rgba(116,198,157,.3);}
+.ppb.lo.sel{background:rgba(45,106,79,.15);}
+.pitems{display:flex;flex-direction:column;gap:4px;}
+.prow{display:flex;align-items:flex-start;gap:4px;}
+.pia{flex:1;background:rgba(11,22,40,.5);border:1px solid var(--border);border-radius:5px;padding:5px 8px;font-size:11px;color:var(--text-mid);font-family:'DM Sans',sans-serif;outline:none;resize:none;line-height:1.5;transition:border-color .2s;}
+.pia:focus{border-color:var(--border-green);color:var(--cream);}
+.px{width:19px;height:19px;background:none;border:1px solid var(--border);border-radius:4px;color:var(--text-dim);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px;transition:all .2s;}
+.px:hover{border-color:rgba(255,123,123,.4);color:var(--red);}
+.padd{background:none;border:1px dashed rgba(245,240,232,.1);color:var(--text-dim);padding:5px 9px;border-radius:5px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;margin-top:3px;transition:all .2s;}
+.padd:hover{border-color:var(--border-green);color:var(--green-light);}
+.bcfs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:9px;}
+.bcf{font-size:10px;padding:3px 8px;border-radius:100px;border:1px solid var(--border);background:none;color:var(--text-dim);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.bcf.on{border-color:var(--border-green);color:var(--green-light);background:var(--green-ghost);}
+.bcs{display:flex;flex-direction:column;gap:5px;}
+.bcr{display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px;background:rgba(17,34,64,.5);border:1px solid var(--border);border-radius:7px;padding:8px 10px;transition:border-color .2s;}
+.bcr:hover{border-color:var(--border-green);}
+.bcn{font-size:11px;color:var(--text-mid);font-weight:500;}
+.bcu{font-size:10px;color:var(--text-dim);}
+.bcin{background:rgba(11,22,40,.6);border:1px solid var(--border);border-radius:5px;padding:4px 7px;font-size:12px;font-family:'DM Mono',monospace;color:var(--cream);outline:none;width:70px;text-align:right;transition:border-color .2s;}
+.bcin:focus{border-color:var(--border-green);}
+.ep-foot{padding:13px 22px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:7px;}
+.btn-gen{background:linear-gradient(135deg,var(--green),var(--green-mid));color:var(--cream);border:none;padding:12px;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:opacity .2s,transform .2s;}
+.btn-gen:hover{opacity:.9;transform:translateY(-1px);}
+.btn-bk{background:none;border:1px solid var(--border);color:var(--text-dim);padding:9px;border-radius:10px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:all .2s;}
+.btn-bk:hover{border-color:var(--border-green);color:var(--green-light);}
+.ppane{overflow-y:auto;max-height:calc(100vh - 57px);padding:26px 34px;background:rgba(11,22,40,.3);}
+.plbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:13px;display:flex;align-items:center;gap:7px;}
+.plbl::after{content:'';flex:1;height:1px;background:var(--border);}
+.pmac{background:linear-gradient(145deg,rgba(17,34,64,.95),rgba(45,106,79,.18));border:1px solid var(--border-green);border-radius:16px;padding:20px;text-align:center;margin-bottom:15px;}
+.pmbr{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.08em;color:var(--text-dim);margin-bottom:8px;}
+.pmage{font-family:'Cormorant Garamond',serif;font-size:60px;font-weight:300;line-height:1;}
+.pmun{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);margin-bottom:7px;}
+.pmdl{display:inline-flex;align-items:center;gap:4px;background:rgba(45,106,79,.2);border:1px solid rgba(116,198,157,.3);border-radius:100px;padding:4px 11px;font-size:11px;color:var(--green-pale);margin-bottom:10px;}
+.pmws{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
+.pmw{background:rgba(17,34,64,.5);border:1px solid var(--border);border-radius:6px;padding:5px 3px;text-align:center;}
+.pmwp{font-family:'DM Mono',monospace;font-size:11px;color:var(--green-light);}
+.pmwl{font-size:9px;color:var(--text-dim);margin-top:1px;line-height:1.3;}
+.pv3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px;}
+.pv3c{background:rgba(17,34,64,.5);border:1px solid var(--border);border-radius:9px;padding:10px;}
+.pv3i{font-size:11px;margin-bottom:4px;}
+.pv3t{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);margin-bottom:2px;}
+.pv3n{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;line-height:1;}
+.pv3v{font-size:10px;margin-top:2px;}
+.pclin{background:rgba(17,34,64,.6);border:1px solid var(--border-green);border-radius:11px;padding:15px;margin-bottom:11px;}
+.pchdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.pcav{width:27px;height:27px;background:var(--green-ghost);border:1px solid var(--border-green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.pcname{font-size:11px;font-weight:500;}
+.pcrole{font-size:9px;color:var(--text-dim);}
+.pctxt{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:var(--text-mid);line-height:1.65;}
+.pvpl{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;}
+.pvpc{background:rgba(17,34,64,.5);border:1px solid var(--border);border-radius:9px;padding:10px;}
+.pvph{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.pvpico{font-size:12px;}
+.pvpttl{font-size:11px;font-weight:500;}
+.pvppr{font-size:9px;text-transform:uppercase;letter-spacing:.07em;}
+.pvpit{list-style:none;display:flex;flex-direction:column;gap:3px;}
+.pvpi{font-size:10px;color:var(--text-dim);display:flex;gap:4px;line-height:1.4;}
+.pvpi::before{content:'·';color:var(--green-mid);flex-shrink:0;}
 
-/* Meridian Age preview */
-.age-preview-card{background:var(--green-ghost);border:1px solid var(--border-green);border-radius:14px;padding:20px;text-align:center;}
-.map-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-light);margin-bottom:8px;}
-.map-number{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--cream);line-height:1;}
-.map-formula{font-size:10px;color:var(--text-dim);margin-top:6px;line-height:1.5;}
+/* ── STEP 3: DONE ── */
+.dw{min-height:calc(100vh - 57px);display:flex;align-items:center;justify-content:center;padding:40px;}
+.dc{max-width:500px;width:100%;background:rgba(17,34,64,.7);border:1px solid var(--border-green);border-radius:20px;padding:38px;text-align:center;}
+.dck{width:48px;height:48px;background:var(--green-ghost);border:1px solid var(--border-green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;margin:0 auto 15px;}
+.dt{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:300;margin-bottom:3px;}
+.dn{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:600;color:var(--green-light);margin-bottom:15px;}
+.dlb{background:rgba(11,22,40,.8);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text-mid);word-break:break-all;line-height:1.5;cursor:pointer;transition:border-color .2s;margin-bottom:11px;text-align:left;}
+.dlb:hover{border-color:var(--border-green);}
+.d2{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px;}
+.dbp{background:var(--green);color:var(--cream);border:none;padding:10px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:background .2s;}
+.dbp:hover{background:var(--green-mid);}
+.dbs{background:none;border:1px solid var(--border);color:var(--text-mid);padding:10px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:all .2s;}
+.dbs:hover{border-color:var(--border-green);color:var(--green-light);}
+.dwa{background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#25d366;padding:9px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;margin-bottom:6px;}
+.dem{background:rgba(66,133,244,.1);border:1px solid rgba(66,133,244,.3);color:#4285f4;padding:9px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;margin-bottom:14px;}
+.cc{font-size:11px;color:var(--green-light);opacity:0;transition:opacity .3s;margin-bottom:5px;}
+.cc.on{opacity:1;}
+.ptbox{background:rgba(17,34,64,.5);border:1px solid var(--border);border-radius:10px;padding:12px;}
+.ptrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.ptttl{font-size:11px;font-weight:500;}
+.ptct{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);}
+.ptdots{display:flex;gap:4px;flex-wrap:wrap;}
+.ptd{width:20px;height:20px;border-radius:4px;border:1px solid var(--border);background:rgba(17,34,64,.5);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-dim);}
+.ptd.ok{background:var(--green-ghost);border-color:var(--border-green);color:var(--green-light);}
+.dnew{background:none;border:none;color:var(--text-dim);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px;padding:4px;margin-top:12px;display:block;width:100%;}
+.dnew:hover{color:var(--text-mid);}
 
-/* Buttons */
-.btn-generate{background:linear-gradient(135deg,var(--green),var(--green-mid));color:var(--cream);border:none;padding:14px 20px;border-radius:12px;font-size:13px;font-weight:500;cursor:pointer;letter-spacing:.05em;transition:opacity .2s,transform .2s;font-family:'DM Sans',sans-serif;width:100%;}
-.btn-generate:hover{opacity:.9;transform:translateY(-1px);}
-
-/* Link output panel */
-.link-panel{background:rgba(17,34,64,0.8);border:1px solid var(--border-green);border-radius:14px;padding:20px;display:none;flex-direction:column;gap:12px;}
-.link-panel.visible{display:flex;}
-.link-panel-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-light);}
-.link-box{background:rgba(11,22,40,0.8);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text-mid);word-break:break-all;line-height:1.5;cursor:pointer;transition:border-color .2s;}
-.link-box:hover{border-color:var(--border-green);}
-.link-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.btn-copy{background:var(--green-ghost);border:1px solid var(--border-green);color:var(--green-light);padding:9px;border-radius:9px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;transition:background .2s;width:100%;}
-.btn-copy:hover{background:rgba(45,106,79,0.25);}
-.btn-open{background:transparent;border:1px solid var(--border);color:var(--text-mid);padding:9px;border-radius:9px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;transition:all .2s;width:100%;}
-.btn-open:hover{border-color:var(--border-green);color:var(--green-light);}
-.copy-confirm{font-size:11px;color:var(--green-light);text-align:center;opacity:0;transition:opacity .3s;}
-.copy-confirm.show{opacity:1;}
-
-/* Pilot tracker */
-.pilot-tracker{background:rgba(17,34,64,0.5);border:1px solid var(--border);border-radius:14px;padding:18px;}
-.pt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-.pt-title{font-size:12px;font-weight:500;}
-.pt-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);}
-.pt-dots{display:flex;gap:6px;flex-wrap:wrap;}
-.pt-dot{width:24px;height:24px;border-radius:6px;border:1px solid var(--border);background:rgba(17,34,64,0.5);display:flex;align-items:center;justify-content:center;font-size:10px;cursor:default;transition:all .2s;}
-.pt-dot.filled{background:var(--green-ghost);border-color:var(--border-green);}
-.pt-note{font-size:10px;color:var(--text-dim);margin-top:10px;line-height:1.5;}
-
-/* Form area */
-.entry-main{padding:40px 48px;overflow-y:auto;max-height:calc(100vh - 65px);}
-.form-section{margin-bottom:36px;}
-.form-section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
-.form-section-icon{width:32px;height:32px;background:var(--green-ghost);border:1px solid var(--border-green);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-.form-section-title{font-size:15px;font-weight:500;}
-.form-section-subtitle{font-size:11px;color:var(--text-dim);}
-.markers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-.marker-field{display:flex;flex-direction:column;gap:4px;}
-.marker-name{font-size:11px;color:var(--text-mid);font-weight:500;}
-.marker-unit{font-size:10px;color:var(--text-dim);}
-.marker-input{background:rgba(17,34,64,0.6);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:'DM Mono',monospace;color:var(--cream);transition:border-color .2s;outline:none;width:100%;}
-.marker-input:focus{border-color:var(--border-green);}
-.marker-input::placeholder{color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:12px;}
-
-::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:var(--navy);}
-::-webkit-scrollbar-thumb{background:var(--navy-light);border-radius:3px;}
-
-@media(max-width:900px){
-  .entry-body{grid-template-columns:1fr;}
-  .entry-sidebar{border-right:none;border-bottom:1px solid var(--border);max-height:none;}
-  .markers-grid{grid-template-columns:repeat(2,1fr);}
-  .entry-nav,.entry-main{padding-left:24px;padding-right:24px;}
-}
+::-webkit-scrollbar-thumb{background:var(--navy-mid);border-radius:2px;}
+@media(max-width:1050px){.rw,.ew{grid-template-columns:1fr;}.ppane{display:none;}.esb{max-height:none;position:static;}.mg{grid-template-columns:repeat(2,1fr);}.nav{padding:14px 20px;}.nav-badge{display:none;}}
 </style>
 </head>
 <body>
-<div id="view-entry"><div class="entry-wrap">
-  <div class="entry-nav">
-    <div class="logo"><div class="logo-mark"></div>MERIDIAN<sup>®</sup></div>
-    <div style="display:flex;align-items:center;gap:6px">
-      <div style="display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;font-size:11px;border:1px solid var(--border-green);color:var(--green-light);background:var(--green-ghost)" id="sp1"><div style="width:16px;height:16px;border-radius:50%;background:var(--green);color:var(--cream);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600">1</div>Ingresar datos</div>
-      <div style="width:18px;height:1px;background:var(--border)"></div>
-      <div style="display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;font-size:11px;border:1px solid var(--border);color:var(--text-dim)" id="sp2"><div style="width:16px;height:16px;border-radius:50%;background:rgba(245,240,232,.05);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600">2</div>Revisar & editar</div>
-      <div style="width:18px;height:1px;background:var(--border)"></div>
-      <div style="display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;font-size:11px;border:1px solid var(--border);color:var(--text-dim)" id="sp3"><div style="width:16px;height:16px;border-radius:50%;background:rgba(245,240,232,.05);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600">3</div>Generar link</div>
-    </div>
-    <div class="entry-badge">Dr. Berlin · Uso Interno</div>
+
+<nav class="nav">
+  <div class="logo"><div class="lm"></div>MERIDIAN<sup>®</sup></div>
+  <div class="nav-steps">
+    <div class="sp act" id="sp1"><div class="sn">1</div>Ingresar datos</div>
+    <div class="step-sep"></div>
+    <div class="sp" id="sp2"><div class="sn">2</div>Revisar &amp; editar</div>
+    <div class="step-sep"></div>
+    <div class="sp" id="sp3"><div class="sn">3</div>Generar link</div>
   </div>
+  <div class="nav-badge">Dr. Berlin · Uso Interno</div>
+</nav>
 
-  <div class="entry-body">
-    <!-- SIDEBAR -->
-    <div class="entry-sidebar">
-      <div>
-        <div class="sidebar-title">Nuevo<br><em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--green-light)">reporte de paciente</em></div>
-        <div class="sidebar-sub" style="margin-top:8px">Ingresa los datos y resultados del panel Tier 2. El sistema generará un link personalizado para el paciente.</div>
-      </div>
-
-      <div>
-        <div class="sidebar-section-label">Paciente</div>
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div class="field-group">
-            <div class="field-label">Nombre completo</div>
-            <input class="field-input" id="f-name" placeholder="ej. Sebastián Morales" type="text">
-          </div>
-          <div class="field-row">
-            <div class="field-group">
-              <div class="field-label">Edad</div>
-              <input class="field-input" id="f-age" placeholder="44" type="number" min="18" max="100">
-            </div>
-            <div class="field-group">
-              <div class="field-label">Sexo</div>
-              <select class="field-input" id="f-sex" style="cursor:pointer">
-                <option value="M">Masculino</option>
-                <option value="F">Femenino</option>
-              </select>
-            </div>
-          </div>
-          <div class="field-group">
-            <div class="field-label">Fecha de muestra</div>
-            <input class="field-input" id="f-date" type="date">
-          </div>
+<!-- ═══ STEP 1 ═══ -->
+<div id="vEntry">
+<div class="ew">
+  <div class="esb">
+    <div><div class="etitle">Nuevo reporte<br><em style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--green-light)">de paciente</em></div><div class="esub" style="margin-top:5px">Ingresa el panel Tier 1 o Tier 2. Editarás el reporte antes de enviar.</div></div>
+    <div>
+      <div class="slbl">Paciente</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="fg"><div class="fl">Nombre completo</div><input class="fi" id="f-name" placeholder="ej. Sebastián Morales" type="text"></div>
+        <div class="fr">
+          <div class="fg"><div class="fl">Edad</div><input class="fi" id="f-age" placeholder="44" type="number" min="18" max="100"></div>
+          <div class="fg"><div class="fl">Sexo</div><select class="fi" id="f-sex"><option value="M">Masculino</option><option value="F">Femenino</option></select></div>
         </div>
+        <div class="fg"><div class="fl">Fecha de muestra</div><input class="fi" id="f-date" type="date"></div>
       </div>
-
-      <!-- Age preview -->
-      <div class="age-preview-card">
-        <div class="map-label">Meridian Age™ Estimada</div>
-        <div class="map-number" id="preview-age">—</div>
-        <div class="map-formula">50% PhenoAge + 25% Composición + 25% VO₂ Max</div>
-      </div>
-
-      <button class="btn-generate" onclick="goToReview()">Continuar → Revisar reporte</button>
-
-      <!-- Link output -->
-      <div class="link-panel" id="link-panel">
-        <div class="link-panel-label">✓ Link generado — listo para enviar</div>
-        <div class="link-box" id="link-display" onclick="copyLink()" title="Click para copiar"></div>
-        <div class="link-actions">
-          <button class="btn-copy" onclick="copyLink()">📋 Copiar link</button>
-          <button class="btn-open" onclick="openReport()">↗ Abrir reporte</button>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <button class="btn-copy" onclick="shareWhatsApp()" style="background:rgba(37,211,102,0.1);border-color:rgba(37,211,102,0.3);color:#25d366">💬 WhatsApp</button>
-          <button class="btn-copy" onclick="shareEmail()" style="background:rgba(66,133,244,0.1);border-color:rgba(66,133,244,0.3);color:#4285f4">✉ Email</button>
-        </div>
-        <div class="copy-confirm" id="copy-confirm">✓ Copiado al portapapeles</div>
-      </div>
-
-      <!-- Pilot tracker -->
-      <div class="pilot-tracker">
-        <div class="pt-header">
-          <div class="pt-title">Piloto · 10 pacientes</div>
-          <div class="pt-count" id="pt-count">0 / 10</div>
-        </div>
-        <div class="pt-dots" id="pt-dots"></div>
-        <div class="pt-note">Cada link generado cuenta como un paciente del piloto. Los reportes viven en la URL — sin base de datos.</div>
-      </div>
-
-      <div style="font-size:11px;color:var(--text-dim);line-height:1.6;">Los campos vacíos aparecerán como "Pendiente" en el reporte del paciente.</div>
     </div>
-
-    <!-- MAIN FORM -->
-    <div class="entry-main">
-
-      <div class="form-section">
-        <div class="form-section-header">
-          <div class="form-section-icon">🧬</div>
-          <div>
-            <div class="form-section-title">Biomarcadores PhenoAge <span style="font-size:11px;color:var(--green-light)">(obligatorios para Meridian Age™)</span></div>
-            <div class="form-section-subtitle">9 marcadores del algoritmo Levine 2018</div>
-          </div>
-        </div>
-        <div class="markers-grid">
-          <div class="marker-field"><div class="marker-name">Albumina</div><div class="marker-unit">g/dL · óptimo: 4.2–5.0</div><input class="marker-input" id="m-alb" placeholder="4.5" type="number" step="0.1" oninput="updatePreview()"></div>
-          <div class="marker-field"><div class="marker-name">Creatinina</div><div class="marker-unit">mg/dL · óptimo: 0.7–1.1</div><input class="marker-input" id="m-cre" placeholder="0.95" type="number" step="0.01" oninput="updatePreview()"></div>
-          <div class="marker-field"><div class="marker-name">Glucosa (ayuno)</div><div class="marker-unit">mg/dL · óptimo: 72–90</div><input class="marker-input" id="m-glu" placeholder="88" type="number" oninput="updatePreview();calcHOMA()"></div>
-          <div class="marker-field"><div class="marker-name">PCR (alta sensibilidad)</div><div class="marker-unit">mg/L · óptimo: &lt;1.0</div><input class="marker-input" id="m-crp" placeholder="0.4" type="number" step="0.1" oninput="updatePreview()"></div>
-          <div class="marker-field"><div class="marker-name">Linfocitos %</div><div class="marker-unit">% · óptimo: 25–40</div><input class="marker-input" id="m-lym" placeholder="32" type="number" step="0.1" oninput="updatePreview()"></div>
-          <div class="marker-field"><div class="marker-name">VCM (MCV)</div><div class="marker-unit">fL · óptimo: 82–92</div><input class="marker-input" id="m-mcv" placeholder="88" type="number" step="0.1" oninput="updatePreview()"></div>
-          <div class="marker-field"><div class="marker-name">ADE (RDW)</div><div class="marker-unit">% · óptimo: &lt;13.0</div><input class="marker-input" id="m-rdw" placeholder="12.4" type="number" step="0.1" oninput="updatePreview()"></div>
-          <div class="marker-field"><div class="marker-name">Fosfatasa Alcalina</div><div class="marker-unit">U/L · óptimo: 40–80</div><input class="marker-input" id="m-alp" placeholder="62" type="number" oninput="updatePreview()"></div>
-          <div class="marker-field"><div class="marker-name">Leucocitos (WBC)</div><div class="marker-unit">10³/μL · óptimo: 4.0–7.0</div><input class="marker-input" id="m-wbc" placeholder="5.8" type="number" step="0.1" oninput="updatePreview()"></div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-header"><div class="form-section-icon">⚡</div><div><div class="form-section-title">Salud Metabólica</div><div class="form-section-subtitle">Glucosa, insulina, resistencia metabólica</div></div></div>
-        <div class="markers-grid">
-          <div class="marker-field"><div class="marker-name">HbA1c</div><div class="marker-unit">% · óptimo: &lt;5.4</div><input class="marker-input" id="m-hba1c" placeholder="5.4" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">Insulina (ayuno)</div><div class="marker-unit">μUI/mL · óptimo: &lt;7</div><input class="marker-input" id="m-ins" placeholder="6.2" type="number" step="0.1" oninput="calcHOMA()"></div>
-          <div class="marker-field"><div class="marker-name">HOMA-IR <span style="font-size:9px;color:var(--green-light)">(auto)</span></div><div class="marker-unit">índice · óptimo: &lt;1.5</div><input class="marker-input" id="m-homa" placeholder="calculado" type="number" step="0.01" readonly style="opacity:.7"></div>
-          <div class="marker-field"><div class="marker-name">Ácido Úrico</div><div class="marker-unit">mg/dL · óptimo: 3.0–5.5</div><input class="marker-input" id="m-ua" placeholder="5.2" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">GGT</div><div class="marker-unit">U/L · óptimo: &lt;25</div><input class="marker-input" id="m-ggt" placeholder="18" type="number"></div>
-          <div class="marker-field"><div class="marker-name">ALT</div><div class="marker-unit">U/L · óptimo: &lt;25</div><input class="marker-input" id="m-alt" placeholder="22" type="number"></div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-header"><div class="form-section-icon">❤️</div><div><div class="form-section-title">Cardiovascular Avanzado</div><div class="form-section-subtitle">Lípidos + marcadores avanzados</div></div></div>
-        <div class="markers-grid">
-          <div class="marker-field"><div class="marker-name">Colesterol Total</div><div class="marker-unit">mg/dL</div><input class="marker-input" id="m-tc" placeholder="185" type="number"></div>
-          <div class="marker-field"><div class="marker-name">LDL</div><div class="marker-unit">mg/dL · óptimo: &lt;100</div><input class="marker-input" id="m-ldl" placeholder="102" type="number"></div>
-          <div class="marker-field"><div class="marker-name">HDL</div><div class="marker-unit">mg/dL · óptimo: &gt;60</div><input class="marker-input" id="m-hdl" placeholder="68" type="number"></div>
-          <div class="marker-field"><div class="marker-name">Triglicéridos</div><div class="marker-unit">mg/dL · óptimo: &lt;100</div><input class="marker-input" id="m-trig" placeholder="88" type="number"></div>
-          <div class="marker-field"><div class="marker-name">ApoB ★</div><div class="marker-unit">mg/dL · óptimo: &lt;80</div><input class="marker-input" id="m-apob" placeholder="78" type="number"></div>
-          <div class="marker-field"><div class="marker-name">Lp(a) ★</div><div class="marker-unit">nmol/L · óptimo: &lt;75</div><input class="marker-input" id="m-lpa" placeholder="18" type="number"></div>
-          <div class="marker-field"><div class="marker-name">Homocisteína</div><div class="marker-unit">μmol/L · óptimo: &lt;9</div><input class="marker-input" id="m-hcy" placeholder="9.8" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">Índice Omega-3</div><div class="marker-unit">% · óptimo: &gt;8</div><input class="marker-input" id="m-o3" placeholder="4.2" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">Fibrinógeno</div><div class="marker-unit">mg/dL · óptimo: 200–350</div><input class="marker-input" id="m-fib" placeholder="280" type="number"></div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-header"><div class="form-section-icon">⚗️</div><div><div class="form-section-title">Hormonas & Optimización</div><div class="form-section-subtitle">Panel hormonal completo Tier 2</div></div></div>
-        <div class="markers-grid">
-          <div class="marker-field"><div class="marker-name">Testosterona Total</div><div class="marker-unit">ng/dL · óptimo H: 600–900</div><input class="marker-input" id="m-ttt" placeholder="620" type="number"></div>
-          <div class="marker-field"><div class="marker-name">Testosterona Libre</div><div class="marker-unit">pg/mL · óptimo H: 10–25</div><input class="marker-input" id="m-tft" placeholder="8.2" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">SHBG</div><div class="marker-unit">nmol/L · óptimo: 20–50</div><input class="marker-input" id="m-shbg" placeholder="42" type="number"></div>
-          <div class="marker-field"><div class="marker-name">DHEA-S</div><div class="marker-unit">μg/dL · óptimo H40s: 150–300</div><input class="marker-input" id="m-dhea" placeholder="198" type="number"></div>
-          <div class="marker-field"><div class="marker-name">Cortisol AM</div><div class="marker-unit">μg/dL · óptimo: 10–18</div><input class="marker-input" id="m-cort" placeholder="14.2" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">IGF-1 ★</div><div class="marker-unit">ng/mL · óptimo H40s: 150–220</div><input class="marker-input" id="m-igf1" placeholder="182" type="number"></div>
-          <div class="marker-field"><div class="marker-name">TSH</div><div class="marker-unit">mUI/L · óptimo: 1.0–2.5</div><input class="marker-input" id="m-tsh" placeholder="1.8" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">T3 Libre</div><div class="marker-unit">pg/mL · óptimo: 3.2–4.2</div><input class="marker-input" id="m-ft3" placeholder="3.6" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">T4 Libre</div><div class="marker-unit">ng/dL · óptimo: 1.0–1.5</div><input class="marker-input" id="m-ft4" placeholder="1.2" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">LH</div><div class="marker-unit">mUI/mL · ref: 2–9</div><input class="marker-input" id="m-lh" placeholder="4.2" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">FSH</div><div class="marker-unit">mUI/mL · ref: 2–12</div><input class="marker-input" id="m-fsh" placeholder="5.1" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">Prolactina</div><div class="marker-unit">ng/mL · ref H: &lt;15</div><input class="marker-input" id="m-prl" placeholder="8.4" type="number" step="0.1"></div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-header"><div class="form-section-icon">🛡️</div><div><div class="form-section-title">Inflamación & Inmunidad</div><div class="form-section-subtitle">Marcadores del envejecimiento inflamatorio</div></div></div>
-        <div class="markers-grid">
-          <div class="marker-field"><div class="marker-name">hsCRP</div><div class="marker-unit">mg/L · óptimo: &lt;0.8</div><input class="marker-input" id="m-hscrp" placeholder="0.4" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">IL-6</div><div class="marker-unit">pg/mL · óptimo: &lt;1.8</div><input class="marker-input" id="m-il6" placeholder="1.2" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">VHS</div><div class="marker-unit">mm/h · óptimo H: &lt;15</div><input class="marker-input" id="m-vhs" placeholder="8" type="number"></div>
-          <div class="marker-field"><div class="marker-name">Anticuerpos TPO</div><div class="marker-unit">UI/mL · óptimo: &lt;35</div><input class="marker-input" id="m-tpo" placeholder="12" type="number"></div>
-          <div class="marker-field"><div class="marker-name">Neutrófilos %</div><div class="marker-unit">% · óptimo: 40–65</div><input class="marker-input" id="m-neut" placeholder="55" type="number"></div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-header"><div class="form-section-icon">🌿</div><div><div class="form-section-title">Nutrición & Micronutrientes</div><div class="form-section-subtitle">Deficiencias clave en longevidad</div></div></div>
-        <div class="markers-grid">
-          <div class="marker-field"><div class="marker-name">Vitamina D (25-OH) ★</div><div class="marker-unit">ng/mL · óptimo: 50–70</div><input class="marker-input" id="m-vitd" placeholder="22" type="number"></div>
-          <div class="marker-field"><div class="marker-name">Vitamina B12</div><div class="marker-unit">pg/mL · óptimo: 400–900</div><input class="marker-input" id="m-b12" placeholder="612" type="number"></div>
-          <div class="marker-field"><div class="marker-name">Folato</div><div class="marker-unit">ng/mL · óptimo: &gt;10</div><input class="marker-input" id="m-fol" placeholder="14" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">Ferritina</div><div class="marker-unit">ng/mL · óptimo H: 70–150</div><input class="marker-input" id="m-ferr" placeholder="88" type="number"></div>
-          <div class="marker-field"><div class="marker-name">Magnesio (RBC)</div><div class="marker-unit">mg/dL · óptimo: 5.5–6.5</div><input class="marker-input" id="m-mg" placeholder="5.8" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">Zinc</div><div class="marker-unit">μg/dL · óptimo: 80–120</div><input class="marker-input" id="m-zn" placeholder="95" type="number"></div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-header"><div class="form-section-icon">🔍</div><div><div class="form-section-title">Detección Oncológica</div><div class="form-section-subtitle">Marcadores tumorales de screening</div></div></div>
-        <div class="markers-grid">
-          <div class="marker-field"><div class="marker-name">PSA (hombres 40+)</div><div class="marker-unit">ng/mL · óptimo: &lt;2.5</div><input class="marker-input" id="m-psa" placeholder="0.8" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">CEA</div><div class="marker-unit">ng/mL · óptimo: &lt;3.0</div><input class="marker-input" id="m-cea" placeholder="1.4" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">AFP</div><div class="marker-unit">ng/mL · óptimo: &lt;10</div><input class="marker-input" id="m-afp" placeholder="3.2" type="number" step="0.1"></div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-header"><div class="form-section-icon">🏃</div><div><div class="form-section-title">Performance Física <span style="font-size:11px;color:var(--gold-light)">(Add-ons)</span></div><div class="form-section-subtitle">DEXA + VO₂ Max — pilares de la Meridian Age™</div></div></div>
-        <div class="markers-grid">
-          <div class="marker-field"><div class="marker-name">VO₂ Max ★</div><div class="marker-unit">ml/kg/min</div><input class="marker-input" id="m-vo2" placeholder="41.2" type="number" step="0.1" oninput="updatePreview()"></div>
-          <div class="marker-field"><div class="marker-name">Grasa Corporal (DEXA)</div><div class="marker-unit">% · óptimo H: 10–20</div><input class="marker-input" id="m-bf" placeholder="22" type="number" step="0.1" oninput="updatePreview()"></div>
-          <div class="marker-field"><div class="marker-name">Grasa Visceral (DEXA)</div><div class="marker-unit">g · óptimo: &lt;500g</div><input class="marker-input" id="m-vat" placeholder="420" type="number"></div>
-          <div class="marker-field"><div class="marker-name">Masa Muscular (ALMI)</div><div class="marker-unit">kg/m² · óptimo H: &gt;8.0</div><input class="marker-input" id="m-almi" placeholder="8.4" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">Densidad Ósea (T-score)</div><div class="marker-unit">SD · normal: &gt;−1.0</div><input class="marker-input" id="m-bmd" placeholder="-0.3" type="number" step="0.1"></div>
-          <div class="marker-field"><div class="marker-name">Edad Composición Corporal</div><div class="marker-unit">años estimados del DEXA</div><input class="marker-input" id="m-bca" placeholder="47" type="number" oninput="updatePreview()"></div>
-        </div>
-      </div>
-
-    </div>
+    <div class="aprev"><div class="aplbl">Meridian Age™</div><div class="apnum" id="preview-age">—</div><div class="apsub">50% PhenoAge · 25% Composición · 25% VO₂</div></div>
+    <button class="btn-next" onclick="goToReview()">Continuar → Revisar reporte</button>
+    <div style="font-size:11px;color:var(--text-dim);line-height:1.6">Campos vacíos se mostrarán como "Pendiente" en el reporte.</div>
   </div>
-</div>
+  <div class="em">
 
-<script>
-const MARKER_KEYS = ['alb','cre','glu','crp','lym','mcv','rdw','alp','wbc',
-  'hba1c','ins','homa','ua','ggt','alt',
-  'tc','ldl','hdl','trig','apob','lpa','hcy','o3','fib',
-  'ttt','tft','shbg','dhea','cort','igf1','tsh','ft3','ft4','lh','fsh','prl',
-  'hscrp','il6','vhs','tpo','neut',
-  'vitd','b12','fol','ferr','mg','zn',
-  'psa','cea','afp',
-  'vo2','bf','vat','almi','bmd','bca'];
+    <!-- METABOLIC -->
+    <div class="fs"><div class="fsh"><div class="fsi">⚡</div><div><div class="fst">Salud Metabólica</div><div class="fss">Glucosa, insulina, resistencia metabólica</div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">Glucosa (ayuno)</div><div class="mu">mg/dL · ópt: 72–90</div><input class="mi" id="m-glu" placeholder="88" type="number" oninput="lp();homa()"></div>
+      <div class="mf"><div class="mn">Insulina (ayuno)</div><div class="mu">μUI/mL · ópt: &lt;7</div><input class="mi" id="m-ins" placeholder="6.2" type="number" step="0.1" oninput="homa()"></div>
+      <div class="mf"><div class="mn">HOMA-IR <span style="font-size:9px;color:var(--green-light)">(auto)</span></div><div class="mu">ópt: &lt;1.5</div><input class="mi" id="m-homa" type="number" step="0.01" readonly></div>
+      <div class="mf"><div class="mn">HbA1c</div><div class="mu">% · ópt: &lt;5.4</div><input class="mi" id="m-hba1c" placeholder="5.4" type="number" step="0.1"></div>
+    </div></div>
 
-// PhenoAge
-function calcPhenoAge(a,c,g,crp,l,m,r,alp,w){
-  const xb=-19.9067+(-0.0336*a)+(0.0095*c)+(0.1953*g)+(0.0954*Math.log(Math.max(crp,0.01)))+(-0.012*l)+(0.0268*m)+(0.3306*r)+(0.0019*alp)+(0.0554*w);
-  const M=1-Math.exp(-Math.exp(xb)*(Math.exp(0.0553*120)-1)/0.0553);
-  return Math.round(Math.max(18,Math.min(100,141.50+Math.log(-0.00553*Math.log(1-M))/0.0553)));
-}
-function vo2Age(vo2,age,sex){
-  const m=sex==='M'?{20:52,30:48,40:42,50:37,60:32}:{20:46,30:42,40:37,50:32,60:27};
-  let mv=m[40];for(let k of Object.keys(m).map(Number).sort((a,b)=>a-b)){if(age>=k)mv=m[k];}
-  return Math.round(Math.max(18,Math.min(90,age-(vo2-mv)*0.55)));
-}
-function bcAge(fat,age,sex){
-  const hi=sex==='M'?20:28;
-  if(fat<=hi)return age-3;
-  return Math.round(Math.min(age+20,age+(fat-hi)*0.7));
-}
+    <!-- LIPIDS STANDARD -->
+    <div class="fs"><div class="fsh"><div class="fsi">🩸</div><div><div class="fst">Lípidos Estándar</div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">Colesterol Total</div><div class="mu">mg/dL · ref: &lt;200</div><input class="mi" id="m-tc" placeholder="188" type="number"></div>
+      <div class="mf"><div class="mn">LDL</div><div class="mu">mg/dL · ópt: &lt;100</div><input class="mi" id="m-ldl" placeholder="102" type="number"></div>
+      <div class="mf"><div class="mn">HDL</div><div class="mu">mg/dL · ópt: &gt;60</div><input class="mi" id="m-hdl" placeholder="68" type="number"></div>
+      <div class="mf"><div class="mn">Triglicéridos</div><div class="mu">mg/dL · ópt: &lt;100</div><input class="mi" id="m-trig" placeholder="88" type="number"></div>
+    </div></div>
 
-function calcHOMA(){
-  const g=parseFloat(document.getElementById('m-glu').value);
-  const i=parseFloat(document.getElementById('m-ins').value);
-  if(g&&i) document.getElementById('m-homa').value=((g*i)/405).toFixed(2);
-  updatePreview();
-}
+    <!-- LIPIDS ADVANCED -->
+    <div class="fs"><div class="fsh"><div class="fsi">❤️</div><div><div class="fst">Lípidos Avanzados</div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">ApoB ★</div><div class="mu">mg/dL · ópt: &lt;80</div><input class="mi" id="m-apob" placeholder="78" type="number"></div>
+      <div class="mf"><div class="mn">Non-HDL <span style="font-size:9px;color:var(--green-light)">(auto)</span></div><div class="mu">mg/dL · ópt: &lt;130</div><input class="mi" id="m-nonhdl" type="number" step="0.1" readonly></div>
+    </div></div>
 
-function updatePreview(){
-  const age=parseInt(document.getElementById('f-age').value)||44;
-  const sex=document.getElementById('f-sex').value||'M';
-  const get=(id,def)=>parseFloat(document.getElementById('m-'+id).value)||def;
-  const pheno=calcPhenoAge(get('alb',4.2),get('cre',0.9),get('glu',90),get('crp',0.5),get('lym',30),get('mcv',88),get('rdw',12.5),get('alp',65),get('wbc',5.5));
-  const fit=vo2Age(get('vo2',40),age,sex);
-  const bc=parseInt(document.getElementById('m-bca').value)||bcAge(get('bf',22),age,sex);
-  document.getElementById('preview-age').textContent=Math.round(pheno*0.5+bc*0.25+fit*0.25);
-}
+    <!-- INFLAMMATION -->
+    <div class="fs"><div class="fsh"><div class="fsi">🔥</div><div><div class="fst">Inflamación</div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">hsCRP</div><div class="mu">mg/L · ópt: &lt;0.8</div><input class="mi" id="m-crp" placeholder="0.4" type="number" step="0.1" oninput="lp()"></div>
+      <div class="mf"><div class="mn">Fibrinógeno</div><div class="mu">mg/dL · ópt: 200–350</div><input class="mi" id="m-fib" placeholder="280" type="number"></div>
+    </div></div>
 
-let pilotCount = parseInt(localStorage.getItem('meridian_pilot_count')||'0');
-function renderPilot(){
-  document.getElementById('pt-count').textContent=pilotCount+' / 10';
-  let html='';
-  for(let i=0;i<10;i++) html+=`<div class="pt-dot ${i<pilotCount?'filled':''}">${i<pilotCount?'✓':i+1}</div>`;
-  document.getElementById('pt-dots').innerHTML=html;
-}
-renderPilot();
+    <!-- LIVER -->
+    <div class="fs"><div class="fsh"><div class="fsi">🫀</div><div><div class="fst">Función Hepática</div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">ALT</div><div class="mu">U/L · ópt: &lt;25</div><input class="mi" id="m-alt" placeholder="22" type="number"></div>
+      <div class="mf"><div class="mn">AST</div><div class="mu">U/L · ópt: &lt;25</div><input class="mi" id="m-ast" placeholder="20" type="number"></div>
+      <div class="mf"><div class="mn">GGT</div><div class="mu">U/L · ópt: &lt;25</div><input class="mi" id="m-ggt" placeholder="18" type="number"></div>
+      <div class="mf"><div class="mn">Fosfatasa Alcalina</div><div class="mu">U/L · ópt: 40–80</div><input class="mi" id="m-alp" placeholder="62" type="number" oninput="lp()"></div>
+      <div class="mf"><div class="mn">Bilirrubina Total</div><div class="mu">mg/dL · ref: &lt;1.2</div><input class="mi" id="m-bili" placeholder="0.7" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">Albumina</div><div class="mu">g/dL · ópt: 4.2–5.0</div><input class="mi" id="m-alb" placeholder="4.5" type="number" step="0.1" oninput="lp()"></div>
+    </div></div>
 
-let currentURL='';
+    <!-- KIDNEY -->
+    <div class="fs"><div class="fsh"><div class="fsi">🫘</div><div><div class="fst">Función Renal</div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">Creatinina</div><div class="mu">mg/dL · ópt: 0.7–1.1</div><input class="mi" id="m-cre" placeholder="0.95" type="number" step="0.01" oninput="lp()"></div>
+      <div class="mf"><div class="mn">eGFR</div><div class="mu">ml/min/1.73m² · ópt: &gt;90</div><input class="mi" id="m-egfr" placeholder="98" type="number"></div>
+      <div class="mf"><div class="mn">Ácido Úrico</div><div class="mu">mg/dL · ópt: 3.0–5.5</div><input class="mi" id="m-ua" placeholder="5.2" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">BUN (Urea)</div><div class="mu">mg/dL · ref: 7–20</div><input class="mi" id="m-bun" placeholder="14" type="number"></div>
+    </div></div>
 
-function generateLink(){
-  const name=document.getElementById('f-name').value||'Paciente';
-  const age=document.getElementById('f-age').value||'44';
-  const sex=document.getElementById('f-sex').value||'M';
-  const date=document.getElementById('f-date').value||new Date().toISOString().split('T')[0];
+    <!-- CBC -->
+    <div class="fs"><div class="fsh"><div class="fsi">🧫</div><div><div class="fst">Hemograma Completo (CBC)</div><div class="fss">Serie roja, blanca y plaquetas</div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">Leucocitos (WBC)</div><div class="mu">10³/μL · ópt: 4.0–7.0</div><input class="mi" id="m-wbc" placeholder="5.8" type="number" step="0.1" oninput="lp()"></div>
+      <div class="mf"><div class="mn">Eritrocitos (RBC)</div><div class="mu">10⁶/μL · ref H: 4.5–5.9</div><input class="mi" id="m-rbc" placeholder="5.1" type="number" step="0.01"></div>
+      <div class="mf"><div class="mn">Plaquetas</div><div class="mu">10³/μL · ref: 150–400</div><input class="mi" id="m-plt" placeholder="220" type="number"></div>
+      <div class="mf"><div class="mn">VCM (MCV)</div><div class="mu">fL · ópt: 82–92</div><input class="mi" id="m-mcv" placeholder="88" type="number" step="0.1" oninput="lp()"></div>
+      <div class="mf"><div class="mn">ADE (RDW)</div><div class="mu">% · ópt: &lt;13.0</div><input class="mi" id="m-rdw" placeholder="12.4" type="number" step="0.1" oninput="lp()"></div>
+      <div class="mf"><div class="mn">Linfocitos %</div><div class="mu">% · ópt: 25–40</div><input class="mi" id="m-lym" placeholder="32" type="number" step="0.1" oninput="lp()"></div>
+      <div class="mf"><div class="mn">Neutrófilos %</div><div class="mu">% · ópt: 40–65</div><input class="mi" id="m-neut" placeholder="55" type="number"></div>
+    </div></div>
 
-  const data={name,age,sex,date};
-  MARKER_KEYS.forEach(k=>{
-    const v=document.getElementById('m-'+k)?.value;
-    if(v) data[k]=v;
-  });
+    <!-- THYROID -->
+    <div class="fs"><div class="fsh"><div class="fsi">🦋</div><div><div class="fst">Tiroides Completo</div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">TSH</div><div class="mu">mUI/L · ópt: 1.0–2.5</div><input class="mi" id="m-tsh" placeholder="1.8" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">T3 Libre</div><div class="mu">pg/mL · ópt: 3.2–4.2</div><input class="mi" id="m-ft3" placeholder="3.6" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">T4 Libre</div><div class="mu">ng/dL · ópt: 1.0–1.5</div><input class="mi" id="m-ft4" placeholder="1.2" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">Anticuerpos TPO</div><div class="mu">UI/mL · ópt: &lt;35</div><input class="mi" id="m-tpo" placeholder="12" type="number"></div>
+    </div></div>
 
-  const encoded=btoa(encodeURIComponent(JSON.stringify(data)));
-  const base=window.location.href.replace('index.html','').replace(/\/$/, '');
-  currentURL=`${base}/report.html#${encoded}`;
+    <!-- VITAMINS -->
+    <div class="fs"><div class="fsh"><div class="fsi">🌿</div><div><div class="fst">Vitaminas &amp; Minerales</div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">Vitamina D ★</div><div class="mu">ng/mL · ópt: 50–70</div><input class="mi" id="m-vitd" placeholder="22" type="number"></div>
+      <div class="mf"><div class="mn">Vitamina B12</div><div class="mu">pg/mL · ópt: 400–900</div><input class="mi" id="m-b12" placeholder="612" type="number"></div>
+      <div class="mf"><div class="mn">Folato</div><div class="mu">ng/mL · ópt: &gt;10</div><input class="mi" id="m-fol" placeholder="14" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">Ferritina</div><div class="mu">ng/mL · ópt H: 70–150</div><input class="mi" id="m-ferr" placeholder="88" type="number"></div>
+      <div class="mf"><div class="mn">Magnesio (RBC)</div><div class="mu">mg/dL · ópt: 5.5–6.5</div><input class="mi" id="m-mg" placeholder="5.8" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">Zinc</div><div class="mu">μg/dL · ópt: 80–120</div><input class="mi" id="m-zn" placeholder="95" type="number"></div>
+    </div></div>
 
-  document.getElementById('link-display').textContent=currentURL;
-  document.getElementById('link-panel').classList.add('visible');
+    <!-- ELECTROLYTES -->
+    <div class="fs"><div class="fsh"><div class="fsi">⚗️</div><div><div class="fst">Electrolitos</div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">Sodio</div><div class="mu">mEq/L · ref: 136–145</div><input class="mi" id="m-na" placeholder="140" type="number"></div>
+      <div class="mf"><div class="mn">Potasio</div><div class="mu">mEq/L · ref: 3.5–5.0</div><input class="mi" id="m-k" placeholder="4.2" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">Cloruro</div><div class="mu">mEq/L · ref: 98–107</div><input class="mi" id="m-cl" placeholder="102" type="number"></div>
+      <div class="mf"><div class="mn">Bicarbonato</div><div class="mu">mEq/L · ref: 22–29</div><input class="mi" id="m-hco3" placeholder="25" type="number"></div>
+    </div></div>
 
-  // Update pilot count
-  pilotCount=Math.min(10,pilotCount+1);
-  localStorage.setItem('meridian_pilot_count',pilotCount);
-  renderPilot();
+    <!-- CARDIOVASCULAR EXTRA -->
+    <div class="fs"><div class="fsh"><div class="fsi">💓</div><div><div class="fst">Cardiovascular Extra</div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">Homocisteína</div><div class="mu">μmol/L · ópt: &lt;9</div><input class="mi" id="m-hcy" placeholder="9.8" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">Lp(a) ★</div><div class="mu">nmol/L · ópt: &lt;75</div><input class="mi" id="m-lpa" placeholder="18" type="number"></div>
+    </div></div>
 
-  // Scroll to link
-  document.getElementById('link-panel').scrollIntoView({behavior:'smooth',block:'nearest'});
-}
+    <!-- TIER 2: HORMONES -->
+    <div class="fs"><div class="fsh"><div class="fsi">🔬</div><div><div class="fst">Hormonas &amp; Optimización <span style="font-size:11px;color:var(--gold-light)">(Tier 2)</span></div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">Testosterona Total</div><div class="mu">ng/dL · ópt H: 600–900</div><input class="mi" id="m-ttt" placeholder="620" type="number"></div>
+      <div class="mf"><div class="mn">Testosterona Libre</div><div class="mu">pg/mL · ópt H: 10–25</div><input class="mi" id="m-tft" placeholder="8.2" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">SHBG</div><div class="mu">nmol/L · ópt: 20–50</div><input class="mi" id="m-shbg" placeholder="42" type="number"></div>
+      <div class="mf"><div class="mn">DHEA-S</div><div class="mu">μg/dL · ópt H40s: 150–300</div><input class="mi" id="m-dhea" placeholder="198" type="number"></div>
+      <div class="mf"><div class="mn">Cortisol AM</div><div class="mu">μg/dL · ópt: 10–18</div><input class="mi" id="m-cort" placeholder="14.2" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">IGF-1 ★</div><div class="mu">ng/mL · ópt H40s: 150–220</div><input class="mi" id="m-igf1" placeholder="182" type="number"></div>
+      <div class="mf"><div class="mn">LH</div><div class="mu">mUI/mL · ref: 2–9</div><input class="mi" id="m-lh" placeholder="4.2" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">FSH</div><div class="mu">mUI/mL · ref: 2–12</div><input class="mi" id="m-fsh" placeholder="5.1" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">Prolactina</div><div class="mu">ng/mL · ref H: &lt;15</div><input class="mi" id="m-prl" placeholder="8.4" type="number" step="0.1"></div>
+    </div></div>
 
-function copyLink(){
-  if(!currentURL) return;
-  navigator.clipboard.writeText(currentURL).then(()=>{
-    const el=document.getElementById('copy-confirm');
-    el.classList.add('show');
-    setTimeout(()=>el.classList.remove('show'),2500);
-  });
-}
+    <!-- TIER 2: ADVANCED INFLAMMATION -->
+    <div class="fs"><div class="fsh"><div class="fsi">🛡️</div><div><div class="fst">Inflamación Avanzada <span style="font-size:11px;color:var(--gold-light)">(Tier 2)</span></div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">IL-6</div><div class="mu">pg/mL · ópt: &lt;1.8</div><input class="mi" id="m-il6" placeholder="1.2" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">VHS</div><div class="mu">mm/h · ópt H: &lt;15</div><input class="mi" id="m-vhs" placeholder="8" type="number"></div>
+    </div></div>
 
-function openReport(){
-  if(currentURL) window.open(currentURL,'_blank');
-}
+    <!-- TIER 2: ADVANCED LIPIDS -->
+    <div class="fs"><div class="fsh"><div class="fsi">🧬</div><div><div class="fst">Lípidos &amp; Cardiovascular Extra <span style="font-size:11px;color:var(--gold-light)">(Tier 2)</span></div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">Índice Omega-3</div><div class="mu">% · ópt: &gt;8</div><input class="mi" id="m-o3" placeholder="4.2" type="number" step="0.1"></div>
+    </div></div>
 
-function shareWhatsApp(){
-  if(!currentURL) return;
-  const name=document.getElementById('f-name').value||'';
-  const msg=`Hola ${name.split(' ')[0]}, tu reporte de longevidad Meridian está listo 🧬\n\n${currentURL}`;
-  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
-}
+    <!-- TIER 2: ONCOLOGY -->
+    <div class="fs"><div class="fsh"><div class="fsi">🔍</div><div><div class="fst">Detección Oncológica <span style="font-size:11px;color:var(--gold-light)">(Tier 2)</span></div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">PSA</div><div class="mu">ng/mL · ópt: &lt;2.5</div><input class="mi" id="m-psa" placeholder="0.8" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">CEA</div><div class="mu">ng/mL · ópt: &lt;3.0</div><input class="mi" id="m-cea" placeholder="1.4" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">AFP</div><div class="mu">ng/mL · ópt: &lt;10</div><input class="mi" id="m-afp" placeholder="3.2" type="number" step="0.1"></div>
+    </div></div>
 
-function shareEmail(){
-  if(!currentURL) return;
-  const name=document.getElementById('f-name').value||'';
-  const subject=`Tu Reporte Meridian de Longevidad · ${new Date().getFullYear()}`;
-  const body=`Hola ${name.split(' ')[0]},\n\nTu reporte de longevidad Meridian está listo. Puedes verlo en el siguiente link:\n\n${currentURL}\n\nEl reporte incluye tu Meridian Age™, análisis de los 72 marcadores del panel Tier 2, y tu plan de acción personalizado de 90 días.\n\nDr. Alejandro Berlin, MD, MSc\nMedicina de Longevidad · Meridian Chile`;
-  window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
-}
+    <!-- ADD-ONS -->
+    <div class="fs"><div class="fsh"><div class="fsi">🏃</div><div><div class="fst">Performance Física <span style="font-size:11px;color:var(--gold-light)">(Add-ons)</span></div><div class="fss">Pilares de Meridian Age™</div></div></div>
+    <div class="mg">
+      <div class="mf"><div class="mn">VO₂ Max ★</div><div class="mu">ml/kg/min</div><input class="mi" id="m-vo2" placeholder="41.2" type="number" step="0.1" oninput="lp()"></div>
+      <div class="mf"><div class="mn">Grasa Corporal (DEXA)</div><div class="mu">% · ópt H: 10–20</div><input class="mi" id="m-bf" placeholder="22" type="number" step="0.1" oninput="lp()"></div>
+      <div class="mf"><div class="mn">Grasa Visceral</div><div class="mu">g · ópt: &lt;500g</div><input class="mi" id="m-vat" placeholder="420" type="number"></div>
+      <div class="mf"><div class="mn">Masa Muscular (ALMI)</div><div class="mu">kg/m² · ópt H: &gt;8.0</div><input class="mi" id="m-almi" placeholder="8.4" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">Densidad Ósea T-score</div><div class="mu">SD · normal: &gt;−1.0</div><input class="mi" id="m-bmd" placeholder="-0.3" type="number" step="0.1"></div>
+      <div class="mf"><div class="mn">Edad Composición Corporal</div><div class="mu">años · del DEXA report</div><input class="mi" id="m-bca" placeholder="47" type="number" oninput="lp()"></div>
+    </div></div>
 
-document.getElementById('f-date').valueAsDate=new Date();
-updatePreview();
-</script>
+  </div><!-- /em -->
+</div><!-- /ew -->
+</div><!-- /vEntry -->
 
-<style>
-#view-review,#view-done{display:none;position:relative;z-index:1;}
-.review-body{display:grid;grid-template-columns:400px 1fr;min-height:calc(100vh - 65px);}
-.edit-panel{border-right:1px solid var(--border);background:rgba(17,34,64,0.5);display:flex;flex-direction:column;max-height:calc(100vh - 65px);position:sticky;top:65px;overflow:hidden;}
-.ep-top{padding:24px 24px 0;flex-shrink:0;}
-.ep-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;margin-bottom:3px;}
-.ep-sub{font-size:11px;color:var(--text-dim);line-height:1.5;margin-bottom:14px;}
-.ep-tabs{display:flex;gap:2px;background:rgba(17,34,64,0.5);border:1px solid var(--border);border-radius:9px;padding:3px;}
-.ep-tab{flex:1;font-size:11px;padding:6px 6px;border-radius:6px;cursor:pointer;color:var(--text-dim);transition:all .2s;border:none;background:none;font-family:'DM Sans',sans-serif;text-align:center;}
-.ep-tab.active{background:var(--green-ghost);color:var(--green-light);border:1px solid var(--border-green);}
-.ep-body{flex:1;overflow-y:auto;padding:16px 24px;}
-.edit-sec{display:none;}
-.edit-sec.on{display:block;}
-.clin-ta{width:100%;background:rgba(17,34,64,0.7);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:13px;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--cream);line-height:1.75;resize:vertical;min-height:155px;outline:none;transition:border-color .2s;}
-.clin-ta:focus{border-color:var(--border-green);}
-.regen-btn{background:none;border:1px solid var(--border);color:var(--text-dim);padding:6px 12px;border-radius:7px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;margin-top:6px;}
-.regen-btn:hover{border-color:var(--border-green);color:var(--green-light);}
-.plan-ed{display:flex;flex-direction:column;gap:10px;}
-.pec{background:rgba(17,34,64,0.6);border:1px solid var(--border);border-radius:10px;padding:13px;}
-.pec-h{display:flex;align-items:center;gap:7px;margin-bottom:9px;}
-.pec-ico{width:28px;height:28px;background:rgba(17,34,64,.8);border:1px solid var(--border);border-radius:7px;text-align:center;font-size:14px;outline:none;color:var(--cream);}
-.pec-tw{flex:1;display:flex;flex-direction:column;gap:3px;}
-.pec-ti{background:none;border:none;border-bottom:1px solid var(--border);color:var(--cream);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;outline:none;padding:2px 0;width:100%;}
-.pec-pri{display:flex;gap:3px;margin-top:2px;}
-.pec-pb{font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:100px;border:1px solid;background:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
-.pec-pb.hi{color:var(--red);border-color:rgba(255,123,123,.3);}
-.pec-pb.hi.sel{background:rgba(255,123,123,.15);}
-.pec-pb.me{color:var(--gold-light);border-color:var(--border-gold);}
-.pec-pb.me.sel{background:rgba(201,168,76,.1);}
-.pec-pb.lo{color:var(--green-light);border-color:rgba(116,198,157,.3);}
-.pec-pb.lo.sel{background:rgba(45,106,79,.15);}
-.pec-items{display:flex;flex-direction:column;gap:5px;}
-.pec-row{display:flex;align-items:flex-start;gap:5px;}
-.pec-ia{flex:1;background:rgba(11,22,40,.5);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:11px;color:var(--text-mid);font-family:'DM Sans',sans-serif;outline:none;resize:none;line-height:1.5;transition:border-color .2s;}
-.pec-ia:focus{border-color:var(--border-green);color:var(--cream);}
-.pec-x{width:20px;height:20px;background:none;border:1px solid var(--border);border-radius:4px;color:var(--text-dim);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px;transition:all .2s;}
-.pec-x:hover{border-color:rgba(255,123,123,.4);color:var(--red);}
-.pec-add{background:none;border:1px dashed rgba(245,240,232,.1);color:var(--text-dim);padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;margin-top:4px;transition:all .2s;}
-.pec-add:hover{border-color:var(--border-green);color:var(--green-light);}
-.bc-filters{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:9px;}
-.bcf{font-size:10px;padding:3px 9px;border-radius:100px;border:1px solid var(--border);background:none;color:var(--text-dim);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
-.bcf.on{border-color:var(--border-green);color:var(--green-light);background:var(--green-ghost);}
-.bcs{display:flex;flex-direction:column;gap:5px;}
-.bc-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:7px;background:rgba(17,34,64,.5);border:1px solid var(--border);border-radius:8px;padding:8px 10px;transition:border-color .2s;}
-.bc-row:hover{border-color:var(--border-green);}
-.bc-n{font-size:11px;color:var(--text-mid);font-weight:500;}
-.bc-u{font-size:10px;color:var(--text-dim);}
-.bc-in{background:rgba(11,22,40,.6);border:1px solid var(--border);border-radius:5px;padding:4px 8px;font-size:12px;font-family:'DM Mono',monospace;color:var(--cream);outline:none;width:72px;text-align:right;transition:border-color .2s;}
-.bc-in:focus{border-color:var(--border-green);}
-.ep-foot{padding:14px 24px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:7px;}
-.btn-gen{background:linear-gradient(135deg,var(--green),var(--green-mid));color:var(--cream);border:none;padding:12px 18px;border-radius:11px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:opacity .2s,transform .2s;}
-.btn-gen:hover{opacity:.9;transform:translateY(-1px);}
-.btn-bk{background:none;border:1px solid var(--border);color:var(--text-dim);padding:9px 18px;border-radius:11px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:all .2s;}
-.btn-bk:hover{border-color:var(--border-green);color:var(--green-light);}
-.prev-pane{overflow-y:auto;max-height:calc(100vh - 65px);padding:28px 36px;background:rgba(11,22,40,.3);}
-.prev-lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.prev-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
-.prev-mac{background:linear-gradient(145deg,rgba(17,34,64,.95),rgba(45,106,79,.18));border:1px solid var(--border-green);border-radius:18px;padding:22px;text-align:center;margin-bottom:16px;}
-.pm-brand{font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:.08em;color:var(--text-dim);margin-bottom:8px;}
-.pm-age{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;line-height:1;color:var(--cream);}
-.pm-unit{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);margin-bottom:7px;}
-.pm-delta{display:inline-flex;align-items:center;gap:4px;background:rgba(45,106,79,.2);border:1px solid rgba(116,198,157,.3);border-radius:100px;padding:4px 12px;font-size:12px;color:var(--green-pale);margin-bottom:11px;}
-.pm-ws{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
-.pm-w{background:rgba(17,34,64,.5);border:1px solid var(--border);border-radius:7px;padding:6px 3px;text-align:center;}
-.pm-wp{font-family:'DM Mono',monospace;font-size:12px;color:var(--green-light);}
-.pm-wl{font-size:9px;color:var(--text-dim);margin-top:1px;line-height:1.3;}
-.pv3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:16px;}
-.pv3c{background:rgba(17,34,64,.5);border:1px solid var(--border);border-radius:10px;padding:11px;}
-.pv3i{font-size:12px;margin-bottom:4px;}
-.pv3t{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-dim);margin-bottom:3px;}
-.pv3n{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;line-height:1;}
-.pv3v{font-size:10px;margin-top:2px;}
-.prev-clin{background:rgba(17,34,64,.6);border:1px solid var(--border-green);border-radius:12px;padding:16px;margin-bottom:12px;}
-.pc-hdr{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
-.pc-av{width:28px;height:28px;background:var(--green-ghost);border:1px solid var(--border-green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;}
-.pc-name{font-size:11px;font-weight:500;}
-.pc-role{font-size:9px;color:var(--text-dim);}
-.pc-txt{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:var(--text-mid);line-height:1.7;}
-.pv-plans{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;}
-.pvp{background:rgba(17,34,64,.5);border:1px solid var(--border);border-radius:10px;padding:11px;}
-.pvp-h{display:flex;align-items:center;gap:6px;margin-bottom:7px;}
-.pvp-ico{font-size:13px;}
-.pvp-ttl{font-size:11px;font-weight:500;}
-.pvp-pr{font-size:9px;text-transform:uppercase;letter-spacing:.08em;}
-.pvp-items{list-style:none;display:flex;flex-direction:column;gap:4px;}
-.pvp-item{font-size:10px;color:var(--text-dim);display:flex;gap:5px;line-height:1.4;}
-.pvp-item::before{content:'·';color:var(--green-mid);flex-shrink:0;}
-.done-wrap{min-height:calc(100vh - 65px);display:flex;align-items:center;justify-content:center;padding:48px;}
-.done-card{max-width:520px;width:100%;background:rgba(17,34,64,.7);border:1px solid var(--border-green);border-radius:22px;padding:40px;text-align:center;}
-.done-ck{width:50px;height:50px;background:var(--green-ghost);border:1px solid var(--border-green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 16px;}
-.done-t{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:3px;}
-.done-n{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--green-light);margin-bottom:16px;}
-.done-lb{background:rgba(11,22,40,.8);border:1px solid var(--border);border-radius:9px;padding:11px 13px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text-mid);word-break:break-all;line-height:1.5;cursor:pointer;transition:border-color .2s;margin-bottom:12px;text-align:left;}
-.done-lb:hover{border-color:var(--border-green);}
-.done-2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px;}
-.db-p{background:var(--green);color:var(--cream);border:none;padding:11px;border-radius:9px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;}
-.db-p:hover{background:var(--green-mid);}
-.db-s{background:none;border:1px solid var(--border);color:var(--text-mid);padding:11px;border-radius:9px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:all .2s;}
-.db-s:hover{border-color:var(--border-green);color:var(--green-light);}
-.db-wa{background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#25d366;padding:9px;border-radius:9px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;margin-bottom:7px;}
-.db-em{background:rgba(66,133,244,.1);border:1px solid rgba(66,133,244,.3);color:#4285f4;padding:9px;border-radius:9px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;margin-bottom:16px;}
-.cc{font-size:11px;color:var(--green-light);opacity:0;transition:opacity .3s;margin-bottom:5px;}
-.cc.on{opacity:1;}
-.done-new{background:none;border:none;color:var(--text-dim);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px;padding:4px;}
-</style>
-
-<!-- STEP 2: REVIEW & EDIT -->
-<div id="view-review">
-<div class="review-body">
-  <div class="edit-panel">
-    <div class="ep-top">
-      <div class="ep-title">Revisar & personalizar</div>
-      <div class="ep-sub">Edita el reporte antes de enviar. La vista previa se actualiza en tiempo real.</div>
+<!-- ═══ STEP 2 ═══ -->
+<div id="vReview">
+<div class="rw">
+  <div class="ep">
+    <div class="ept">
+      <div class="ep-title">Revisar &amp; personalizar</div>
+      <div class="ep-sub">Edita el reporte antes de enviar. Vista previa en tiempo real.</div>
       <div class="ep-tabs">
         <button class="ep-tab active" onclick="epTab(this,'es-clin')">✍ Nota clínica</button>
         <button class="ep-tab" onclick="epTab(this,'es-plan')">📋 Plan</button>
@@ -544,23 +385,23 @@ updatePreview();
       </div>
     </div>
     <div class="ep-body">
-      <div class="edit-sec on" id="es-clin">
-        <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;line-height:1.5">Nota del Dr. Berlin que aparece en el reporte. Escribe en primera persona.</div>
-        <textarea class="clin-ta" id="edit-note" oninput="upPrev()"></textarea>
-        <button class="regen-btn" onclick="regenNote()">↺ Regenerar automáticamente</button>
+      <div class="esec on" id="es-clin">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;line-height:1.5">Nota del Dr. Berlin en el reporte del paciente. Edita libremente.</div>
+        <textarea class="cta" id="edit-note" oninput="upPrev()"></textarea>
+        <button class="regen" onclick="regenNote()">↺ Regenerar</button>
       </div>
-      <div class="edit-sec" id="es-plan">
-        <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;line-height:1.5">Edita título, ícono, prioridad e ítems de cada tarjeta del plan de acción.</div>
-        <div class="plan-ed" id="plan-ed"></div>
+      <div class="esec" id="es-plan">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;line-height:1.5">Edita título, ícono, prioridad e ítems de cada tarjeta.</div>
+        <div class="ped" id="ped"></div>
       </div>
-      <div class="edit-sec" id="es-bio">
-        <div style="font-size:11px;color:var(--text-dim);margin-bottom:9px;line-height:1.5">Correcciones de último momento antes de generar el link.</div>
-        <div class="bc-filters">
-          <button class="bcf on" onclick="bcf(this,'all')">Todos</button>
-          <button class="bcf" onclick="bcf(this,'pheno')">PhenoAge</button>
-          <button class="bcf" onclick="bcf(this,'cardio')">Cardio</button>
-          <button class="bcf" onclick="bcf(this,'hor')">Hormonas</button>
-          <button class="bcf" onclick="bcf(this,'nut')">Nutrición</button>
+      <div class="esec" id="es-bio">
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:9px;line-height:1.5">Correcciones de último momento.</div>
+        <div class="bcfs">
+          <button class="bcf on" onclick="bcfn(this,'all')">Todos</button>
+          <button class="bcf" onclick="bcfn(this,'pheno')">PhenoAge</button>
+          <button class="bcf" onclick="bcfn(this,'cardio')">Cardio</button>
+          <button class="bcf" onclick="bcfn(this,'hor')">Hormonas</button>
+          <button class="bcf" onclick="bcfn(this,'nut')">Nutrición</button>
         </div>
         <div class="bcs" id="bcs"></div>
       </div>
@@ -570,45 +411,227 @@ updatePreview();
       <button class="btn-bk" onclick="goBack()">← Volver a datos</button>
     </div>
   </div>
-  <div class="prev-pane">
-    <div class="prev-lbl">Vista previa del reporte</div>
-    <div class="prev-mac">
-      <div class="pm-brand">Meridian Age™</div>
-      <div class="pm-age" id="pv-age">—</div>
-      <div class="pm-unit">años</div>
-      <div class="pm-delta" id="pv-delta"></div>
-      <div class="pm-ws">
-        <div class="pm-w"><div class="pm-wp">50%</div><div class="pm-wl">PhenoAge</div></div>
-        <div class="pm-w"><div class="pm-wp">25%</div><div class="pm-wl">Composición</div></div>
-        <div class="pm-w"><div class="pm-wp">25%</div><div class="pm-wl">VO₂ Max</div></div>
-      </div>
-    </div>
+  <div class="ppane">
+    <div class="plbl">Vista previa del reporte</div>
+    <div class="pmac"><div class="pmbr">Meridian Age™</div><div class="pmage" id="pv-age">—</div><div class="pmun">años</div><div class="pmdl" id="pv-dl"></div><div class="pmws"><div class="pmw"><div class="pmwp">50%</div><div class="pmwl">PhenoAge</div></div><div class="pmw"><div class="pmwp">25%</div><div class="pmwl">Composición</div></div><div class="pmw"><div class="pmwp">25%</div><div class="pmwl">VO₂ Max</div></div></div></div>
     <div class="pv3" id="pv3"></div>
-    <div class="prev-lbl" style="margin-top:2px">Nota clínica</div>
-    <div class="prev-clin"><div class="pc-hdr"><div class="pc-av">👨‍⚕️</div><div><div class="pc-name">Dr. Alejandro Berlin, MD, MSc</div><div class="pc-role">Medicina de Longevidad · Meridian Chile</div></div></div><div class="pc-txt" id="pv-clin"></div></div>
-    <div class="prev-lbl" style="margin-top:2px">Plan de acción</div>
-    <div class="pv-plans" id="pv-plans"></div>
+    <div class="plbl" style="margin-top:2px">Nota clínica</div>
+    <div class="pclin"><div class="pchdr"><div class="pcav">👨‍⚕️</div><div><div class="pcname">Dr. Alejandro Berlin, MD, MSc</div><div class="pcrole">Medicina de Longevidad · Meridian Chile</div></div></div><div class="pctxt" id="pv-clin"></div></div>
+    <div class="plbl" style="margin-top:2px">Plan de acción</div>
+    <div class="pvpl" id="pvpl"></div>
   </div>
 </div>
 </div>
 
-<!-- STEP 3: DONE -->
-<div id="view-done">
-<div class="done-wrap"><div class="done-card">
-  <div class="done-ck">✓</div>
-  <div class="done-t">Reporte listo para</div>
-  <div class="done-n" id="dn-name"></div>
-  <div class="done-lb" id="dn-link" onclick="cpLink()"></div>
-  <div class="cc" id="cc">✓ Copiado</div>
-  <div class="done-2"><button class="db-p" onclick="cpLink()">📋 Copiar link</button><button class="db-p" onclick="opLink()">↗ Abrir reporte</button></div>
-  <button class="db-wa" onclick="sWA()">💬 Enviar por WhatsApp</button>
-  <button class="db-em" onclick="sEmail()">✉ Enviar por Email</button>
-  <div class="pilot-tracker" style="margin-top:4px">
-    <div class="pt-header"><div class="pt-title">Piloto · progreso</div><div class="pt-count" id="pt-count">0 / 10</div></div>
-    <div class="pt-dots" id="pt-dots"></div>
+<!-- ═══ STEP 3 ═══ -->
+<div id="vDone">
+<div class="dw"><div class="dc">
+  <div class="dck">✓</div>
+  <div class="dt">Reporte listo para</div>
+  <div class="dn" id="dn-name"></div>
+  <div class="dlb" id="dn-link" onclick="cpLink()"></div>
+  <div class="cc" id="cc">✓ Copiado al portapapeles</div>
+  <div class="d2"><button class="dbp" onclick="cpLink()">📋 Copiar link</button><button class="dbp" onclick="opLink()">↗ Abrir reporte</button></div>
+  <button class="dwa" onclick="sWA()">💬 Enviar por WhatsApp</button>
+  <button class="dem" onclick="sEmail()">✉ Enviar por Email</button>
+  <div class="ptbox">
+    <div class="ptrow"><div class="ptttl">Piloto · progreso</div><div class="ptct" id="ptct">0 / 10</div></div>
+    <div class="ptdots" id="ptdots"></div>
   </div>
-  <br><button class="done-new" onclick="newRep()">+ Crear nuevo reporte</button>
+  <button class="dnew" onclick="newRep()">+ Crear nuevo reporte</button>
 </div></div>
 </div>
+
+<script>
+// ── MARKER KEYS ──
+const MK=['glu','ins','homa','hba1c','tc','ldl','hdl','trig','apob','nonhdl','crp','fib','alt','ast','ggt','alp','bili','alb','cre','egfr','ua','bun','wbc','rbc','plt','mcv','rdw','lym','neut','tsh','ft3','ft4','tpo','vitd','b12','fol','ferr','mg','zn','na','k','cl','hco3','hcy','lpa','ttt','tft','shbg','dhea','cort','igf1','lh','fsh','prl','il6','vhs','o3','psa','cea','afp','vo2','bf','vat','almi','bmd','bca'];
+
+// Biomarker meta for corrections panel
+const BM=[
+  {k:'alb',n:'Albumina',u:'g/dL',c:'pheno'},{k:'cre',n:'Creatinina',u:'mg/dL',c:'pheno'},
+  {k:'glu',n:'Glucosa',u:'mg/dL',c:'pheno'},{k:'crp',n:'PCR alta sens.',u:'mg/L',c:'pheno'},
+  {k:'lym',n:'Linfocitos %',u:'%',c:'pheno'},{k:'mcv',n:'VCM (MCV)',u:'fL',c:'pheno'},
+  {k:'rdw',n:'ADE (RDW)',u:'%',c:'pheno'},{k:'alp',n:'Fosf. Alc.',u:'U/L',c:'pheno'},
+  {k:'wbc',n:'Leucocitos',u:'10³/μL',c:'pheno'},
+  {k:'hba1c',n:'HbA1c',u:'%',c:'met'},{k:'homa',n:'HOMA-IR',u:'índice',c:'met'},
+  {k:'apob',n:'ApoB',u:'mg/dL',c:'cardio'},{k:'lpa',n:'Lp(a)',u:'nmol/L',c:'cardio'},
+  {k:'ldl',n:'LDL',u:'mg/dL',c:'cardio'},{k:'hdl',n:'HDL',u:'mg/dL',c:'cardio'},
+  {k:'hcy',n:'Homocisteína',u:'μmol/L',c:'cardio'},{k:'o3',n:'Omega-3 idx',u:'%',c:'cardio'},
+  {k:'tft',n:'Test. Libre',u:'pg/mL',c:'hor'},{k:'ttt',n:'Test. Total',u:'ng/dL',c:'hor'},
+  {k:'igf1',n:'IGF-1',u:'ng/mL',c:'hor'},{k:'dhea',n:'DHEA-S',u:'μg/dL',c:'hor'},
+  {k:'tsh',n:'TSH',u:'mUI/L',c:'hor'},{k:'cort',n:'Cortisol AM',u:'μg/dL',c:'hor'},
+  {k:'vitd',n:'Vitamina D',u:'ng/mL',c:'nut'},{k:'b12',n:'Vitamina B12',u:'pg/mL',c:'nut'},
+  {k:'ferr',n:'Ferritina',u:'ng/mL',c:'nut'},{k:'mg',n:'Magnesio RBC',u:'mg/dL',c:'nut'},
+];
+
+// ── ALGORITHMS ──
+function calcPA(a,c,g,crp,l,m,r,alp,w){
+  const xb=-19.9067+(-0.0336*a)+(0.0095*c)+(0.1953*g)+(0.0954*Math.log(Math.max(crp,0.01)))+(-0.012*l)+(0.0268*m)+(0.3306*r)+(0.0019*alp)+(0.0554*w);
+  const M=1-Math.exp(-Math.exp(xb)*(Math.exp(0.0553*120)-1)/0.0553);
+  return Math.round(Math.max(18,Math.min(100,141.50+Math.log(-0.00553*Math.log(1-M))/0.0553)));
+}
+function vo2A(v2,age,sex){const m=sex==='M'?{20:52,30:48,40:42,50:37,60:32}:{20:46,30:42,40:37,50:32,60:27};let mv=m[40];for(let k of Object.keys(m).map(Number).sort((a,b)=>a-b)){if(age>=k)mv=m[k];}return Math.round(Math.max(18,Math.min(90,age-(v2-mv)*0.55)));}
+function bcA(f,age,sex){const hi=sex==='M'?20:28;return f<=hi?age-3:Math.round(Math.min(age+20,age+(f-hi)*0.7));}
+
+function gv(k){return parseFloat(document.getElementById('m-'+k)?.value)||null;}
+function cd(){
+  const age=parseInt(document.getElementById('f-age').value)||44;
+  const sex=document.getElementById('f-sex').value||'M';
+  const v={};MK.forEach(k=>v[k]=gv(k));
+  const pa=calcPA(v.alb||4.2,v.cre||0.9,v.glu||90,v.crp||0.5,v.lym||30,v.mcv||88,v.rdw||12.5,v.alp||65,v.wbc||5.5);
+  const fa=vo2A(v.vo2||40,age,sex);
+  const ba=v.bca||bcA(v.bf||22,age,sex);
+  const ma=Math.round(pa*0.5+ba*0.25+fa*0.25);
+  return{age,sex,v,pa,fa,ba,ma};
+}
+
+function homa(){
+  const g=gv('glu'),i=gv('ins');
+  if(g&&i)document.getElementById('m-homa').value=((g*i)/405).toFixed(2);
+  calcNonHDL();lp();
+}
+function calcNonHDL(){
+  const tc=gv('tc'),hdl=gv('hdl');
+  if(tc&&hdl)document.getElementById('m-nonhdl').value=(tc-hdl).toFixed(0);
+}
+function lp(){const{ma}=cd();document.getElementById('preview-age').textContent=ma;}
+
+// ── STEP NAV ──
+function setStep(n){
+  ['sp1','sp2','sp3'].forEach((id,i)=>{
+    const el=document.getElementById(id);if(!el)return;
+    el.className='sp'+(i+1===n?' act':i+1<n?' done':'');
+  });
+}
+
+// ── PLAN & NOTE BUILDERS ──
+function getFlags(v){
+  const f=[];
+  if(v.hba1c&&v.hba1c>5.4)f.push('tendencia pre-diabética');
+  if(v.tft&&v.tft<10)f.push('testosterona libre subóptima');
+  if(v.vitd&&v.vitd<40)f.push('déficit de Vitamina D');
+  if(v.o3&&v.o3<6)f.push('índice Omega-3 bajo');
+  if(v.homa&&v.homa>2.0)f.push('resistencia a la insulina incipiente');
+  return f;
+}
+function buildNote(name,age,v,ma){
+  const d=age-ma,fn=name.split(' ')[0],flags=getFlags(v);
+  return `"${fn}, tus resultados son ${d>=3?'notablemente positivos':'un retrato honesto de tu estado actual'} para tu edad. Tu Meridian Age™ de ${ma} años ${d>=0?'refleja años de buenas decisiones':'es un punto de partida importante'}. ${flags.length?'Las áreas a trabajar son concretas y completamente reversibles: '+flags.join(', ')+'.':' Tus resultados están en rangos excelentes — el trabajo ahora es optimizar y mantener.'} Con el plan de los próximos 90 días, espero ver mejoras medibles en tu Meridian Age™ en el próximo panel."`;
+}
+function buildPlans(v){
+  const flags=getFlags(v);const ps=[];
+  if(flags.some(f=>f.includes('diabét')||f.includes('insulina'))){ps.push({icon:'🍽️',title:'Nutrición & Metabolismo',pr:'hi',items:['Reducir carbohidratos refinados a <100g/día.','Ventana alimentaria de 10 horas.','Proteína 1.8g/kg/día.','Vinagre de manzana 15ml antes de comidas.']});}
+  else{ps.push({icon:'🍽️',title:'Nutrición & Optimización',pr:'lo',items:['Proteína 1.6g/kg/día y grasas saludables.','Ayuno intermitente 12–14 horas diario.','Vegetales crucíferos: 5 porciones/semana.']});}
+  const s=['Magnesio glicinato: 400mg.'];
+  if(v.vitd&&v.vitd<40)s.unshift('Vitamina D3 + K2: 5,000 UI/día.');
+  if(v.o3&&v.o3<6)s.unshift('Omega-3 EPA+DHA: 3g/día.');
+  if(flags.some(f=>f.includes('insulina')))s.push('Berberina 500mg 2x/día.');
+  ps.push({icon:'💊',title:'Suplementación',pr:'hi',items:s});
+  ps.push({icon:'🏃',title:'Ejercicio & VO₂ Max',pr:'me',items:['Zona 2 aeróbico: 3–4 sesiones/semana de 45 min.','Fuerza: 3 sesiones/semana.',`VO₂ Max actual: ${v.vo2||'—'} ml/kg/min. Objetivo: +2–3.`]});
+  ps.push({icon:'🔬',title:'Seguimiento',pr:'lo',items:['Panel de control a los 90 días.','Consulta virtual con Dr. Berlin en 4 semanas.',v.vo2?'Repetir VO₂ Max en 6 meses.':'Agendar VO₂ Max y DEXA.']});
+  return ps;
+}
+
+let editPlans=[],curURL='';
+
+function goToReview(){
+  const{age,v,ma}=cd();
+  const name=document.getElementById('f-name').value||'Paciente';
+  editPlans=buildPlans(v);
+  document.getElementById('edit-note').value=buildNote(name,age,v,ma);
+  renderPed();renderBCS();upPrev();
+  document.getElementById('vEntry').style.display='none';
+  document.getElementById('vReview').style.display='block';
+  setStep(2);window.scrollTo(0,0);
+}
+function goBack(){
+  document.getElementById('vReview').style.display='none';
+  document.getElementById('vEntry').style.display='block';
+  setStep(1);window.scrollTo(0,0);
+}
+
+// ── PLAN EDITOR ──
+function renderPed(){
+  const prl={hi:'Alta',me:'Media',lo:'Baja'};
+  document.getElementById('ped').innerHTML=editPlans.map((p,pi)=>`
+    <div class="pec">
+      <div class="pec-h">
+        <input class="pico" value="${p.icon}" oninput="editPlans[${pi}].icon=this.value;upPrev()" maxlength="2">
+        <div class="ptw">
+          <input class="ptin" value="${p.title}" oninput="editPlans[${pi}].title=this.value;upPrev()">
+          <div class="ppri">${['hi','me','lo'].map(pr=>`<button class="ppb ${pr}${p.pr===pr?' sel':''}" onclick="setPr(${pi},'${pr}')">${prl[pr]}</button>`).join('')}</div>
+        </div>
+      </div>
+      <div class="pitems">${p.items.map((it,ii)=>`<div class="prow"><textarea class="pia" rows="2" oninput="editPlans[${pi}].items[${ii}]=this.value;upPrev()">${it}</textarea><button class="px" onclick="delIt(${pi},${ii})">×</button></div>`).join('')}</div>
+      <button class="padd" onclick="addIt(${pi})">+ Agregar ítem</button>
+    </div>`).join('');
+}
+function setPr(pi,pr){editPlans[pi].pr=pr;renderPed();upPrev();}
+function delIt(pi,ii){editPlans[pi].items.splice(ii,1);renderPed();upPrev();}
+function addIt(pi){editPlans[pi].items.push('Nuevo ítem.');renderPed();upPrev();}
+
+// ── BIO CORRECTIONS ──
+let bcFilter='all';
+function bcfn(btn,cat){bcFilter=cat;document.querySelectorAll('.bcf').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderBCS();}
+function renderBCS(){
+  const items=BM.filter(b=>bcFilter==='all'||b.c===bcFilter);
+  document.getElementById('bcs').innerHTML=items.map(b=>{
+    const cur=document.getElementById('m-'+b.k)?.value||'';
+    return`<div class="bcr"><div><div class="bcn">${b.n}</div><div class="bcu">${b.u}</div></div><input class="bcin" id="bc-${b.k}" value="${cur}" placeholder="—" type="number" step="any" oninput="const el=document.getElementById('m-${b.k}');if(el)el.value=this.value;lp();homa()"></div>`;}).join('');
+}
+
+// ── LIVE PREVIEW ──
+function upPrev(){
+  const{age,pa,fa,ba,ma}=cd();
+  const absd=Math.abs(age-ma);
+  document.getElementById('pv-age').textContent=ma;
+  document.getElementById('pv-dl').textContent=(age-ma)>=0?`↓ ${absd}a más joven`:`↑ ${absd}a sobre tu edad`;
+  const gc='var(--green-light)',wc='var(--gold-light)';
+  document.getElementById('pv3').innerHTML=[{icon:'🧬',t:'Biológica',n:pa},{icon:'⚖️',t:'Composición',n:ba},{icon:'❤️',t:'Cardiovascular',n:fa}].map(a=>{const ok=a.n<age;return`<div class="pv3c"><div class="pv3i">${a.icon}</div><div class="pv3t">${a.t}</div><div class="pv3n" style="color:${ok?gc:wc}">${a.n}</div><div class="pv3v" style="color:${ok?gc:wc}">${a.n<age?`↓ ${age-a.n}a`:`↑ ${a.n-age}a`}</div></div>`;}).join('');
+  document.getElementById('pv-clin').textContent=document.getElementById('edit-note').value;
+  const prc={hi:'var(--red)',me:'var(--gold-light)',lo:'var(--green-light)'};
+  const prl2={hi:'Prioridad Alta',me:'Prioridad Media',lo:'Mantener'};
+  document.getElementById('pvpl').innerHTML=editPlans.map(p=>`<div class="pvpc"><div class="pvph"><div class="pvpico">${p.icon}</div><div><div class="pvpttl">${p.title}</div><div class="pvppr" style="color:${prc[p.pr]}">${prl2[p.pr]}</div></div></div><ul class="pvpit">${p.items.map(i=>`<li class="pvpi">${i}</li>`).join('')}</ul></div>`).join('');
+}
+function regenNote(){const{age,v,ma}=cd();document.getElementById('edit-note').value=buildNote(document.getElementById('f-name').value||'Paciente',age,v,ma);upPrev();}
+function epTab(btn,id){document.querySelectorAll('.ep-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.esec').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');}
+
+// ── GENERATE FINAL LINK ──
+function genFinalLink(){
+  const name=document.getElementById('f-name').value||'Paciente';
+  const age=document.getElementById('f-age').value||'44';
+  const sex=document.getElementById('f-sex').value||'M';
+  const date=document.getElementById('f-date').value||new Date().toISOString().split('T')[0];
+  const clinNote=document.getElementById('edit-note').value;
+  const data={name,age,sex,date,clinNote,plans:editPlans};
+  MK.forEach(k=>{const v=document.getElementById('m-'+k)?.value;if(v)data[k]=v;});
+  const enc=btoa(encodeURIComponent(JSON.stringify(data)));
+  const base=window.location.href.replace('index.html','').replace(/\/$/,'');
+  curURL=`${base}/report.html#${enc}`;
+  const pc=Math.min(10,(parseInt(localStorage.getItem('m_pilot')||'0'))+1);
+  localStorage.setItem('m_pilot',pc);
+  document.getElementById('dn-name').textContent=name+'.';
+  document.getElementById('dn-link').textContent=curURL;
+  renderPT(pc);
+  document.getElementById('vReview').style.display='none';
+  document.getElementById('vDone').style.display='block';
+  setStep(3);window.scrollTo(0,0);
+}
+function renderPT(pc){
+  document.getElementById('ptct').textContent=pc+' / 10';
+  let h='';for(let i=0;i<10;i++)h+=`<div class="ptd ${i<pc?'ok':''}">${i<pc?'✓':i+1}</div>`;
+  document.getElementById('ptdots').innerHTML=h;
+}
+function cpLink(){navigator.clipboard.writeText(curURL).then(()=>{const e=document.getElementById('cc');e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2500);});}
+function opLink(){if(curURL)window.open(curURL,'_blank');}
+function sWA(){const n=document.getElementById('f-name').value||'';window.open('https://wa.me/?text='+encodeURIComponent(`Hola ${n.split(' ')[0]}, tu reporte de longevidad Meridian está listo 🧬\n\n${curURL}`),'_blank');}
+function sEmail(){const n=document.getElementById('f-name').value||'';const s=`Tu Reporte Meridian · ${new Date().getFullYear()}`;const b=`Hola ${n.split(' ')[0]},\n\nTu reporte está listo:\n\n${curURL}\n\nDr. Alejandro Berlin, MD, MSc\nMedicina de Longevidad · Meridian Chile`;window.open(`mailto:?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`);}
+function newRep(){document.getElementById('vDone').style.display='none';document.getElementById('vEntry').style.display='block';setStep(1);window.scrollTo(0,0);}
+
+// ── INIT ──
+document.getElementById('f-date').valueAsDate=new Date();
+renderPT(parseInt(localStorage.getItem('m_pilot')||'0'));
+lp();
+</script>
 </body>
 </html>
