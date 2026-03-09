@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MERIDIAN — Cuestionario de Bienvenida</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B1628;--navy-mid:#112240;--navy-card:rgba(17,34,64,0.72);
+  --green:#2D6A4F;--green-mid:#40916C;--green-light:#74C69D;
+  --green-ghost:rgba(45,106,79,0.13);--green-glow:rgba(45,106,79,0.28);
+  --gold:#C9A84C;--gold-light:#E8C97A;--gold-ghost:rgba(201,168,76,0.1);
+  --cream:#F5F0E8;--cream-dim:rgba(245,240,232,0.55);
+  --red:#ff8080;--red-ghost:rgba(255,128,128,0.12);
+  --border:rgba(245,240,232,0.07);--border-green:rgba(64,145,108,0.38);
+  --border-gold:rgba(201,168,76,0.32);
+  --radius:16px;--radius-sm:10px;--radius-pill:100px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--cream);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 50% at 12% 5%,rgba(45,106,79,.18) 0%,transparent 60%),
+  radial-gradient(ellipse 55% 65% at 92% 92%,rgba(45,106,79,.12) 0%,transparent 55%),
+  radial-gradient(ellipse 45% 40% at 50% 48%,rgba(201,168,76,.04) 0%,transparent 70%);}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px;}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 40px;background:rgba(11,22,40,.93);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);}
+.logo{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;letter-spacing:.22em;
+  display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--cream);}
+.lm{width:20px;height:20px;border:1.5px solid var(--green-light);border-radius:50%;position:relative;flex-shrink:0;}
+.lm::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:6px;height:1.5px;background:var(--green-light);}
+.lm::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1.5px;height:6px;background:var(--green-light);}
+.logo sup{font-size:7px;color:var(--green-light);font-family:'DM Sans',sans-serif;font-weight:400;letter-spacing:0;}
+.nav-badge{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--cream-dim);
+  border:1px solid var(--border);padding:5px 12px;border-radius:var(--radius-pill);}
+
+/* PROGRESS */
+.progress-track{height:2px;background:rgba(245,240,232,.05);position:relative;z-index:1;}
+.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--green-light));
+  transition:width .45s cubic-bezier(.4,0,.2,1);}
+
+/* LAYOUT */
+.wrap{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:52px 20px 120px;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:52px;animation:up .65s ease both;}
+.eyebrow{display:flex;align-items:center;justify-content:center;gap:10px;
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--green-light);margin-bottom:16px;}
+.eyebrow::before,.eyebrow::after{content:'';flex:1;max-width:36px;height:1px;background:var(--border-green);}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,5.5vw,50px);font-weight:300;line-height:1.15;margin-bottom:14px;}
+.hero h1 em{font-style:italic;color:var(--green-light);}
+.hero-sub{font-size:13.5px;color:var(--cream-dim);line-height:1.78;max-width:460px;margin:0 auto 24px;}
+.hero-pills{display:inline-flex;align-items:center;background:var(--navy-card);border:1px solid var(--border);border-radius:var(--radius-pill);overflow:hidden;font-size:11px;}
+.hero-pill{padding:8px 18px;color:var(--cream-dim);border-right:1px solid var(--border);}
+.hero-pill:last-child{border-right:none;}
+.hero-pill span{color:var(--green-light);font-weight:500;}
+
+/* SETUP BANNER */
+.setup-banner{background:var(--gold-ghost);border:1px solid var(--border-gold);border-radius:12px;
+  padding:16px 20px;margin-bottom:18px;font-size:11px;color:var(--gold-light);line-height:1.8;}
+.setup-banner strong{display:block;font-size:12px;margin-bottom:5px;letter-spacing:.04em;}
+.setup-banner code{background:rgba(201,168,76,.15);padding:1px 6px;border-radius:4px;
+  font-family:'DM Mono',monospace;font-size:10px;}
+
+/* CARD */
+.card{background:var(--navy-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px 32px;margin-bottom:14px;backdrop-filter:blur(10px);animation:up .55s ease both;}
+.card:nth-child(2){animation-delay:.04s;}.card:nth-child(3){animation-delay:.08s;}
+.card:nth-child(4){animation-delay:.12s;}.card:nth-child(5){animation-delay:.16s;}
+.card:nth-child(6){animation-delay:.20s;}.card:nth-child(7){animation-delay:.24s;}
+.card:nth-child(8){animation-delay:.28s;}
+.card-header{display:flex;align-items:flex-start;gap:13px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--border);}
+.card-num{width:30px;height:30px;flex-shrink:0;background:var(--green-ghost);border:1px solid var(--border-green);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:10px;color:var(--green-light);}
+.card-title{font-size:13.5px;font-weight:500;margin-bottom:2px;}
+.card-sub{font-size:11px;color:var(--cream-dim);line-height:1.5;}
+
+/* FIELDS */
+.field{margin-bottom:18px;display:flex;flex-direction:column;gap:5px;}
+.field:last-child{margin-bottom:0;}
+.label{font-size:11.5px;color:var(--cream-dim);font-weight:500;line-height:1.4;}
+.label .req{color:var(--gold-light);margin-left:2px;}
+.hint{font-size:10px;color:rgba(245,240,232,.32);line-height:1.55;margin-top:1px;}
+.divider{height:1px;background:var(--border);margin:18px 0;}
+.val-msg{font-size:10px;color:var(--red);margin-top:3px;display:none;}
+.val-msg.show{display:block;}
+
+/* INPUTS */
+input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea{
+  background:rgba(11,22,40,.55);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:11px 13px;font-size:13px;color:var(--cream);font-family:'DM Sans',sans-serif;
+  transition:border-color .18s,box-shadow .18s;outline:none;width:100%;}
+input:focus,select:focus,textarea:focus{border-color:var(--border-green);box-shadow:0 0 0 3px var(--green-ghost);}
+input.err,select.err{border-color:rgba(255,128,128,.5);}
+input::placeholder,textarea::placeholder{color:rgba(245,240,232,.22);font-size:12px;}
+select{cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(245,240,232,0.28)'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center;}
+select option{background:var(--navy-mid);color:var(--cream);}
+textarea{resize:vertical;min-height:88px;line-height:1.65;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;}
+@media(max-width:540px){.g2,.g3{grid-template-columns:1fr;}}
+
+/* SCALE */
+.scale-wrap{display:flex;flex-direction:column;gap:7px;}
+.scale-ends{display:flex;justify-content:space-between;font-size:10px;color:rgba(245,240,232,.3);}
+.scale-row{display:flex;gap:5px;}
+.sbt{flex:1;height:34px;border-radius:7px;border:1px solid var(--border);background:none;
+  color:var(--cream-dim);font-size:11.5px;font-family:'DM Mono',monospace;cursor:pointer;transition:all .14s;}
+.sbt:hover{border-color:var(--border-green);color:var(--green-light);}
+.sbt.on{background:var(--green-ghost);border-color:var(--border-green);color:var(--green-light);font-weight:600;}
+.sbt.on-hi{background:var(--gold-ghost);border-color:var(--border-gold);color:var(--gold-light);font-weight:600;}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:7px;}
+.chip{padding:6px 13px;border-radius:var(--radius-pill);border:1px solid var(--border);background:none;
+  color:var(--cream-dim);font-size:11px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .16s;user-select:none;}
+.chip:hover{border-color:var(--border-green);color:var(--green-light);}
+.chip.on{background:var(--green-ghost);border-color:var(--border-green);color:var(--green-light);}
+
+/* PILLS */
+.pills{display:flex;flex-wrap:wrap;gap:7px;}
+.pill{padding:7px 16px;border-radius:var(--radius-pill);border:1px solid var(--border);background:none;
+  color:var(--cream-dim);font-size:11.5px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .16s;}
+.pill:hover{border-color:var(--border-green);color:var(--green-light);}
+.pill.on{background:var(--green-ghost);border-color:var(--border-green);color:var(--green-light);font-weight:500;}
+
+/* FAMILY HISTORY */
+.fh-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+@media(max-width:540px){.fh-grid{grid-template-columns:1fr;}}
+.fh-row{display:flex;align-items:center;justify-content:space-between;gap:8px;
+  background:rgba(11,22,40,.45);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 13px;}
+.fh-label{font-size:11.5px;color:var(--cream-dim);line-height:1.35;}
+.fh-label small{display:block;font-size:10px;color:rgba(245,240,232,.3);margin-top:2px;}
+.fh-btns{display:flex;gap:5px;flex-shrink:0;}
+.fhb{padding:4px 11px;border-radius:var(--radius-pill);border:1px solid var(--border);
+  background:none;color:var(--cream-dim);font-size:10px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .14s;}
+.fhb.yes{background:var(--red-ghost);border-color:rgba(255,128,128,.4);color:var(--red);}
+.fhb.no{background:var(--green-ghost);border-color:var(--border-green);color:var(--green-light);}
+
+/* SUBMIT */
+.submit-card{background:linear-gradient(145deg,rgba(45,106,79,.16),rgba(17,34,64,.95));
+  border:1px solid var(--border-green);border-radius:var(--radius);
+  padding:36px;text-align:center;margin-top:6px;animation:up .55s .32s ease both;}
+.submit-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin-bottom:8px;}
+.submit-sub{font-size:12.5px;color:var(--cream-dim);line-height:1.75;margin-bottom:28px;max-width:370px;margin-left:auto;margin-right:auto;}
+.btn{background:linear-gradient(135deg,var(--green),var(--green-mid));color:var(--cream);border:none;
+  padding:14px 42px;border-radius:12px;font-size:13.5px;font-weight:500;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:opacity .2s,transform .2s;letter-spacing:.04em;}
+.btn:hover{opacity:.88;transform:translateY(-2px);}
+.btn:active{transform:translateY(0);}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.privacy{font-size:10px;color:rgba(245,240,232,.22);margin-top:14px;line-height:1.65;}
+
+/* SUCCESS */
+#success-page{display:none;}
+.success-wrap{text-align:center;padding:80px 20px;animation:up .55s ease both;}
+.success-icon{width:60px;height:60px;margin:0 auto 22px;background:var(--green-ghost);
+  border:1px solid var(--border-green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;margin-bottom:10px;}
+.success-sub{font-size:13px;color:var(--cream-dim);line-height:1.78;max-width:400px;margin:0 auto 28px;}
+.success-box{background:var(--navy-card);border:1px solid var(--border-green);border-radius:12px;
+  padding:18px 22px;font-size:11.5px;color:var(--cream-dim);line-height:1.75;max-width:420px;margin:0 auto;text-align:left;}
+.success-box strong{color:var(--green-light);display:block;margin-bottom:4px;font-size:12px;}
+
+/* SPINNER */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(245,240,232,.3);
+  border-top-color:var(--cream);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:7px;}
+
+@keyframes up{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="logo"><div class="lm"></div>MERIDIAN<sup>TM</sup></a>
+  <div class="nav-badge">Cuestionario de Bienvenida</div>
+</nav>
+<div class="progress-track"><div class="progress-bar" id="pbar"></div></div>
+
+<!-- FORM PAGE -->
+<div class="wrap" id="form-page">
+
+  <div class="hero">
+    <div class="eyebrow">Vitalidad &amp; Rendimiento</div>
+    <h1>Tu historia de salud,<br><em>en tus propias palabras</em></h1>
+    <p class="hero-sub">Completa este cuestionario para activar tu membresía. Tus respuestas guiarán la selección de tu panel de exámenes, la interpretación de tus resultados y la personalización de tu plan de vitalidad.</p>
+    <div class="hero-pills">
+      <div class="hero-pill">~<span>10</span> minutos</div>
+      <div class="hero-pill"><span>7</span> secciones</div>
+      <div class="hero-pill"><span>100%</span> confidencial</div>
+    </div>
+  </div>
+
+  <form id="mf" novalidate>
+
+  <!-- S1 DATOS PERSONALES -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">01</div>
+      <div><div class="card-title">Datos personales</div><div class="card-sub">Información básica para tu ficha clínica</div></div>
+    </div>
+    <div class="g2">
+      <div class="field">
+        <div class="label">Nombre completo <span class="req">*</span></div>
+        <input type="text" id="f-nombre" placeholder="ej. Sebastian Morales" autocomplete="name">
+        <div class="val-msg" id="err-nombre">Por favor ingresa tu nombre</div>
+      </div>
+      <div class="field">
+        <div class="label">Email <span class="req">*</span></div>
+        <input type="email" id="f-email" placeholder="tu@email.com" autocomplete="email">
+        <div class="val-msg" id="err-email">Email no valido</div>
+      </div>
+    </div>
+    <div class="g3">
+      <div class="field">
+        <div class="label">Edad <span class="req">*</span></div>
+        <input type="number" id="f-edad" placeholder="44" min="18" max="100">
+        <div class="val-msg" id="err-edad">Ingresa tu edad (18-100)</div>
+      </div>
+      <div class="field">
+        <div class="label">Sexo biológico</div>
+        <select id="f-sexo">
+          <option value="">Seleccionar</option>
+          <option>Masculino</option><option>Femenino</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="label">Ciudad</div>
+        <input type="text" id="f-ciudad" placeholder="Santiago">
+      </div>
+    </div>
+    <div class="g2">
+      <div class="field">
+        <div class="label">Telefono / WhatsApp</div>
+        <input type="tel" id="f-tel" placeholder="+56 9 XXXX XXXX">
+      </div>
+      <div class="field">
+        <div class="label">¿Tienes médico de cabecera activo?</div>
+        <div class="pills" id="p-medico">
+          <button type="button" class="pill" data-v="Sí, regularmente">Sí, regularmente</button>
+          <button type="button" class="pill" data-v="Sí, rara vez">Sí, rara vez</button>
+          <button type="button" class="pill" data-v="No tengo">No tengo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2 MOTIVACION -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">02</div>
+      <div><div class="card-title">¿Por qué Meridian?</div><div class="card-sub">Tus motivaciones guiarán el foco de tu panel y tu reporte personalizado</div></div>
+    </div>
+    <div class="field">
+      <div class="label">Principal motivación <span style="font-size:10px;color:rgba(245,240,232,.3)">(puedes marcar varios)</span></div>
+      <div class="chips" id="c-motiv">
+        <button type="button" class="chip" data-v="Energia y rendimiento">Energia y rendimiento</button>
+        <button type="button" class="chip" data-v="Longevidad y prevención">Longevidad y prevención</button>
+        <button type="button" class="chip" data-v="Composición corporal">Composición corporal</button>
+        <button type="button" class="chip" data-v="Optimización hormonal">Optimización hormonal</button>
+        <button type="button" class="chip" data-v="Chequeo general profundo">Chequeo general profundo</button>
+        <button type="button" class="chip" data-v="Resultado previo anormal">Resultado previo anormal</button>
+        <button type="button" class="chip" data-v="Salud cardiovascular">Salud cardiovascular</button>
+        <button type="button" class="chip" data-v="Rendimiento deportivo">Rendimiento deportivo</button>
+      </div>
+    </div>
+    <div class="field">
+      <div class="label">¿Cómo te enteraste de Meridian?</div>
+      <div class="pills" id="p-ref">
+        <button type="button" class="pill" data-v="Amigo o familiar">Amigo / familiar</button>
+        <button type="button" class="pill" data-v="Redes sociales">Redes sociales</button>
+        <button type="button" class="pill" data-v="Médico u otro profesional">Médico / profesional</button>
+        <button type="button" class="pill" data-v="Búsqueda online">Búsqueda online</button>
+        <button type="button" class="pill" data-v="Prensa o podcast">Prensa / podcast</button>
+        <button type="button" class="pill" data-v="Otro">Otro</button>
+      </div>
+    </div>
+    <div class="field">
+      <div class="label">En tus propias palabras: ¿qué esperas lograr en 12 meses?</div>
+      <textarea id="f-obj" placeholder="ej. Quiero entender por qué me siento cansado todo el día a pesar de dormir bien..."></textarea>
+    </div>
+  </div>
+
+  <!-- S3 ESTADO ACTUAL -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">03</div>
+      <div><div class="card-title">¿Cómo te sientes hoy?</div><div class="card-sub">Escala 1–10, promedio de los últimos 3 meses</div></div>
+    </div>
+    <div class="field"><div class="label">Energía general durante el día</div>
+      <div class="scale-wrap"><div class="scale-ends"><span>Sin energía</span><span>Máxima energía</span></div>
+      <div class="scale-row" id="sc-energia"></div></div></div>
+    <div class="field"><div class="label">Calidad del sueño</div>
+      <div class="scale-wrap"><div class="scale-ends"><span>Muy mala</span><span>Excelente</span></div>
+      <div class="scale-row" id="sc-sueno"></div></div></div>
+    <div class="field">
+      <div class="label">Horas de sueño por noche (promedio)</div>
+      <select id="f-hsueno">
+        <option value="">Seleccionar</option>
+        <option>Menos de 5 horas</option><option>5–6 horas</option>
+        <option>6–7 horas</option><option>7–8 horas</option><option>Más de 8 horas</option>
+      </select>
+    </div>
+    <div class="field"><div class="label">Concentración y claridad mental</div>
+      <div class="scale-wrap"><div class="scale-ends"><span>Muy bajo</span><span>Optimo</span></div>
+      <div class="scale-row" id="sc-foco"></div></div></div>
+    <div class="field"><div class="label">Libido / deseo sexual</div>
+      <div class="scale-wrap"><div class="scale-ends"><span>Muy bajo</span><span>Optimo</span></div>
+      <div class="scale-row" id="sc-libido"></div></div></div>
+    <div class="field"><div class="label">Nivel de estrés percibido</div>
+      <div class="scale-wrap"><div class="scale-ends"><span>Sin estrés</span><span>Extremo</span></div>
+      <div class="scale-row" id="sc-estres"></div></div></div>
+    <div class="divider"></div>
+    <div class="field">
+      <div class="label">Síntomas actuales <span style="font-size:10px;color:rgba(245,240,232,.3)">(todos los que apliquen)</span></div>
+      <div class="chips" id="c-sint">
+        <button type="button" class="chip" data-v="Fatiga crónica">Fatiga crónica</button>
+        <button type="button" class="chip" data-v="Niebla mental">Niebla mental</button>
+        <button type="button" class="chip" data-v="Insomnio">Insomnio</button>
+        <button type="button" class="chip" data-v="Aumento de peso">Aumento de peso</button>
+        <button type="button" class="chip" data-v="Pérdida muscular">Pérdida muscular</button>
+        <button type="button" class="chip" data-v="Irritabilidad">Irritabilidad</button>
+        <button type="button" class="chip" data-v="Dolor articular">Dolor articular</button>
+        <button type="button" class="chip" data-v="Bajo rendimiento deportivo">Bajo rendimiento</button>
+        <button type="button" class="chip" data-v="Digestión irregular">Digestión irregular</button>
+        <button type="button" class="chip" data-v="Caída de cabello">Caída de cabello</button>
+        <button type="button" class="chip" data-v="Sin síntomas relevantes">Sin síntomas</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4 ESTILO DE VIDA -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">04</div>
+      <div><div class="card-title">Estilo de vida</div><div class="card-sub">Contexto esencial para interpretar cada resultado</div></div>
+    </div>
+    <div class="field">
+      <div class="label">Tipo de ejercicio principal <span style="font-size:10px;color:rgba(245,240,232,.3)">(puedes marcar varios)</span></div>
+      <div class="chips" id="c-ejtp">
+        <button type="button" class="chip" data-v="Cardio aeróbico">Cardio aeróbico</button>
+        <button type="button" class="chip" data-v="Fuerza / musculación">Fuerza / musculación</button>
+        <button type="button" class="chip" data-v="HIIT / Crossfit">HIIT / Crossfit</button>
+        <button type="button" class="chip" data-v="Deportes de equipo">Deportes de equipo</button>
+        <button type="button" class="chip" data-v="Yoga / Pilates">Yoga / Pilates</button>
+        <button type="button" class="chip" data-v="Poco ejercicio">Poco ejercicio</button>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="field">
+        <div class="label">Frecuencia de ejercicio</div>
+        <select id="f-ejfq">
+          <option value="">Seleccionar</option>
+          <option>Menos de 1 vez/semana</option><option>1–2 veces/semana</option>
+          <option>3–4 veces/semana</option><option>5 o más veces/semana</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="label">Horas sentado al día</div>
+        <select id="f-sent">
+          <option value="">Seleccionar</option>
+          <option>Menos de 4 horas</option><option>4–6 horas</option>
+          <option>6–8 horas</option><option>Más de 8 horas</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <div class="label">Dieta predominante</div>
+      <div class="pills" id="p-dieta">
+        <button type="button" class="pill" data-v="Omnívoro balanceado">Omnívoro</button>
+        <button type="button" class="pill" data-v="Alto en proteína animal">Alto en proteína</button>
+        <button type="button" class="pill" data-v="Mediterránea">Mediterránea</button>
+        <button type="button" class="pill" data-v="Keto / Low-carb">Keto / Low-carb</button>
+        <button type="button" class="pill" data-v="Vegetariana">Vegetariana</button>
+        <button type="button" class="pill" data-v="Vegana">Vegana</button>
+        <button type="button" class="pill" data-v="Sin patrón fijo">Sin patrón fijo</button>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="field">
+        <div class="label">Alcohol (bebidas por semana)</div>
+        <select id="f-alc">
+          <option value="">Seleccionar</option>
+          <option>No bebo</option><option>1–3 bebidas/semana</option>
+          <option>4–7 bebidas/semana</option><option>8–14 bebidas/semana</option>
+          <option>Más de 14 bebidas/semana</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="label">Tabaco / Vaping</div>
+        <select id="f-tab">
+          <option value="">Seleccionar</option>
+          <option>No fumo</option>
+          <option>Ex-fumador (menos de 5 años)</option>
+          <option>Ex-fumador (más de 5 años)</option>
+          <option>Fumador activo — cigarrillos</option>
+          <option>Fumador activo — vaping</option>
+          <option>Fumador ocasional</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5 HISTORIAL MEDICO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">05</div>
+      <div><div class="card-title">Historial médico</div><div class="card-sub">Contexto clínico clave para la interpretación del panel</div></div>
+    </div>
+    <div class="field">
+      <div class="label">Diagnósticos previos o actuales <span style="font-size:10px;color:rgba(245,240,232,.3)">(todos los que apliquen)</span></div>
+      <div class="chips" id="c-diag">
+        <button type="button" class="chip" data-v="Prediabetes / DM2">Prediabetes / DM2</button>
+        <button type="button" class="chip" data-v="Hipertensión">Hipertensión</button>
+        <button type="button" class="chip" data-v="Dislipidemia">Dislipidemia</button>
+        <button type="button" class="chip" data-v="Tiroides">Tiroides</button>
+        <button type="button" class="chip" data-v="SOPQ">SOPQ</button>
+        <button type="button" class="chip" data-v="Depresión / ansiedad">Depresión / ansiedad</button>
+        <button type="button" class="chip" data-v="Autoinmune">Autoinmune</button>
+        <button type="button" class="chip" data-v="Cardiovascular">Cardiovascular</button>
+        <button type="button" class="chip" data-v="Cancer previo o actual">Cancer</button>
+        <button type="button" class="chip" data-v="Ninguno">Ninguno</button>
+      </div>
+    </div>
+    <div class="field">
+      <div class="label">Medicamentos actuales</div>
+      <div class="hint">Nombre, dosis, frecuencia. Crítico para interpretar tiroides, lípidos, cortisol.</div>
+      <textarea id="f-meds" placeholder="ej. Levotiroxina 50 mcg/día · Atorvastatina 10 mg/noche · Sin medicamentos"></textarea>
+    </div>
+    <div class="field">
+      <div class="label">Suplementos actuales</div>
+      <textarea id="f-sups" placeholder="ej. Omega-3 2 g/día · Vitamina D 5.000 UI · Magnesio 400 mg · Ninguno" style="min-height:70px;"></textarea>
+    </div>
+    <div class="field">
+      <div class="label">Cirugías o procedimientos relevantes</div>
+      <input type="text" id="f-cir" placeholder="ej. Colecistectomía 2018 · Sin cirugías">
+    </div>
+  </div>
+
+  <!-- S6 HISTORIA FAMILIAR -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">06</div>
+      <div><div class="card-title">Historia familiar</div><div class="card-sub">Cambia la interpretación del riesgo cardiovascular, metabólico y oncológico</div></div>
+    </div>
+    <div class="field">
+      <div class="label">¿Familiar de primer grado con alguna de estas condiciones?</div>
+      <div class="hint">Padres, hermanos, hijos</div>
+      <div class="fh-grid" style="margin-top:10px;">
+        <div class="fh-row">
+          <div class="fh-label">Infarto / ECV precoz<small>Padre &lt;55, madre &lt;65</small></div>
+          <div class="fh-btns"><button type="button" class="fhb" data-f="fh-ecv" data-v="Si">Si</button><button type="button" class="fhb" data-f="fh-ecv" data-v="No">No</button></div>
+        </div>
+        <div class="fh-row">
+          <div class="fh-label">Diabetes tipo 2</div>
+          <div class="fh-btns"><button type="button" class="fhb" data-f="fh-dm2" data-v="Si">Si</button><button type="button" class="fhb" data-f="fh-dm2" data-v="No">No</button></div>
+        </div>
+        <div class="fh-row">
+          <div class="fh-label">Cancer</div>
+          <div class="fh-btns"><button type="button" class="fhb" data-f="fh-cancer" data-v="Si">Si</button><button type="button" class="fhb" data-f="fh-cancer" data-v="No">No</button></div>
+        </div>
+        <div class="fh-row">
+          <div class="fh-label">Alzheimer / Demencia</div>
+          <div class="fh-btns"><button type="button" class="fhb" data-f="fh-alz" data-v="Si">Si</button><button type="button" class="fhb" data-f="fh-alz" data-v="No">No</button></div>
+        </div>
+        <div class="fh-row">
+          <div class="fh-label">Osteoporosis</div>
+          <div class="fh-btns"><button type="button" class="fhb" data-f="fh-osteo" data-v="Si">Si</button><button type="button" class="fhb" data-f="fh-osteo" data-v="No">No</button></div>
+        </div>
+        <div class="fh-row">
+          <div class="fh-label">Enfermedad tiroidea</div>
+          <div class="fh-btns"><button type="button" class="fhb" data-f="fh-tir" data-v="Si">Si</button><button type="button" class="fhb" data-f="fh-tir" data-v="No">No</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="field" id="cancer-tipo-wrap" style="display:none;">
+      <div class="label">¿Qué tipo de cáncer? (familiar)</div>
+      <input type="text" id="f-cancertipo" placeholder="ej. Cáncer de mama, próstata, colon...">
+    </div>
+  </div>
+
+  <!-- S7 CIERRE -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-num">07</div>
+      <div><div class="card-title">Para el equipo de Meridian</div><div class="card-sub">Lo que no encaja en ninguna pregunta anterior — tu voz directa al equipo</div></div>
+    </div>
+    <div class="field">
+      <div class="label">¿Algo más que quieras que el equipo de Meridian sepa?</div>
+      <div class="hint">Síntoma que te preocupa, resultado previo que no entendiste, o simplemente lo que te trajo aquí hoy.</div>
+      <textarea id="f-notas" rows="4" placeholder="Escribe aquí libremente..."></textarea>
+    </div>
+    <div class="field">
+      <div class="label">¿Cómo prefieres ser contactado?</div>
+      <div class="pills" id="p-contacto">
+        <button type="button" class="pill" data-v="WhatsApp">WhatsApp</button>
+        <button type="button" class="pill" data-v="Email">Email</button>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-card">
+    <div class="submit-title">Listo para enviar</div>
+    <p class="submit-sub">El equipo médico de Meridian revisará tus respuestas para personalizar tu panel, interpretar tus resultados y diseñar tu plan de vitalidad.</p>
+    <button type="submit" class="btn" id="submit-btn">Enviar cuestionario</button>
+    <p class="privacy">Tus datos son confidenciales y solo accesibles por el equipo clínico de Meridian Chile.<br>No se comparten con terceros ni con aseguradoras.</p>
+  </div>
+
+  </form>
+</div><!-- /form-page -->
+
+<!-- SUCCESS PAGE -->
+<div class="wrap" id="success-page">
+  <div class="success-wrap">
+    <div class="success-icon">&#10003;</div>
+    <div class="success-title">Cuestionario recibido</div>
+    <p class="success-sub">Gracias por tomarte el tiempo. El equipo de Meridian revisará tus respuestas para personalizar tu panel y preparar tu reporte.</p>
+    <div class="success-box">
+      <strong>¿Qué sigue?</strong>
+      Recibirás tu orden de exámenes por email para coordinar tu extracción con Examedi. Los resultados llegan en 3–5 días hábiles. Con ellos, generamos tu reporte de Meridian Age™ y tu plan personalizado.
+    </div>
+  </div>
+</div>
+
+<!--
+=================================================
+GOOGLE APPS SCRIPT — copiar en script.google.com
+=================================================
+
+function doPost(e) {
+  var ss = SpreadsheetApp.openById('TU_SHEET_ID');
+  var sheet = ss.getSheetByName('Pacientes') || ss.getActiveSheet();
+  var d = JSON.parse(e.postData.contents);
+
+  // Add header row if sheet is empty
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow([
+      'Timestamp','Nombre','Email','Edad','Sexo','Ciudad','Telefono',
+      'Medico cabecera','Motivacion','Referido','Objetivo 12m',
+      'Energia','Sueno','Horas sueno','Foco','Libido','Estres','Sintomas',
+      'Ejercicio tipo','Ejercicio frec','Horas sentado','Dieta','Alcohol','Tabaco',
+      'Diagnosticos','Medicamentos','Suplementos','Cirugias',
+      'FH ECV','FH DM2','FH Cancer','FH Cancer tipo','FH Alzheimer','FH Osteo','FH Tiroides',
+      'Notas','Contacto preferido'
+    ]);
+  }
+
+  sheet.appendRow([
+    d.timestamp, d.nombre, d.email, d.edad, d.sexo, d.ciudad, d.telefono,
+    d.medico_cabecera, d.motivacion, d.referido, d.objetivo_12m,
+    d.energia, d.sueno, d.horas_sueno, d.foco, d.libido, d.estres, d.sintomas,
+    d.ejercicio_tipo, d.ejercicio_frec, d.horas_sentado, d.dieta, d.alcohol, d.tabaco,
+    d.diagnosticos, d.medicamentos, d.suplementos, d.cirugias,
+    d.fh_ecv, d.fh_dm2, d.fh_cancer, d.fh_cancer_tipo, d.fh_alz, d.fh_osteo, d.fh_tir,
+    d.notas, d.contacto_preferido
+  ]);
+
+  return ContentService
+    .createTextOutput(JSON.stringify({result:'ok'}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+=================================================
+-->
+
+<script>
+// ── CONFIG: replace with your Apps Script web app URL ──
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGPZSqla9h2hN_iUm3RaXah1y0Pbl3H_ujqh6kLCSWtYu39ape_Z4Y4HzGoDK1Mt_C/exec';
+
+// ── STATE ──
+const scales  = {};
+const chips   = {};
+const pillSel = {};
+const fhSel   = {};
+
+// ── BUILD SCALES ──
+['energia','sueno','foco','libido','estres'].forEach(id => {
+  const row = document.getElementById('sc-' + id);
+  const isHi = id === 'estres';
+  for (let i = 1; i <= 10; i++) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'sbt'; b.textContent = i;
+    b.addEventListener('click', () => {
+      row.querySelectorAll('.sbt').forEach(x => x.className = 'sbt');
+      b.classList.add(isHi ? 'on-hi' : 'on');
+      scales[id] = i;
+      updateProgress();
+    });
+    row.appendChild(b);
+  }
+});
+
+// ── CHIPS ──
+document.querySelectorAll('.chips').forEach(wrap => {
+  const id = wrap.id;
+  chips[id] = new Set();
+  wrap.querySelectorAll('.chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const v = btn.dataset.v;
+      if (chips[id].has(v)) { chips[id].delete(v); btn.classList.remove('on'); }
+      else { chips[id].add(v); btn.classList.add('on'); }
+      updateProgress();
+    });
+  });
+});
+
+// ── PILLS ──
+document.querySelectorAll('.pills').forEach(wrap => {
+  const id = wrap.id;
+  wrap.querySelectorAll('.pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wrap.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
+      btn.classList.add('on');
+      pillSel[id] = btn.dataset.v;
+      updateProgress();
+    });
+  });
+});
+
+// ── FAMILY HISTORY ──
+document.querySelectorAll('.fhb').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const field = btn.dataset.f;
+    const val   = btn.dataset.v;
+    btn.closest('.fh-btns').querySelectorAll('.fhb').forEach(b => b.className = 'fhb');
+    btn.classList.add(val === 'Si' ? 'yes' : 'no');
+    fhSel[field] = val;
+    if (field === 'fh-cancer') {
+      document.getElementById('cancer-tipo-wrap').style.display = val === 'Si' ? 'block' : 'none';
+    }
+    updateProgress();
+  });
+});
+
+// ── PROGRESS ──
+function updateProgress() {
+  let score = 0, max = 100;
+  const v = id => (document.getElementById(id)?.value || '').trim();
+  if (v('f-nombre')) score += 15;
+  if (v('f-email') && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('f-email'))) score += 15;
+  if (v('f-edad')) score += 10;
+  score += Object.keys(scales).length * 3;
+  ['c-motiv','c-sint','c-ejtp','c-diag'].forEach(id => { if (chips[id]?.size > 0) score += 5; });
+  ['p-dieta','p-contacto','p-medico','p-ref'].forEach(id => { if (pillSel[id]) score += 3; });
+  document.getElementById('pbar').style.width = Math.min(100, score) + '%';
+}
+
+document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', updateProgress));
+
+// ── VALIDATION ──
+function validate() {
+  let ok = true;
+  const v  = id => (document.getElementById(id)?.value || '').trim();
+  const se = (eid, fid, show) => {
+    document.getElementById(eid).classList.toggle('show', show);
+    document.getElementById(fid)?.classList.toggle('err', show);
+  };
+  if (!v('f-nombre'))  { se('err-nombre','f-nombre',true);  ok=false; } else se('err-nombre','f-nombre',false);
+  if (!v('f-email') || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('f-email'))) { se('err-email','f-email',true); ok=false; } else se('err-email','f-email',false);
+  if (!v('f-edad') || isNaN(+v('f-edad')) || +v('f-edad')<18 || +v('f-edad')>100) { se('err-edad','f-edad',true); ok=false; } else se('err-edad','f-edad',false);
+  if (!ok) document.getElementById('f-nombre').scrollIntoView({behavior:'smooth',block:'center'});
+  return ok;
+}
+
+// ── COLLECT ──
+function collect() {
+  const v  = id => (document.getElementById(id)?.value || '').trim();
+  const cs = id => [...(chips[id]  || [])].join(' | ');
+  const ps = id => pillSel[id] || '';
+  const fh = id => fhSel[id]   || '';
+  const sc = id => scales[id]  || '';
+  return {
+    timestamp: new Date().toLocaleString('es-CL'),
+    nombre: v('f-nombre'), email: v('f-email'), edad: v('f-edad'),
+    sexo: v('f-sexo'), ciudad: v('f-ciudad'), telefono: v('f-tel'),
+    medico_cabecera: ps('p-medico'),
+    motivacion: cs('c-motiv'), referido: ps('p-ref'), objetivo_12m: v('f-obj'),
+    energia: sc('energia'), sueno: sc('sueno'), horas_sueno: v('f-hsueno'),
+    foco: sc('foco'), libido: sc('libido'), estres: sc('estres'),
+    sintomas: cs('c-sint'),
+    ejercicio_tipo: cs('c-ejtp'), ejercicio_frec: v('f-ejfq'), horas_sentado: v('f-sent'),
+    dieta: ps('p-dieta'), alcohol: v('f-alc'), tabaco: v('f-tab'),
+    diagnosticos: cs('c-diag'), medicamentos: v('f-meds'),
+    suplementos: v('f-sups'), cirugias: v('f-cir'),
+    fh_ecv: fh('fh-ecv'), fh_dm2: fh('fh-dm2'), fh_cancer: fh('fh-cancer'),
+    fh_cancer_tipo: v('f-cancertipo'), fh_alz: fh('fh-alz'),
+    fh_osteo: fh('fh-osteo'), fh_tir: fh('fh-tir'),
+    notas: v('f-notas'), contacto_preferido: ps('p-contacto'),
+  };
+}
+
+// ── SUBMIT ──
+document.getElementById('mf').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!validate()) return;
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Enviando...';
+
+  const data = collect();
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data),
+    });
+    showSuccess();
+  } catch(err) {
+    btn.disabled = false;
+    btn.textContent = 'Enviar cuestionario';
+    alert('Hubo un problema al enviar. Por favor intenta nuevamente o escribenos por WhatsApp.');
+    console.error(err);
+  }
+});
+
+function showSuccess() {
+  document.getElementById('pbar').style.width = '100%';
+  document.getElementById('setup-banner').style.display = 'none';
+  document.getElementById('form-page').style.display = 'none';
+  document.getElementById('success-page').style.display = 'block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+updateProgress();
+</script>
+</body>
+</html>
