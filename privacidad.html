@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Politica de Privacidad | Meridian Chile</title>
+
+<style>
+:root {
+  --navy:   #080F1C;
+  --navy2:  #0D1827;
+  --navy3:  #142035;
+  --gold:   #C9A84C;
+  --gold2:  #E2C06A;
+  --green:  #2D6A4F;
+  --green3: #74C69D;
+  --white:  #F5F3EF;
+  --dim:    #8895B0;
+  --border: rgba(201,168,76,0.18);
+  --b2:     rgba(255,255,255,0.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.03;pointer-events:none;z-index:1000}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.4rem 3rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--b2);background:rgba(8,15,28,.85);backdrop-filter:blur(16px);transition:padding .3s}
+.nav-brand{font-family:'DM Mono',monospace;font-size:1rem;font-weight:400;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:10px}
+.nav-brand img{height:28px;width:28px;object-fit:contain}
+.nav-brand .wm{letter-spacing:.22em;color:var(--white)}
+.nav-brand .wm span{color:var(--gold)}
+.nav-links{display:flex;gap:2.5rem;align-items:center;list-style:none}
+.nav-links a{font-size:.78rem;letter-spacing:.12em;color:var(--dim);text-decoration:none;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{font-size:.75rem!important;letter-spacing:.14em!important;color:var(--gold)!important;border:1px solid var(--gold)!important;padding:.5rem 1.2rem;border-radius:2px;transition:all .2s!important}
+.nav-cta:hover{background:var(--gold)!important;color:var(--navy)!important}
+
+/* BUTTONS */
+.btn-primary{display:inline-flex;align-items:center;gap:.6rem;background:var(--gold);color:var(--navy);font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:1rem 2rem;border-radius:2px;text-decoration:none;transition:all .25s;border:none;cursor:pointer}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-1px);box-shadow:0 8px 32px rgba(201,168,76,.25)}
+.btn-ghost{display:inline-flex;align-items:center;background:transparent;color:var(--dim);font-family:'DM Sans',sans-serif;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;padding:1rem 1.5rem;border-radius:2px;text-decoration:none;border:1px solid var(--b2);transition:all .25s}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+/* LAYOUT HELPERS */
+.section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0 3rem}
+.sl{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;margin-bottom:1rem}
+.sl-green{color:var(--green3)}.sl-gold{color:var(--gold)}.sl-dim{color:var(--dim)}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:300;line-height:1.2}
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:4rem}
+.section-note{font-size:.8rem;color:var(--dim);text-align:right;max-width:240px;line-height:1.6}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.rd1{transition-delay:.1s}.rd2{transition-delay:.2s}.rd3{transition-delay:.3s}.rd4{transition-delay:.4s}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:8rem 3rem 5rem;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-20%;right:-10%;width:70vw;height:70vw;background:radial-gradient(ellipse at center,rgba(45,106,79,.12) 0%,rgba(45,106,79,.04) 40%,transparent 70%);pointer-events:none}
+.hero-eye{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.28em;color:var(--green3);text-transform:uppercase;margin-bottom:2rem;opacity:0;animation:fadeUp .8s ease .2s forwards}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,7vw,6.5rem);font-weight:300;line-height:1.04;letter-spacing:-.01em;max-width:820px;margin-bottom:2rem;opacity:0;animation:fadeUp .9s ease .4s forwards}
+.hero-sub{font-size:1.05rem;color:var(--dim);max-width:560px;line-height:1.75;margin-bottom:1.2rem;font-weight:300;opacity:0;animation:fadeUp .9s ease .6s forwards}
+.hero-tagline{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.18em;color:var(--green3);margin-bottom:2.5rem;opacity:0;animation:fadeUp .9s ease .7s forwards}
+.hero-actions{display:flex;gap:1rem;align-items:center;opacity:0;animation:fadeUp .9s ease .8s forwards}
+.hero-data{position:absolute;right:3rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:.5rem;opacity:0;animation:fadeIn 1.2s ease 1.2s forwards}
+.data-pill{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.08em;color:var(--green3);background:rgba(45,106,79,.1);border:1px solid rgba(116,198,157,.2);padding:.4rem .8rem;border-radius:2px;white-space:nowrap;animation:pulse 3s ease-in-out infinite}
+.data-pill:nth-child(2){animation-delay:.5s;color:var(--gold);background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.2)}
+.data-pill:nth-child(3){animation-delay:1s}
+.data-pill:nth-child(4){animation-delay:1.5s;color:var(--gold);background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.2)}
+.data-pill:nth-child(5){animation-delay:2s}
+.scroll-hint{position:absolute;bottom:2.5rem;left:3rem;display:flex;align-items:center;gap:.8rem;font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;opacity:0;animation:fadeIn 1s ease 1.5s forwards}
+.scroll-line{width:40px;height:1px;background:var(--dim);position:relative;overflow:hidden}
+.scroll-line::after{content:'';position:absolute;left:-100%;top:0;width:100%;height:100%;background:var(--gold);animation:scanline 2s ease-in-out infinite}
+
+/* HOW IT WORKS */
+.how{padding:7rem 3rem}
+.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:4rem;position:relative}
+.how-steps::before{content:'';position:absolute;top:1.5rem;left:12%;right:12%;height:1px;background:linear-gradient(90deg,var(--green),var(--gold),var(--green));opacity:.3}
+.step{padding:0 1.5rem;text-align:center}
+.step-num{width:3rem;height:3rem;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:.75rem;color:var(--gold);margin:0 auto 1.5rem;background:var(--navy);position:relative;z-index:1}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:400;margin-bottom:.8rem}
+.step-desc{font-size:.8rem;color:var(--dim);line-height:1.7}
+
+/* BIOMARKERS */
+.markers-section{padding:7rem 3rem;background:var(--navy2)}
+.markers-ticker-wrap{padding:4rem 0 0;overflow:hidden;mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent)}
+.ticker{display:flex;gap:2rem;animation:ticker 35s linear infinite;white-space:nowrap;flex-shrink:0}
+.ticker-item{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.1em;color:var(--dim);padding:.4rem 1rem;border:1px solid var(--b2);border-radius:2px;flex-shrink:0}
+.ticker-item.hi{color:var(--gold);border-color:rgba(201,168,76,.25)}
+.ticker-item.green{color:var(--green3);border-color:rgba(116,198,157,.2)}
+.markers-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5px;background:var(--b2);margin-top:3rem}
+.mcat{background:var(--navy);padding:2rem 1.8rem}
+.mcat-title{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;opacity:.85}
+.mcat-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.mcat-list li{font-size:.82rem;color:var(--dim);padding-left:1rem;position:relative;line-height:1.4}
+.mcat-list li::before{content:'·';position:absolute;left:0;color:var(--green3)}
+
+/* BIOLOGICAL AGE */
+.bio-age{padding:7rem 3rem}
+.bio-age-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;margin-top:4rem}
+.bio-age-text p{font-size:.95rem;color:var(--dim);line-height:1.85;margin-bottom:1.2rem}
+.bio-age-text p:last-child{margin-bottom:0}
+/* flow diagram */
+.flow-diagram{display:flex;flex-direction:column;gap:0;border:1px solid var(--b2);border-radius:4px;overflow:hidden}
+.flow-node{background:var(--navy2);padding:1.6rem 2rem;display:flex;align-items:center;gap:1.4rem;position:relative;transition:background .2s}
+.flow-node:hover{background:var(--navy3)}
+.flow-node+.flow-node{border-top:1px solid var(--b2)}
+.flow-arrow{display:flex;align-items:center;justify-content:center;padding:.6rem 0;background:var(--navy);position:relative}
+.flow-arrow::after{content:'↓';font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gold);letter-spacing:.1em}
+.flow-icon{width:36px;height:36px;border-radius:50%;border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gold);opacity:.8}
+.flow-label{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--white);margin-bottom:.2rem}
+.flow-sub{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:var(--dim)}
+.flow-node-in .flow-icon{color:var(--green3);border-color:rgba(116,198,157,.2);background:rgba(45,106,79,.1)}
+.flow-node-mid .flow-icon{color:var(--gold);border-color:rgba(201,168,76,.2);background:rgba(201,168,76,.08)}
+.flow-node-out .flow-icon{color:var(--white);border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.04)}
+
+/* SCIENCE */
+.science{padding:7rem 3rem;background:var(--navy2);position:relative;overflow:hidden}
+.science::before{content:'';position:absolute;top:-40%;right:-20%;width:80vw;height:80vw;background:radial-gradient(ellipse,rgba(201,168,76,.04) 0%,transparent 65%);pointer-events:none}
+.science-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;position:relative;z-index:1}
+.science-body{margin-top:1.5rem}
+.science-body p{font-size:.92rem;color:var(--dim);line-height:1.85;margin-bottom:1rem}
+.science-body p:last-child{margin-bottom:0}
+.science-refs{display:flex;flex-direction:column;gap:1px;background:var(--b2)}
+.science-ref{background:var(--navy3);padding:1.4rem 1.8rem;display:flex;align-items:flex-start;gap:1.2rem;transition:background .2s}
+.science-ref:hover{background:var(--navy)}
+.science-ref-num{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--gold);letter-spacing:.1em;flex-shrink:0;margin-top:3px}
+.science-ref-text{font-size:.82rem;color:var(--dim);line-height:1.6}
+.science-ref-text strong{color:var(--white);display:block;margin-bottom:.25rem;font-weight:400;font-size:.84rem}
+
+/* WHO */
+.who{padding:7rem 3rem}
+.who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:4rem;background:var(--b2)}
+.who-card{background:var(--navy2);padding:3rem 2.5rem}
+.who-icon{width:28px;height:28px;margin-bottom:1.5rem;display:block;color:var(--green3);opacity:.8}
+.who-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;margin-bottom:1rem;color:var(--white)}
+.who-desc{font-size:.85rem;color:var(--dim);line-height:1.75}
+.who-quote{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--b2);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:var(--gold);line-height:1.5}
+
+/* PILOT */
+.pilot{padding:7rem 3rem;background:var(--navy2);position:relative;overflow:hidden}
+.pilot::before{content:'';position:absolute;bottom:-30%;left:-10%;width:60vw;height:60vw;background:radial-gradient(ellipse,rgba(45,106,79,.08) 0%,transparent 65%);pointer-events:none}
+.pilot-inner{max-width:680px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.pilot-badge{display:inline-flex;align-items:center;gap:.5rem;font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.2em;color:var(--green3);border:1px solid rgba(116,198,157,.25);background:rgba(45,106,79,.1);padding:.4rem 1rem;border-radius:20px;margin-bottom:2rem}
+.pilot-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green3);animation:blink 1.5s ease-in-out infinite}
+.pilot h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.5rem);font-weight:300;line-height:1.15;margin-bottom:1.5rem}
+.pilot-body{font-size:.95rem;color:var(--dim);line-height:1.8;margin-bottom:2.5rem}
+.pilot-includes{display:flex;justify-content:center;gap:2rem;margin-bottom:2.5rem;flex-wrap:wrap}
+.pilot-item{display:flex;align-items:center;gap:.5rem;font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.08em;color:var(--dim)}
+.pilot-item::before{content:'→';color:var(--green3)}
+.pilot-note{margin-top:1.5rem;font-size:.78rem;color:var(--dim);font-style:italic}
+.pilot-note strong{color:var(--white);font-style:normal}
+
+
+/* FOUNDERS */
+.founders{padding:7rem 3rem;background:var(--navy2);display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
+.founders-label{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.25em;color:var(--dim);text-transform:uppercase;margin-bottom:1.5rem}
+.founders h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:300;line-height:1.25;margin-bottom:1.5rem}
+.founders h2 em{font-style:italic;color:var(--gold)}
+.founders-bio{font-size:.9rem;color:var(--dim);line-height:1.85}
+.founders-bio p+p{margin-top:1rem}
+.founder-card{background:var(--navy);border:1px solid var(--b2);border-top:3px solid var(--gold);padding:2.5rem;border-radius:4px}
+.founder-card+.founder-card{margin-top:1.5rem}
+.founder-initials{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--navy3),var(--navy));border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--gold);margin-bottom:1.2rem}
+.founder-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;margin-bottom:.25rem}
+.founder-role{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:var(--green3);margin-bottom:1.2rem}
+.founder-detail{font-size:.83rem;color:var(--dim);line-height:1.7}
+.founder-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.2rem}
+.tag{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.08em;color:var(--dim);border:1px solid var(--b2);padding:.25rem .6rem;border-radius:2px}
+@media(max-width:900px){.founders{grid-template-columns:1fr;gap:3rem;padding:4rem 1.5rem}}
+
+/* FOOTER */
+footer{padding:3rem;border-top:1px solid var(--b2);display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:'DM Mono',monospace;font-size:.85rem;letter-spacing:.2em;color:var(--white)}
+.footer-brand span{color:var(--gold)}
+.footer-copy{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;color:var(--dim)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes scanline{0%{left:-100%}100%{left:100%}}
+@keyframes pulse{0%,100%{opacity:.7}50%{opacity:1}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:1.2rem 1.5rem}
+  .nav-links{display:none}
+  .hero{padding:7rem 1.5rem 4rem}
+  .hero-data{display:none}
+  .bio-age-grid,.science-grid{grid-template-columns:1fr;gap:3rem}
+  .how-steps{grid-template-columns:1fr 1fr;gap:2rem}
+  .how-steps::before{display:none}
+  .markers-cats,.who-grid{grid-template-columns:1fr}
+  .section-header{flex-direction:column;align-items:flex-start;gap:1rem}
+  footer{flex-direction:column;gap:1rem;text-align:center}
+  .pilot-includes{flex-direction:column;align-items:center}
+  .how,.markers-section,.bio-age,.science,.who,.pilot{padding:4rem 1.5rem}
+}
+
+/* ── PAGE CONTENT ── */
+.page-wrap{max-width:820px;margin:0 auto;padding:120px 3rem 80px;}
+.page-hero{margin-bottom:56px;}
+.page-eyebrow{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,5vw,3.4rem);font-weight:300;line-height:1.15;color:var(--white);margin-bottom:16px;}
+.page-title span{color:var(--gold);}
+.page-meta{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.15em;color:var(--dim);text-transform:uppercase;}
+.page-meta a{color:var(--dim);text-decoration:none;}
+.page-meta a:hover{color:var(--gold);}
+.doc-body{font-size:.92rem;line-height:1.85;color:rgba(245,243,239,.82);}
+.doc-body h2{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:400;color:var(--white);margin:2.8rem 0 .8rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
+.doc-body h3{font-size:.78rem;font-family:'DM Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin:2rem 0 .6rem;}
+.doc-body p{margin-bottom:1rem;}
+.doc-body ul{margin:.6rem 0 1rem 1.4rem;}
+.doc-body ul li{margin-bottom:.4rem;}
+.doc-body a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.3);}
+.doc-body a:hover{border-color:var(--gold);}
+.doc-body strong{color:var(--white);font-weight:500;}
+.doc-body .note{background:rgba(201,168,76,.06);border-left:3px solid var(--gold);padding:.9rem 1.2rem;border-radius:0 4px 4px 0;margin:1.4rem 0;font-size:.85rem;color:var(--dim);}
+.doc-body .contact-block{background:rgba(255,255,255,.04);border:1px solid var(--b2);border-radius:4px;padding:1.4rem 1.8rem;margin:1.8rem 0;}
+.doc-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:2.4rem 0;}
+.toc{background:rgba(255,255,255,.03);border:1px solid var(--b2);border-radius:4px;padding:1.4rem 1.8rem;margin-bottom:2.8rem;}
+.toc-title{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:.9rem;}
+.toc ol{margin-left:1.2rem;counter-reset:toc;}
+.toc ol li{font-size:.82rem;color:var(--dim);margin-bottom:.35rem;}
+.toc ol li a{color:var(--dim);border:none;text-decoration:none;}
+.toc ol li a:hover{color:var(--gold);}
+/* dev page specific */
+.dev-card{background:rgba(255,255,255,.035);border:1px solid var(--b2);border-radius:6px;padding:1.6rem 2rem;margin-bottom:1.4rem;}
+.dev-card h3{margin-top:0;}
+.dev-tag{display:inline-block;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);color:var(--gold);padding:.25rem .65rem;border-radius:2px;margin-right:.4rem;margin-bottom:.4rem;}
+.dev-tag.green{background:rgba(45,106,79,.15);border-color:rgba(116,198,157,.3);color:#74C69D;}
+.flow-diagram{background:rgba(255,255,255,.03);border:1px solid var(--b2);border-radius:6px;padding:1.6rem 2rem;margin:1.4rem 0;font-family:'DM Mono',monospace;font-size:.78rem;line-height:2;}
+.flow-diagram .flow-step{display:flex;align-items:center;gap:1rem;color:var(--dim);}
+.flow-diagram .flow-step .step-label{color:var(--white);}
+.flow-diagram .flow-arrow{color:var(--gold);font-size:1rem;}
+.scope-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.7rem;margin:1rem 0;}
+.scope-item{background:rgba(255,255,255,.03);border:1px solid var(--b2);border-radius:4px;padding:.7rem 1rem;font-size:.8rem;display:flex;gap:.6rem;align-items:flex-start;}
+.scope-item::before{content:'◆';color:var(--gold);font-size:.55rem;flex-shrink:0;margin-top:.15rem;}
+.platform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:1.2rem 0;}
+.platform-card{background:rgba(255,255,255,.03);border:1px solid var(--b2);border-radius:6px;padding:1.2rem 1.4rem;}
+.platform-card h4{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--white);margin-bottom:.5rem;}
+.platform-card p{font-size:.8rem;color:var(--dim);margin:0;}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">
+    <img src="symbol.png" alt="">
+    <span class="wm"><span>M</span>ERI<span>D</span>IAN</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+    <li><a href="index.html#biomarcadores">Biomarcadores</a></li>
+    <li><a href="index.html#piloto" class="nav-cta">Unirme al piloto</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <div class="page-eyebrow">Documentos legales</div>
+    <h1 class="page-title">Política de <span>Privacidad</span></h1>
+    <p class="page-meta">
+      Última actualización: marzo 2026 &nbsp;·&nbsp;
+      Versión 1.0 &nbsp;·&nbsp;
+      <a href="/cdn-cgi/l/email-protection#02616d6c71776e7663426f67706b666b636c2f616a6b6e672c616d6f"><span class="__cf_email__" data-cfemail="a5c6cacbd6d0c9d1c4e5c8c0d7ccc1ccc4cb88c6cdccc9c08bc6cac8">[email&#160;protected]</span></a>
+    </p>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">Contenido</div>
+    <ol>
+      <li><a href="#quienes-somos">Quiénes somos</a></li>
+      <li><a href="#datos-recopilados">Datos que recopilamos</a></li>
+      <li><a href="#wearables">Integración con dispositivos wearables</a></li>
+      <li><a href="#uso-datos">Cómo usamos tus datos</a></li>
+      <li><a href="#comparticion">Con quién compartimos tus datos</a></li>
+      <li><a href="#retencion">Retención y eliminación</a></li>
+      <li><a href="#seguridad">Seguridad</a></li>
+      <li><a href="#derechos">Tus derechos</a></li>
+      <li><a href="#menores">Menores de edad</a></li>
+      <li><a href="#cambios">Cambios a esta política</a></li>
+      <li><a href="#contacto-pp">Contacto</a></li>
+    </ol>
+  </div>
+
+  <div class="doc-body">
+
+    <h2 id="quienes-somos">1. Quiénes somos</h2>
+    <p>Meridian Chile ("Meridian", "nosotros") es una plataforma de analítica de salud preventiva operada por el Dr. Alejandro Berlin (MD, MSc), con sede en Santiago, Chile. Nuestro servicio integra biomarcadores clínicos, datos de composición corporal y señales fisiológicas provenientes de dispositivos wearables para entregar información longitudinal sobre el estado de salud del usuario.</p>
+    <p>Esta Política de Privacidad describe cómo recopilamos, usamos, almacenamos y protegemos la información personal de nuestros usuarios, de acuerdo con la Ley N° 19.628 sobre Protección de la Vida Privada de Chile y, en la medida aplicable, el Reglamento General de Protección de Datos (GDPR) de la Unión Europea.</p>
+    <p><strong>Contacto de privacidad:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2744484954524b5346674a42554e434e46490a444f4e4b420944484a">[email&#160;protected]</a></p>
+
+    <div class="doc-divider"></div>
+    <h2 id="datos-recopilados">2. Datos que recopilamos</h2>
+
+    <h3>Datos que tú nos proporcionas directamente</h3>
+    <ul>
+      <li>Nombre completo, correo electrónico y fecha de nacimiento</li>
+      <li>Sexo biológico, estatura y peso</li>
+      <li>Resultados de exámenes de laboratorio ingresados por ti o por tu médico</li>
+      <li>Resultados de mediciones de composición corporal (DEXA) y capacidad aeróbica (VO₂ Max)</li>
+      <li>Información médica relevante: tabaquismo, presión arterial, antecedentes</li>
+      <li>Información de contacto para comunicaciones del servicio</li>
+    </ul>
+
+    <h3>Datos de uso de la plataforma</h3>
+    <ul>
+      <li>Registros de acceso (fecha, hora, dirección IP)</li>
+      <li>Páginas visitadas dentro de la plataforma</li>
+      <li>Configuración de cuenta y preferencias</li>
+    </ul>
+
+    <h3>Datos provenientes de dispositivos wearables (con tu autorización)</h3>
+    <p>Si conectas un dispositivo wearable compatible, recopilamos los datos descritos en la sección 3 de este documento. Esta recopilación requiere tu autorización explícita a través del protocolo OAuth 2.0 y puede ser revocada en cualquier momento.</p>
+
+    <div class="doc-divider"></div>
+    <h2 id="wearables">3. Integración con dispositivos wearables</h2>
+    <p>Meridian puede integrarse con los siguientes servicios de terceros cuando el usuario lo autoriza explícitamente:</p>
+
+    <div class="platform-grid">
+      <div class="platform-card">
+        <h4>Garmin Connect</h4>
+        <p>VO₂ Max estimado, HRV, frecuencia cardíaca en reposo, sueño, estrés, pasos y calorías activas.</p>
+      </div>
+      <div class="platform-card">
+        <h4>Fitbit (Google)</h4>
+        <p>Frecuencia cardíaca, HRV, etapas de sueño, SpO₂, pasos, temperatura de piel y actividad.</p>
+      </div>
+      <div class="platform-card">
+        <h4>Oura Ring</h4>
+        <p>Puntaje de readiness, HRV, temperatura corporal basal, etapas de sueño, ritmo respiratorio nocturno y actividad.</p>
+      </div>
+      <div class="platform-card">
+        <h4>WHOOP</h4>
+        <p>Recovery score, HRV, frecuencia cardíaca en reposo, strain diario, ciclos fisiológicos y eficiencia de sueño.</p>
+      </div>
+      <div class="platform-card">
+        <h4>Strava</h4>
+        <p>Actividades registradas (carrera, ciclismo, natación), distancia, ritmo y frecuencia cardíaca por actividad. <strong>Uso exclusivamente para visualización personal.</strong></p>
+      </div>
+      <div class="platform-card">
+        <h4>Samsung Health Connect</h4>
+        <p>Frecuencia cardíaca, sueño, actividad, pasos y oxígeno en sangre.</p>
+      </div>
+      <div class="platform-card">
+        <h4>Polar AccessLink</h4>
+        <p>HRV, frecuencia cardíaca 24/7, sueño, carga de entrenamiento, VO₂ Max y actividad diaria.</p>
+      </div>
+      <div class="platform-card">
+        <h4>Suunto Cloud API</h4>
+        <p>Archivos de entrenamiento FIT, frecuencia cardíaca, HRV, etapas de sueño y actividad.</p>
+      </div>
+      <div class="platform-card">
+        <h4>Apple HealthKit</h4>
+        <p>HRV, frecuencia cardíaca en reposo, VO₂ Max, sueño, ECG, oxígeno en sangre y composición corporal. Requiere app iOS nativa.</p>
+      </div>
+    </div>
+
+    <h3>Principios de uso de datos wearables</h3>
+    <ul>
+      <li><strong>Consentimiento explícito:</strong> cada integración requiere autorización OAuth individual.</li>
+      <li><strong>Mínimo necesario:</strong> solo solicitamos los datos estrictamente requeridos para la funcionalidad visible en la plataforma.</li>
+      <li><strong>Sin venta:</strong> los datos de dispositivos wearables no se venden ni transfieren a terceros comerciales.</li>
+      <li><strong>Sin publicidad:</strong> los datos no se usan para publicidad personalizada ni segmentación publicitaria.</li>
+      <li><strong>Sin scoring crediticio:</strong> los datos no se usan para determinar condiciones de seguros ni scoring crediticio.</li>
+      <li><strong>Inteligencia artificial y modelos de salud:</strong> los datos de wearables de Garmin, Fitbit, Oura y WHOOP pueden usarse para mejorar los modelos de salud de Meridian únicamente con tu consentimiento explícito y adicional, solicitado en un paso separado. Los datos de Strava <strong>nunca</strong> se usan en ningún modelo analítico o de IA, de acuerdo con los Términos de Servicio de su API.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Declaración de uso limitado (Fitbit):</strong> El uso de información recibida de las APIs de Fitbit cumple con la Fitbit Platform Developer and User Data Policy, incluyendo los requisitos de Limited Use. The use of information received from Fitbit APIs and/or Developer Tools will adhere to the Fitbit Platform Developer and User Data Policy, including the Limited Use requirements.
+    </div>
+
+    <div class="doc-divider"></div>
+    <h2 id="uso-datos">4. Cómo usamos tus datos</h2>
+    <p>Los datos recopilados se utilizan exclusivamente para:</p>
+    <ul>
+      <li>Calcular y actualizar tu índice Meridian Age™, que integra biomarcadores de laboratorio, composición corporal y señales fisiológicas de wearables</li>
+      <li>Generar tu reporte personal de salud y recomendaciones clínicas de tu médico</li>
+      <li>Visualizar la evolución longitudinal de tus marcadores de salud</li>
+      <li>Enviarte comunicaciones relacionadas con tu chequeo y seguimiento (con tu consentimiento)</li>
+      <li>Mejorar la plataforma de forma agregada y anonimizada</li>
+      <li>Cumplir con obligaciones legales aplicables</li>
+    </ul>
+    <p><strong>Meridian no utiliza tus datos para entrenar o mejorar modelos de inteligencia artificial o machine learning sin tu consentimiento explícito y adicional, solicitado en un paso separado. Los datos provenientes de Strava no se usan en ningún modelo analítico o de IA bajo ninguna circunstancia.</strong></p>
+
+    <div class="doc-divider"></div>
+    <h2 id="comparticion">5. Con quién compartimos tus datos</h2>
+    <p>Meridian no vende ni cede tus datos personales a terceros con fines comerciales. Los datos pueden ser accedidos por:</p>
+    <ul>
+      <li><strong>Tu médico tratante en Meridian</strong> (Dr. Alejandro Berlin y equipo clínico), para generar tu reporte y recomendaciones</li>
+      <li><strong>Proveedores de infraestructura técnica</strong> (hosting, base de datos) que operan bajo acuerdos de confidencialidad y procesan datos únicamente según nuestras instrucciones</li>
+      <li><strong>Autoridades competentes</strong> cuando sea requerido por ley</li>
+    </ul>
+    <p>No compartimos datos identificables con plataformas publicitarias, brokers de datos ni terceros no especificados en esta política.</p>
+
+    <div class="doc-divider"></div>
+    <h2 id="retencion">6. Retención y eliminación de datos</h2>
+    <p>Conservamos tus datos mientras mantengas una cuenta activa en Meridian o mientras sea necesario para prestarte el servicio. Al solicitar la eliminación de tu cuenta:</p>
+    <ul>
+      <li>Tus datos personales identificables serán eliminados dentro de los 30 días siguientes a la solicitud</li>
+      <li>Los tokens de acceso a tus dispositivos wearables serán revocados inmediatamente</li>
+      <li>Los datos de laboratorio y salud serán eliminados o anonimizados de forma irrevocable</li>
+      <li>Podemos conservar datos anonimizados y agregados para análisis estadístico interno</li>
+    </ul>
+    <p>Para solicitar la eliminación de tus datos, escríbenos a <a href="/cdn-cgi/l/email-protection#a0c3cfced3d5ccd4c1e0cdc5d2c9c4c9c1ce8dc3c8c9ccc58ec3cfcd"><span class="__cf_email__" data-cfemail="096a66677a7c657d6849646c7b606d606867246a6160656c276a6664">[email&#160;protected]</span></a> con el asunto "Eliminación de datos".</p>
+
+    <div class="doc-divider"></div>
+    <h2 id="seguridad">7. Seguridad</h2>
+    <p>Implementamos medidas técnicas y organizativas para proteger tus datos:</p>
+    <ul>
+      <li>Transmisión cifrada mediante HTTPS/TLS en todas las comunicaciones</li>
+      <li>Tokens OAuth almacenados en base de datos cifrada en reposo</li>
+      <li>Credenciales de aplicación (client secrets) almacenadas exclusivamente en variables de entorno del servidor, nunca en código cliente</li>
+      <li>Acceso restringido a datos personales al personal autorizado con necesidad legítima</li>
+      <li>Revisiones periódicas de seguridad</li>
+    </ul>
+
+    <div class="doc-divider"></div>
+    <h2 id="derechos">8. Tus derechos</h2>
+    <p>De acuerdo con la Ley N° 19.628 y el GDPR (según aplique), tienes derecho a:</p>
+    <ul>
+      <li><strong>Acceso:</strong> solicitar una copia de los datos que tenemos sobre ti</li>
+      <li><strong>Rectificación:</strong> corregir datos inexactos o incompletos</li>
+      <li><strong>Eliminación:</strong> solicitar que eliminemos tus datos personales</li>
+      <li><strong>Revocación del consentimiento:</strong> desconectar cualquier integración wearable en cualquier momento desde tu cuenta</li>
+      <li><strong>Portabilidad:</strong> recibir tus datos en un formato estructurado y legible por máquina</li>
+      <li><strong>Oposición:</strong> oponerte al procesamiento de tus datos en determinadas circunstancias</li>
+    </ul>
+    <p>Para ejercer cualquiera de estos derechos, contacta a <a href="/cdn-cgi/l/email-protection#98fbf7f6ebedf4ecf9d8f5fdeaf1fcf1f9f6b5fbf0f1f4fdb6fbf7f5"><span class="__cf_email__" data-cfemail="2f4c40415c5a435b4e6f424a5d464b464e41024c4746434a014c4042">[email&#160;protected]</span></a>.</p>
+
+    <div class="doc-divider"></div>
+    <h2 id="menores">9. Menores de edad</h2>
+    <p>El servicio de Meridian está dirigido exclusivamente a mayores de 18 años. No recopilamos intencionalmente datos de menores de edad. Si detectamos que hemos recopilado datos de un menor, los eliminaremos de inmediato.</p>
+
+    <div class="doc-divider"></div>
+    <h2 id="cambios">10. Cambios a esta política</h2>
+    <p>Podemos actualizar esta Política de Privacidad periódicamente. Cuando lo hagamos, actualizaremos la fecha de "Última actualización" en la parte superior. Para cambios materiales, notificaremos a los usuarios registrados por correo electrónico con al menos 15 días de anticipación.</p>
+
+    <div class="doc-divider"></div>
+    <h2 id="contacto-pp">11. Contacto</h2>
+    <div class="contact-block">
+      <p><strong>Meridian Chile</strong><br>
+      Responsable: Dr. Alejandro Berlin, MD, MSc<br>
+      Santiago, Chile<br>
+      Correo: <a href="/cdn-cgi/l/email-protection#fd9e92938e8891899cbd90988f9499949c93d09e95949198d39e9290"><span class="__cf_email__" data-cfemail="fd9e92938e889189
