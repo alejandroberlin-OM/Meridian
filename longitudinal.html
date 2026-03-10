@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meridian — Evolución a lo largo del tiempo · Carlos Mendoza</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B1628;--navy-mid:#112240;--navy-card:#0e1d36;
+  --green:#2D6A4F;--green-mid:#40916C;--green-light:#74C69D;--green-pale:#B7E4C7;
+  --green-ghost:rgba(45,106,79,0.12);--green-glow:rgba(116,198,157,0.15);
+  --gold:#C9A84C;--gold-light:#E8C97A;--gold-ghost:rgba(201,168,76,0.12);
+  --cream:#F5F0E8;--red:#ff7b7b;--red-ghost:rgba(255,123,123,0.1);
+  --text-dim:rgba(245,240,232,0.4);--text-mid:rgba(245,240,232,0.68);
+  --border:rgba(245,240,232,0.07);--border-green:rgba(64,145,108,0.3);--border-gold:rgba(201,168,76,0.28);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--cream);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse 80% 50% at 5% 0%,rgba(45,106,79,0.18) 0%,transparent 55%),
+  radial-gradient(ellipse 50% 70% at 95% 100%,rgba(45,106,79,0.11) 0%,transparent 55%),
+  radial-gradient(ellipse 40% 30% at 50% 50%,rgba(201,168,76,0.04) 0%,transparent 70%);
+  pointer-events:none;z-index:0;}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:15px 44px;background:rgba(11,22,40,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.logo{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;display:flex;align-items:center;gap:9px;color:var(--cream);text-decoration:none;}
+.logo-sym{width:28px;height:28px;background:var(--green-ghost);border:1px solid var(--border-green);border-radius:7px;display:flex;align-items:center;justify-content:center;}
+.logo-sym svg{width:18px;height:18px;}
+.wm{letter-spacing:.18em;}.wm span{color:#C9A84C;}
+.logo sup{font-size:8px;color:var(--green-light);font-family:'DM Sans',sans-serif;font-weight:400;}
+.nav-center{display:flex;align-items:center;gap:6px;}
+.nav-pill{font-size:11px;padding:5px 13px;border-radius:100px;border:1px solid var(--border);color:var(--text-dim);cursor:pointer;transition:all .2s;background:none;font-family:'DM Sans',sans-serif;}
+.nav-pill.active{border-color:var(--border-green);color:var(--green-light);background:var(--green-ghost);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.nav-patient{font-size:12px;color:var(--text-mid);}
+.nav-patient strong{color:var(--cream);}
+.nav-badge{font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-ghost);border:1px solid var(--border-gold);color:var(--gold-light);padding:4px 10px;border-radius:100px;}
+
+/* ── LAYOUT ── */
+.page{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:40px 44px 80px;}
+
+/* ── HERO BANNER ── */
+.hero-banner{background:linear-gradient(135deg,rgba(17,34,64,0.95) 0%,rgba(45,106,79,0.25) 60%,rgba(17,34,64,0.8) 100%);border:1px solid var(--border-green);border-radius:20px;padding:36px 44px;margin-bottom:36px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;overflow:hidden;position:relative;}
+.hero-banner::after{content:'';position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(116,198,157,0.08) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--green-light);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.hero-eyebrow::before{content:'';width:20px;height:1px;background:var(--green-light);}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;line-height:1.1;margin-bottom:6px;}
+.hero-name em{font-style:italic;color:var(--green-light);}
+.hero-meta{font-size:12px;color:var(--text-dim);display:flex;gap:16px;margin-bottom:18px;}
+.hero-meta span{display:flex;align-items:center;gap:5px;}
+.hero-story{font-family:'Cormorant Garamond',serif;font-size:19px;font-style:italic;color:var(--text-mid);line-height:1.5;max-width:560px;border-left:2px solid var(--gold);padding-left:16px;}
+.hero-story strong{color:var(--gold-light);font-style:normal;}
+.hero-right{text-align:center;}
+.hero-age-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px;}
+.hero-age{font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;line-height:1;color:var(--green-light);}
+.hero-age-vs{font-size:12px;color:var(--text-mid);margin-top:4px;}
+.hero-age-vs strong{color:var(--cream);}
+.hero-delta-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(45,106,79,0.25);border:1px solid var(--border-green);border-radius:100px;padding:5px 14px;font-size:12px;color:var(--green-pale);margin-top:8px;}
+
+/* ── SECTION TITLES ── */
+.sec-title{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ── MERIDIAN AGE TIMELINE ── */
+.timeline-grid{display:grid;grid-template-columns:1fr 1.8fr;gap:20px;margin-bottom:36px;}
+.timeline-table{background:rgba(17,34,64,0.6);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.tt-head{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:12px 20px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);}
+.tt-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;padding:14px 20px;border-bottom:1px solid var(--border);align-items:center;transition:background .2s;cursor:default;}
+.tt-row:last-child{border-bottom:none;}
+.tt-row:hover{background:rgba(45,106,79,0.06);}
+.tt-row.latest{background:rgba(45,106,79,0.1);border-left:3px solid var(--green-light);}
+.tt-year{font-family:'DM Mono',monospace;font-size:13px;color:var(--text-mid);}
+.tt-age{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;}
+.tt-age.best{color:var(--green-light);}
+.tt-delta{font-size:12px;}
+.tt-delta.pos{color:var(--green-light);}
+.tt-delta.neg{color:var(--red);}
+.tt-badge{font-size:9px;padding:3px 8px;border-radius:100px;border:1px solid;display:inline-block;}
+.tt-badge.opt{border-color:rgba(116,198,157,0.4);color:var(--green-light);background:rgba(116,198,157,0.08);}
+.tt-badge.acc{border-color:var(--border-gold);color:var(--gold-light);background:var(--gold-ghost);}
+.tt-badge.new{border-color:rgba(116,198,157,0.5);color:var(--green-pale);background:rgba(45,106,79,0.2);}
+
+/* ── CHART CARD ── */
+.chart-card{background:rgba(17,34,64,0.6);border:1px solid var(--border);border-radius:16px;padding:24px;}
+.chart-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+.chart-title{font-size:14px;font-weight:500;}
+.chart-sub{font-size:11px;color:var(--text-dim);margin-top:2px;}
+.chart-legend{display:flex;gap:12px;}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-dim);}
+.leg-dot{width:8px;height:8px;border-radius:50%;}
+canvas{width:100%;display:block;}
+
+/* ── BIOMARKER TRENDS ── */
+.trends-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:36px;}
+.trend-card{background:rgba(17,34,64,0.6);border:1px solid var(--border);border-radius:14px;padding:16px;transition:border-color .25s,transform .25s;cursor:default;}
+.trend-card:hover{border-color:var(--border-green);transform:translateY(-2px);}
+.trend-cat{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;}
+.trend-name{font-size:12px;font-weight:500;margin-bottom:10px;line-height:1.3;}
+.trend-sparkline{height:36px;margin-bottom:8px;}
+.trend-values{display:flex;justify-content:space-between;align-items:flex-end;}
+.trend-old{font-size:11px;color:var(--text-dim);}
+.trend-new{font-family:'DM Mono',monospace;font-size:15px;color:var(--cream);}
+.trend-unit{font-size:10px;color:var(--text-dim);margin-left:2px;}
+.trend-arrow{font-size:11px;display:flex;align-items:center;gap:3px;padding:2px 7px;border-radius:100px;border:1px solid;}
+.trend-arrow.up-good{color:var(--green-light);border-color:rgba(116,198,157,0.3);background:rgba(116,198,157,0.07);}
+.trend-arrow.down-good{color:var(--green-light);border-color:rgba(116,198,157,0.3);background:rgba(116,198,157,0.07);}
+.trend-arrow.up-bad{color:var(--red);border-color:rgba(255,123,123,0.3);background:var(--red-ghost);}
+.trend-arrow.neutral{color:var(--gold-light);border-color:var(--border-gold);background:var(--gold-ghost);}
+
+/* ── DOMAIN EVOLUTION ── */
+.domain-evo{background:rgba(17,34,64,0.6);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:36px;}
+.domain-row{display:grid;grid-template-columns:140px 1fr 60px 60px 60px;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
+.domain-row:last-child{border-bottom:none;}
+.domain-row-head{display:grid;grid-template-columns:140px 1fr 60px 60px 60px;gap:12px;padding:0 0 10px;border-bottom:1px solid var(--border);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);}
+.dom-name{font-size:12px;font-weight:500;}
+.dom-sub{font-size:10px;color:var(--text-dim);}
+.dom-bars{display:flex;flex-direction:column;gap:4px;}
+.dom-bar-row{display:flex;align-items:center;gap:6px;}
+.dom-bar-label{font-size:9px;color:var(--text-dim);width:28px;text-align:right;}
+.dom-bar-track{flex:1;height:4px;background:rgba(245,240,232,0.07);border-radius:2px;overflow:hidden;}
+.dom-bar-fill{height:100%;border-radius:2px;transition:width 1.2s ease;}
+.dom-score{font-family:'DM Mono',monospace;font-size:13px;text-align:center;}
+.dom-score.best{color:var(--green-light);}
+.dom-delta-val{font-size:12px;text-align:center;}
+.dom-delta-val.pos{color:var(--green-light);}
+.dom-delta-val.neg{color:var(--red);}
+
+/* ── INSIGHTS ── */
+.insights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px;}
+.insight-card{border-radius:14px;padding:20px;border:1px solid;}
+.insight-card.win{background:rgba(45,106,79,0.12);border-color:var(--border-green);}
+.insight-card.watch{background:rgba(201,168,76,0.08);border-color:var(--border-gold);}
+.insight-card.story{background:rgba(17,34,64,0.8);border-color:var(--border);}
+.insight-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:12px;}
+.insight-icon.win{background:rgba(116,198,157,0.15);border:1px solid rgba(116,198,157,0.3);}
+.insight-icon.watch{background:rgba(232,201,122,0.12);border:1px solid var(--border-gold);}
+.insight-icon.story{background:rgba(201,168,76,0.1);border:1px solid var(--border-gold);}
+.insight-title{font-size:13px;font-weight:500;margin-bottom:6px;}
+.insight-text{font-size:11px;color:var(--text-mid);line-height:1.6;}
+.insight-text strong{color:var(--cream);}
+
+/* ── NEXT VISIT ── */
+.next-visit{background:linear-gradient(135deg,rgba(17,34,64,0.9),rgba(45,106,79,0.2));border:1px solid var(--border-green);border-radius:16px;padding:28px 32px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;}
+.nv-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;margin-bottom:6px;}
+.nv-sub{font-size:12px;color:var(--text-dim);line-height:1.6;max-width:480px;}
+.nv-date{text-align:center;}
+.nv-date-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px;}
+.nv-date-val{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--green-light);}
+.nv-date-sub{font-size:11px;color:var(--text-dim);margin-top:2px;}
+.nv-targets{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.nv-tag{font-size:10px;padding:4px 10px;border-radius:100px;border:1px solid var(--border-green);color:var(--green-light);background:var(--green-ghost);}
+
+/* ── DISCLAIMER ── */
+.disclaimer{font-size:10px;color:var(--text-dim);line-height:1.7;margin-top:40px;padding-top:20px;border-top:1px solid var(--border);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+.hero-banner{animation:fadeUp .6s ease both;}
+.timeline-grid{animation:fadeUp .6s .1s ease both;}
+.trends-grid{animation:fadeUp .6s .2s ease both;}
+.domain-evo{animation:fadeUp .6s .3s ease both;}
+.insights-grid{animation:fadeUp .6s .4s ease both;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--navy);}
+::-webkit-scrollbar-thumb{background:var(--navy-mid);border-radius:2px;}
+
+/* ── DEMO BADGE ── */
+.demo-bar{background:rgba(201,168,76,0.12);border-bottom:1px solid var(--border-gold);padding:8px 44px;font-size:11px;color:var(--gold-light);display:flex;align-items:center;gap:8px;}
+.demo-bar::before{content:'◆';font-size:8px;}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">Vista previa — Funcionalidad de seguimiento longitudinal · Datos de ejemplo · No datos reales de paciente</div>
+
+<nav class="nav">
+  <a href="#" class="logo">
+    <div class="logo-sym">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#74C69D" stroke-width="1.5">
+        <circle cx="12" cy="12" r="9"/>
+        <line x1="12" y1="3" x2="12" y2="21"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <path d="M12 3 C16 7 16 17 12 21" stroke="#C9A84C"/>
+      </svg>
+    </div>
+    <span class="wm"><span>M</span>ERI<span>D</span>IAN</span><sup>®</sup>
+  </a>
+  <div class="nav-center">
+    <button class="nav-pill">Reporte actual</button>
+    <button class="nav-pill active">Evolución</button>
+    <button class="nav-pill">Comparar</button>
+  </div>
+  <div class="nav-right">
+    <span class="nav-patient">Paciente: <strong>Carlos Mendoza</strong> · 47 años · H</span>
+    <span class="nav-badge">3 mediciones</span>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero-banner">
+    <div>
+      <div class="hero-eyebrow">Evolución longitudinal · 2023–2025</div>
+      <div class="hero-name">Tu cuerpo está <em>rejuveneciendo.</em></div>
+      <div class="hero-meta">
+        <span>⚡ 3 mediciones · 2 años de seguimiento</span>
+        <span>📅 Última: Marzo 2025</span>
+        <span>📍 Santiago, Chile</span>
+      </div>
+      <div class="hero-story">
+        En 2023 tu edad biológica superaba tu edad cronológica en 3 años. Hoy, la supera en sentido contrario — <strong>tu cuerpo es 6 años más joven</strong> que tu pasaporte. Cada año que pasa, la brecha favorece más a tu biología.
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-age-label">Meridian Age™ actual</div>
+      <div class="hero-age">41</div>
+      <div class="hero-age-vs">Edad cronológica: <strong>47</strong></div>
+      <div class="hero-delta-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+        −6 años vs. edad real
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE TABLE + MAIN CHART -->
+  <div class="sec-title">Meridian Age™ a lo largo del tiempo</div>
+  <div class="timeline-grid">
+
+    <div class="timeline-table">
+      <div class="tt-head">
+        <span>Año</span><span>Meridian Age™</span><span>Δ vs. año anterior</span><span>Estado</span>
+      </div>
+      <div class="tt-row">
+        <span class="tt-year">2023</span>
+        <span class="tt-age">50</span>
+        <span class="tt-delta neg">— (línea base)</span>
+        <span><span class="tt-badge acc">Aceptable</span></span>
+      </div>
+      <div class="tt-row">
+        <span class="tt-year">2024</span>
+        <span class="tt-age">46</span>
+        <span class="tt-delta pos">↓ −4 años</span>
+        <span><span class="tt-badge opt">Mejorando</span></span>
+      </div>
+      <div class="tt-row latest">
+        <span class="tt-year">2025</span>
+        <span class="tt-age best">41</span>
+        <span class="tt-delta pos">↓ −5 años</span>
+        <span><span class="tt-badge new">✦ Mejor marca</span></span>
+      </div>
+      <div style="padding:14px 20px;background:rgba(45,106,79,0.07);border-top:1px solid var(--border);">
+        <div style="font-size:10px;color:var(--text-dim);margin-bottom:3px;">Proyección 2026 (si mantiene ritmo actual)</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--text-mid);">~38</span>
+          <span style="font-size:10px;color:var(--text-dim);font-style:italic;">estimado · no garantizado</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Meridian Age™ vs. Edad cronológica</div>
+          <div class="chart-sub">Brecha biológica ampliándose año a año</div>
+        </div>
+        <div class="chart-legend">
+          <div class="leg-item"><div class="leg-dot" style="background:#74C69D;"></div>Meridian Age™</div>
+          <div class="leg-item"><div class="leg-dot" style="background:rgba(245,240,232,0.3);border:1px dashed rgba(245,240,232,0.3);"></div>Edad cronológica</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#C9A84C;opacity:.6;"></div>Proyección</div>
+        </div>
+      </div>
+      <canvas id="mainChart" height="200"></canvas>
+    </div>
+
+  </div>
+
+  <!-- BIOMARKER TRENDS -->
+  <div class="sec-title">Biomarcadores clave · Evolución 2023 → 2025</div>
+  <div class="trends-grid" id="trendsGrid"></div>
+
+  <!-- DOMAIN EVOLUTION -->
+  <div class="sec-title">Dominios de salud · Puntuación a lo largo del tiempo</div>
+  <div class="domain-evo">
+    <div class="domain-row-head">
+      <span>Dominio</span><span>Evolución visual</span><span>2023</span><span>2024</span><span>2025</span>
+    </div>
+    <div id="domainRows"></div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="sec-title">Narrativa clínica · Lo que los datos dicen</div>
+  <div class="insights-grid">
+    <div class="insight-card win">
+      <div class="insight-icon win">🏆</div>
+      <div class="insight-title">Mayor victoria: VO₂ Max</div>
+      <div class="insight-text">Tu capacidad aeróbica pasó de <strong>36 → 48 ml/kg/min</strong> — una ganancia de 12 puntos en 2 años. Esto equivale a bajar ~11 años de edad cardiovascular. El predictor número uno de longevidad, y está acelerando.</div>
+    </div>
+    <div class="insight-card win">
+      <div class="insight-icon win">🔥</div>
+      <div class="insight-title">Inflamación bajo control</div>
+      <div class="insight-text">Tu hsCRP bajó de <strong>2.8 → 0.6 mg/L</strong>. Estás por debajo del umbral de inflamación silenciosa. El riesgo cardiovascular asociado a inflamación crónica se ha reducido sustancialmente.</div>
+    </div>
+    <div class="insight-card watch">
+      <div class="insight-icon watch">⚠️</div>
+      <div class="insight-title">Atención: HOMA-IR estancado</div>
+      <div class="insight-text">La resistencia a la insulina mejoró en 2024 (<strong>2.4 → 1.9</strong>) pero no avanzó en 2025 (1.8). Sigue por encima del umbral óptimo &lt;1.5. Es la palanca metabólica más importante que queda por optimizar.</div>
+    </div>
+    <div class="insight-card win">
+      <div class="insight-icon win">💪</div>
+      <div class="insight-title">Composición corporal transformada</div>
+      <div class="insight-text">Grasa corporal <strong>28% → 19%</strong>. Masa muscular (ALMI) <strong>7.2 → 8.6 kg/m²</strong>. Ganaste músculo y perdiste grasa simultáneamente — el perfil de composición corporal de alguien 10 años más joven.</div>
+    </div>
+    <div class="insight-card story">
+      <div class="insight-icon story">📖</div>
+      <div class="insight-title">"Tu cuerpo envejece más lento que el tiempo"</div>
+      <div class="insight-text">En 2 años cronológicos, tu Meridian Age™ bajó 9 años. Cada año calendario, tu edad biológica retrocede ~4.5 años. Si este ritmo continúa, a los 50 años cronológicos tu biología tendrá ~38 años.</div>
+    </div>
+    <div class="insight-card watch">
+      <div class="insight-icon watch">🎯</div>
+      <div class="insight-title">Próximo objetivo: Meridian Age 37</div>
+      <div class="insight-text">Con optimización de HOMA-IR (&lt;1.5), mantenimiento de VO₂ &gt;50 y masa muscular &gt;9 kg/m², el modelo proyecta Meridian Age <strong>37–38 para 2026</strong>. 10 años de ventaja biológica.</div>
+    </div>
+  </div>
+
+  <!-- NEXT VISIT -->
+  <div class="next-visit">
+    <div>
+      <div class="nv-title">Próxima medición Meridian</div>
+      <div class="nv-sub">En 12 meses se repetirá el panel completo: sangre en ayunas, DEXA, VO₂ Max (CPET) y evaluación clínica con Dr. Berlin. El objetivo es validar la trayectoria y ajustar el plan de optimización.</div>
+      <div class="nv-targets">
+        <span class="nv-tag">HOMA-IR &lt; 1.5</span>
+        <span class="nv-tag">VO₂ Max &gt; 50</span>
+        <span class="nv-tag">ALMI &gt; 9.0 kg/m²</span>
+        <span class="nv-tag">hsCRP &lt; 0.5</span>
+        <span class="nv-tag">ApoB &lt; 70 mg/dL</span>
+      </div>
+    </div>
+    <div class="nv-date">
+      <div class="nv-date-label">Fecha estimada</div>
+      <div class="nv-date-val">Marzo 2026</div>
+      <div class="nv-date-sub">en ~11 meses</div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    Meridian Age™ es un índice compuesto propietario. Los pesos, rangos óptimos y fórmulas derivadas son definidos por el equipo clínico de Meridian y no han sido validados externamente como instrumento diagnóstico. Los biomarcadores se interpretan en rangos funcionales de medicina preventiva, que pueden diferir de los rangos de referencia clínicos estándar. Las estimaciones de proyección son orientativas y no constituyen un pronóstico individual. Ante cualquier hallazgo significativo, consulta con tu médico tratante. · Dr. Alejandro Berlin, MD, MSc · Meridian Chile · 2025
+  </div>
+
+</div>
+
+<script>
+// ── DATA ──
+const years = [2023, 2024, 2025];
+const chronoAges = [45, 46, 47];
+const meridianAges = [50, 46, 41];
+const projYear = 2026;
+const projAge = 38;
+
+// ── MAIN CHART ──
+(function(){
+  const canvas = document.getElementById('mainChart');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const W = rect.width - 48;
+  const H = 200;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.scale(dpr, dpr);
+
+  const allYears = [...years, projYear];
+  const pad = {l:44, r:30, t:20, b:36};
+  const cW = W - pad.l - pad.r;
+  const cH = H - pad.t - pad.b;
+
+  const xMin = 2022.8, xMax = 2026.2;
+  const yMin = 34, yMax = 56;
+
+  function xPos(yr){ return pad.l + ((yr - xMin) / (xMax - xMin)) * cW; }
+  function yPos(v){ return pad.t + (1 - (v - yMin)/(yMax - yMin)) * cH; }
+
+  // Grid
+  ctx.strokeStyle = 'rgba(245,240,232,0.06)';
+  ctx.lineWidth = 1;
+  [36,40,44,48,52].forEach(v => {
+    ctx.beginPath();
+    ctx.moveTo(pad.l, yPos(v));
+    ctx.lineTo(W - pad.r, yPos(v));
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(245,240,232,0.3)';
+    ctx.font = '10px DM Mono, monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(v, pad.l - 7, yPos(v) + 3.5);
+  });
+
+  // Year labels
+  allYears.forEach(yr => {
+    ctx.fillStyle = yr === projYear ? 'rgba(201,168,76,0.5)' : 'rgba(245,240,232,0.35)';
+    ctx.font = '10px DM Sans, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(yr, xPos(yr), H - 8);
+  });
+
+  // Gap fill between chrono and meridian
+  ctx.beginPath();
+  ctx.moveTo(xPos(years[0]), yPos(chronoAges[0]));
+  years.forEach((yr, i) => ctx.lineTo(xPos(yr), yPos(chronoAges[i])));
+  years.slice().reverse().forEach((yr, i) => ctx.lineTo(xPos(yr), yPos(meridianAges[years.length - 1 - i])));
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(116,198,157,0.07)';
+  ctx.fill();
+
+  // Chrono line (dashed)
+  ctx.beginPath();
+  ctx.setLineDash([4,4]);
+  ctx.strokeStyle = 'rgba(245,240,232,0.25)';
+  ctx.lineWidth = 1.5;
+  years.forEach((yr, i) => i === 0 ? ctx.moveTo(xPos(yr), yPos(chronoAges[i])) : ctx.lineTo(xPos(yr), yPos(chronoAges[i])));
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Projection dashed line
+  ctx.beginPath();
+  ctx.setLineDash([5,5]);
+  ctx.strokeStyle = 'rgba(201,168,76,0.5)';
+  ctx.lineWidth = 1.5;
+  ctx.moveTo(xPos(2025), yPos(41));
+  ctx.lineTo(xPos(projYear), yPos(projAge));
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Projection point
+  ctx.beginPath();
+  ctx.arc(xPos(projYear), yPos(projAge), 5, 0, Math.PI*2);
+  ctx.fillStyle = 'rgba(201,168,76,0.4)';
+  ctx.fill();
+  ctx.strokeStyle = '#C9A84C';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Meridian Age line (gradient)
+  const grad = ctx.createLinearGradient(xPos(2023), 0, xPos(2025), 0);
+  grad.addColorStop(0, '#40916C');
+  grad.addColorStop(1, '#74C69D');
+  ctx.beginPath();
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = 2.5;
+  ctx.lineJoin = 'round';
+  years.forEach((yr, i) => i === 0 ? ctx.moveTo(xPos(yr), yPos(meridianAges[i])) : ctx.lineTo(xPos(yr), yPos(meridianAges[i])));
+  ctx.stroke();
+
+  // Meridian points + labels
+  years.forEach((yr, i) => {
+    const x = xPos(yr), y = yPos(meridianAges[i]);
+    ctx.beginPath();
+    ctx.arc(x, y, i === 2 ? 7 : 5, 0, Math.PI*2);
+    ctx.fillStyle = i === 2 ? '#74C69D' : 'rgba(116,198,157,0.7)';
+    ctx.fill();
+    if(i === 2){
+      ctx.strokeStyle = 'rgba(116,198,157,0.4)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(x, y, 11, 0, Math.PI*2);
+      ctx.stroke();
+    }
+    ctx.fillStyle = '#74C69D';
+    ctx.font = 'bold 11px DM Sans, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(meridianAges[i], x, y - 13);
+  });
+
+  // Gap label
+  ctx.fillStyle = 'rgba(116,198,157,0.6)';
+  ctx.font = '10px DM Sans, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('↑ brecha biológica creciente', xPos(2024.1), yPos(43.5));
+})();
+
+// ── BIOMARKER TRENDS ──
+const biomarkers = [
+  {cat:'Metabólico',name:'HOMA-IR',vals:[2.4,1.9,1.8],unit:'',dir:'down',opt:1.5,good:true,partialWin:true},
+  {cat:'Inflamación',name:'hsCRP',vals:[2.8,1.1,0.6],unit:'mg/L',dir:'down',opt:0.8,good:true},
+  {cat:'Fitness',name:'VO₂ Max',vals:[36,42,48],unit:'ml/kg/min',dir:'up',opt:50,good:true},
+  {cat:'Lípidos',name:'ApoB',vals:[92,78,71],unit:'mg/dL',dir:'down',opt:80,good:true},
+  {cat:'Hormonal',name:'Testosterona libre',vals:[8.2,9.1,10.4],unit:'ng/dL',dir:'up',opt:9.0,good:true},
+  {cat:'Composición',name:'% Grasa corporal',vals:[28,23,19],unit:'%',dir:'down',opt:20,good:true},
+  {cat:'Composición',name:'ALMI',vals:[7.2,8.0,8.6],unit:'kg/m²',dir:'up',opt:8.0,good:true},
+  {cat:'Vitaminas',name:'Vitamina D',vals:[24,38,47],unit:'ng/mL',dir:'up',opt:40,good:true},
+];
+
+const grid = document.getElementById('trendsGrid');
+biomarkers.forEach(bm => {
+  const delta = bm.vals[2] - bm.vals[0];
+  const deltaPct = ((delta / bm.vals[0]) * 100).toFixed(0);
+  const improved = bm.dir === 'down' ? delta < 0 : delta > 0;
+  const arrowClass = improved ? 'down-good' : 'up-bad';
+  const arrowSym = delta > 0 ? '↑' : '↓';
+  const sign = delta > 0 ? '+' : '';
+
+  // Sparkline path
+  const sW = 180, sH = 36;
+  const minV = Math.min(...bm.vals) * 0.92;
+  const maxV = Math.max(...bm.vals) * 1.08;
+  const pts = bm.vals.map((v,i) => {
+    const x = (i / (bm.vals.length - 1)) * sW;
+    const y = sH - ((v - minV) / (maxV - minV)) * sH;
+    return [x, y];
+  });
+  const pathD = pts.map((p,i) => (i===0?'M':'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  const fillD = pathD + ` L${sW},${sH} L0,${sH} Z`;
+
+  const card = document.createElement('div');
+  card.className = 'trend-card';
+  card.innerHTML = `
+    <div class="trend-cat">${bm.cat}</div>
+    <div class="trend-name">${bm.name}</div>
+    <div class="trend-sparkline">
+      <svg viewBox="0 0 ${sW} ${sH}" width="100%" height="${sH}" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="sg${bm.name.replace(/\s/g,'')}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="${improved?'#74C69D':'#ff7b7b'}" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="${improved?'#74C69D':'#ff7b7b'}" stop-opacity="0.02"/>
+          </linearGradient>
+        </defs>
+        <path d="${fillD}" fill="url(#sg${bm.name.replace(/\s/g,'')})" />
+        <path d="${pathD}" stroke="${improved?'#74C69D':'#ff7b7b'}" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+        ${pts.map((p,i) => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${i===2?3.5:2}" fill="${i===2?(improved?'#74C69D':'#ff7b7b'):'rgba(245,240,232,0.3)'}"/>`).join('')}
+      </svg>
+    </div>
+    <div class="trend-values">
+      <div>
+        <div class="trend-old">${bm.vals[0]} → ${bm.vals[1]}</div>
+        <div style="display:flex;align-items:baseline;gap:2px;margin-top:1px;">
+          <span class="trend-new">${bm.vals[2]}</span><span class="trend-unit">${bm.unit}</span>
+        </div>
+      </div>
+      <div class="trend-arrow ${improved?'down-good':'up-bad'}">${arrowSym} ${sign}${deltaPct}%</div>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+// ── DOMAIN EVOLUTION ──
+const domains = [
+  {name:'Metabólico',sub:'Glucosa, insulina, HbA1c',scores:[58,72,84],color:'#74C69D'},
+  {name:'Cardiovascular / Fitness',sub:'VO₂ Max, PA, lípidos',scores:[52,66,81],color:'#52b788'},
+  {name:'Inflamación',sub:'hsCRP, IL-6, fibrinógeno',scores:[44,70,88],color:'#74C69D'},
+  {name:'Composición corporal',sub:'DEXA: grasa, músculo, hueso',scores:[55,68,79],color:'#40916C'},
+  {name:'Hormonal',sub:'Testosterona, cortisol, DHEA',scores:[62,70,76],color:'#74C69D'},
+  {name:'Micronutrientes',sub:'Vit D, B12, Omega-3, ferritina',scores:[48,65,82],color:'#52b788'},
+];
+
+const domContainer = document.getElementById('domainRows');
+domains.forEach(d => {
+  const row = document.createElement('div');
+  row.className = 'domain-row';
+  const delta = d.scores[2] - d.scores[0];
+  row.innerHTML = `
+    <div>
+      <div class="dom-name">${d.name}</div>
+      <div class="dom-sub">${d.sub}</div>
+    </div>
+    <div class="dom-bars">
+      ${d.scores.map((s,i) => `
+        <div class="dom-bar-row">
+          <span class="dom-bar-label">${years[i]}</span>
+          <div class="dom-bar-track">
+            <div class="dom-bar-fill" style="width:${s}%;background:${i===2?d.color:'rgba(116,198,157,'+(0.3+i*0.15)+')'}"></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="dom-score">${d.scores[0]}</div>
+    <div class="dom-score">${d.scores[1]}</div>
+    <div class="dom-score best">${d.scores[2]}</div>
+  `;
+  domContainer.appendChild(row);
+});
+</script>
+</body>
+</html>
