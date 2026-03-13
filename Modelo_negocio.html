@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MERIDIAN — Business Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #080F1C;
+  --navy2:  #0D1827;
+  --navy3:  #142035;
+  --gold:   #C9A84C;
+  --gold2:  #E2C06A;
+  --green:  #2D6A4F;
+  --green3: #74C69D;
+  --white:  #F5F3EF;
+  --dim:    #8895B0;
+  --border: rgba(201,168,76,0.18);
+  --b2:     rgba(255,255,255,0.07);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── LAYOUT ── */
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 3.5rem 3rem;
+}
+
+/* ── HEADER ── */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+.brand { display: flex; flex-direction: column; gap: .3rem; }
+.brand-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.1rem;
+  letter-spacing: .22em;
+  color: var(--white);
+}
+.brand-name span { color: var(--gold); }
+.brand-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: .62rem;
+  letter-spacing: .2em;
+  color: var(--green3);
+  text-transform: uppercase;
+}
+.doc-meta { text-align: right; }
+.doc-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .2em;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: .3rem;
+}
+.doc-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--white);
+}
+
+/* ── SECTION LABELS ── */
+.sl {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--green3);
+  margin-bottom: .8rem;
+}
+
+/* ── TWO-COL MAIN GRID ── */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+/* ── POSITIONING BLOCK ── */
+.positioning h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.15;
+  margin-bottom: 1.2rem;
+}
+.positioning h2 em { color: var(--gold); font-style: italic; }
+.positioning p {
+  font-size: .85rem;
+  color: var(--dim);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+.positioning p:last-child { margin-bottom: 0; }
+.insight-box {
+  margin-top: 1.8rem;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1.2rem 1.4rem;
+  background: rgba(201,168,76,.04);
+}
+.insight-box .insight-label {
+  font-family: 'DM Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: .7rem;
+}
+.insight-flow {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  font-family: 'DM Mono', monospace;
+  font-size: .72rem;
+  color: var(--dim);
+}
+.insight-flow .avoid { text-decoration: line-through; opacity: .5; }
+.insight-flow .arrow { color: var(--gold); font-size: .8rem; }
+.insight-flow .better { color: var(--green3); }
+.insight-row { display: flex; flex-direction: column; gap: .5rem; }
+
+/* ── ECOSYSTEM SVG ── */
+.ecosystem-wrap {
+  display: flex;
+  flex-direction: column;
+}
+.ecosystem-wrap h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--dim);
+  margin-bottom: 1.2rem;
+}
+.eco-svg-container {
+  flex: 1;
+  background: var(--navy2);
+  border: 1px solid var(--b2);
+  border-radius: 4px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0 0 3rem;
+}
+
+/* ── TIERS SECTION ── */
+.tiers-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 300;
+  margin-bottom: 1.8rem;
+}
+.tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5px;
+  background: var(--b2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.tier {
+  background: var(--navy2);
+  padding: 1.6rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+  position: relative;
+  transition: background .2s;
+}
+.tier:hover { background: var(--navy3); }
+.tier-num {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .18em;
+  color: var(--dim);
+}
+.tier-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.tier-tag {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: .55rem;
+  letter-spacing: .14em;
+  padding: .25rem .6rem;
+  border-radius: 2px;
+  text-transform: uppercase;
+  width: fit-content;
+}
+.tag-free   { background: rgba(116,198,157,.12); color: var(--green3); border: 1px solid rgba(116,198,157,.25); }
+.tag-addon  { background: rgba(201,168,76,.08);  color: var(--gold);   border: 1px solid rgba(201,168,76,.2); }
+.tag-prem   { background: rgba(201,168,76,.14);  color: var(--gold2);  border: 1px solid rgba(201,168,76,.3); }
+.tag-corp   { background: rgba(45,106,79,.15);   color: var(--green3); border: 1px solid rgba(45,106,79,.3); }
+.tier-desc {
+  font-size: .78rem;
+  color: var(--dim);
+  line-height: 1.7;
+  flex: 1;
+}
+.tier-rev {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem;
+  letter-spacing: .1em;
+  padding-top: .7rem;
+  border-top: 1px solid var(--b2);
+}
+.tier-rev .rev-label { color: var(--dim); display: block; margin-bottom: .2rem; }
+.tier-rev .rev-val { color: var(--gold); }
+.tier-accent {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.accent-green { background: var(--green3); }
+.accent-gold  { background: var(--gold); }
+.accent-gold2 { background: linear-gradient(90deg, var(--gold), var(--gold2)); }
+.accent-teal  { background: linear-gradient(90deg, var(--green), var(--green3)); }
+
+/* ── BOTTOM ROW ── */
+.bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+/* ── PARTNERS ── */
+.partners h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  margin-bottom: 1.2rem;
+}
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--b2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.partner-card {
+  background: var(--navy2);
+  padding: 1.1rem 1.2rem;
+}
+.partner-who {
+  font-family: 'DM Mono', monospace;
+  font-size: .62rem;
+  letter-spacing: .16em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: .4rem;
+}
+.partner-benefit {
+  font-size: .78rem;
+  color: var(--dim);
+  line-height: 1.6;
+}
+
+/* ── REGULATORY ── */
+.regulatory h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  margin-bottom: 1.2rem;
+}
+.reg-items { display: flex; flex-direction: column; gap: .8rem; }
+.reg-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: .9rem 1rem;
+  background: var(--navy2);
+  border-radius: 3px;
+  border: 1px solid var(--b2);
+}
+.reg-icon {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem;
+  color: var(--green3);
+  flex-shrink: 0;
+  padding-top: .1rem;
+}
+.reg-text { font-size: .78rem; color: var(--dim); line-height: 1.65; }
+.reg-text strong { color: var(--white); font-weight: 400; }
+
+/* ── FOOTER ── */
+footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--b2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-brand {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem;
+  letter-spacing: .2em;
+  color: var(--dim);
+}
+.footer-brand span { color: var(--gold); }
+.footer-note {
+  font-size: .72rem;
+  color: var(--dim);
+  font-style: italic;
+}
+
+@media print {
+  body { background: var(--navy); }
+  .page { padding: 2rem; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="brand-name"><span>M</span>ERI<span>D</span>IAN</div>
+      <div class="brand-sub">Preventive Health Intelligence</div>
+    </div>
+    <div class="doc-meta">
+      <div class="doc-label">Documento interno · 2026</div>
+      <div class="doc-title">Modelo de Negocio &amp; Ecosistema</div>
+    </div>
+  </header>
+
+  <!-- MAIN GRID: Positioning + Ecosystem -->
+  <div class="main-grid">
+
+    <!-- LEFT: Positioning -->
+    <div class="positioning">
+      <div class="sl">Posicionamiento estratégico</div>
+      <h2>El sistema operativo<br>de la salud <em>preventiva.</em></h2>
+      <p>MERIDIAN no es un laboratorio ni una clínica. Es la plataforma que se sienta en el centro del ecosistema de salud preventiva: gestionando la relación con el paciente, los datos longitudinales y los protocolos de biomarcadores, mientras labs, médicos y aseguradoras actúan como infraestructura.</p>
+      <p>Quien controla el viaje del paciente controla el activo más valioso del sistema: los datos y la confianza. Eso es lo que construye MERIDIAN.</p>
+
+      <div class="insight-box">
+        <div class="insight-label">El insight estratégico central</div>
+        <div class="insight-row">
+          <div class="insight-flow">
+            <span class="avoid">Paciente → Proveedor</span>
+  
+          </div>
+          <div class="insight-flow">
+            <span class="arrow">→</span>
+            <span class="better">Paciente → MERIDIAN → Proveedores</span>
+          </div>
+          <div style="font-size:.7rem;color:var(--dim);margin-top:.3rem;padding-left:1.2rem">La plataforma es poderosa. Proveedores son infraestructura.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Ecosystem diagram -->
+    <div class="ecosystem-wrap">
+      <div class="sl">Ecosistema</div>
+      <div class="eco-svg-container">
+        <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg" width="100%" style="max-width:420px">
+          <defs>
+            <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#C9A84C" opacity=".7"/>
+            </marker>
+            <marker id="arr-g" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#74C69D" opacity=".7"/>
+            </marker>
+            <marker id="arr-d" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#8895B0" opacity=".5"/>
+            </marker>
+          </defs>
+
+          <!-- MERIDIAN center box -->
+          <rect x="130" y="120" width="160" height="100" rx="3"
+            fill="#0D1827" stroke="#C9A84C" stroke-width="1" stroke-opacity=".5"/>
+          <rect x="130" y="120" width="160" height="3" rx="1" fill="#C9A84C" opacity=".8"/>
+          <text x="210" y="148" text-anchor="middle" font-family="DM Mono,monospace"
+            font-size="9" letter-spacing="2" fill="#C9A84C">MERIDIAN</text>
+          <text x="210" y="163" text-anchor="middle" font-family="Cormorant Garamond,serif"
+            font-size="11" fill="#F5F3EF" font-weight="300">Preventive Health OS</text>
+          <line x1="150" y1="172" x2="270" y2="172" stroke="#8895B0" stroke-width=".5" stroke-opacity=".3"/>
+          <text x="210" y="184" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7.5" fill="#8895B0">Onboarding · Protocolos · Datos</text>
+          <text x="210" y="196" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7.5" fill="#8895B0">Reportes · Estratificación de riesgo</text>
+          <text x="210" y="208" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7.5" fill="#8895B0">Gestión de la relación con el paciente</text>
+
+          <!-- CORPORATES top -->
+          <rect x="150" y="14" width="120" height="38" rx="3"
+            fill="#0D1827" stroke="#74C69D" stroke-width=".8" stroke-opacity=".4"/>
+          <text x="210" y="30" text-anchor="middle" font-family="DM Mono,monospace"
+            font-size="7.5" letter-spacing="1.5" fill="#74C69D">CORPORATIVOS</text>
+          <text x="210" y="44" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7" fill="#8895B0">Programas de salud empresarial</text>
+          <!-- arrow corp → meridian -->
+          <line x1="210" y1="52" x2="210" y2="118" stroke="#74C69D"
+            stroke-width=".8" stroke-opacity=".5" stroke-dasharray="3,3" marker-end="url(#arr-g)"/>
+
+          <!-- PATIENTS bottom -->
+          <rect x="150" y="288" width="120" height="38" rx="3"
+            fill="#0D1827" stroke="#74C69D" stroke-width=".8" stroke-opacity=".4"/>
+          <text x="210" y="305" text-anchor="middle" font-family="DM Mono,monospace"
+            font-size="7.5" letter-spacing="1.5" fill="#74C69D">PACIENTES</text>
+          <text x="210" y="318" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7" fill="#8895B0">Testing · Reportes · Seguimiento</text>
+          <!-- arrow meridian → patients -->
+          <line x1="210" y1="222" x2="210" y2="286" stroke="#74C69D"
+            stroke-width=".8" stroke-opacity=".5" stroke-dasharray="3,3" marker-end="url(#arr-g)"/>
+
+          <!-- LABS left -->
+          <rect x="12" y="148" width="100" height="44" rx="3"
+            fill="#0D1827" stroke="#8895B0" stroke-width=".8" stroke-opacity=".3"/>
+          <text x="62" y="165" text-anchor="middle" font-family="DM Mono,monospace"
+            font-size="7.5" letter-spacing="1.5" fill="#8895B0">LABORATORIOS</text>
+          <text x="62" y="179" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7" fill="#8895B0">Procesamiento</text>
+          <text x="62" y="189" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7" fill="#8895B0">de muestras</text>
+          <!-- arrow lab ↔ meridian -->
+          <line x1="113" y1="170" x2="128" y2="170" stroke="#8895B0"
+            stroke-width=".8" stroke-opacity=".4" marker-end="url(#arr-d)"/>
+
+          <!-- PHYSICIANS right -->
+          <rect x="308" y="118" width="100" height="44" rx="3"
+            fill="#0D1827" stroke="#8895B0" stroke-width=".8" stroke-opacity=".3"/>
+          <text x="358" y="135" text-anchor="middle" font-family="DM Mono,monospace"
+            font-size="7.5" letter-spacing="1.5" fill="#8895B0">MÉDICOS</text>
+          <text x="358" y="149" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7" fill="#8895B0">Red de especialistas</text>
+          <text x="358" y="159" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7" fill="#8895B0">Referidos + supervisión</text>
+          <!-- arrow meridian ↔ physicians -->
+          <line x1="291" y1="155" x2="307" y2="148" stroke="#8895B0"
+            stroke-width=".8" stroke-opacity=".4" marker-end="url(#arr-d)"/>
+
+          <!-- ISAPRE bottom-left -->
+          <rect x="12" y="248" width="100" height="44" rx="3"
+            fill="#0D1827" stroke="#C9A84C" stroke-width=".8" stroke-opacity=".3"/>
+          <text x="62" y="265" text-anchor="middle" font-family="DM Mono,monospace"
+            font-size="7.5" letter-spacing="1.5" fill="#C9A84C">ISAPRES</text>
+          <text x="62" y="279" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7" fill="#8895B0">Reembolso clínico</text>
+          <text x="62" y="289" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7" fill="#8895B0">Codes MLE FONASA</text>
+          <!-- arrow isapre → meridian (diagonal) -->
+          <line x1="112" y1="260" x2="136" y2="218" stroke="#C9A84C"
+            stroke-width=".8" stroke-opacity=".35" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+
+          <!-- DIAGNOSTICS bottom-right -->
+          <rect x="308" y="218" width="100" height="54" rx="3"
+            fill="#0D1827" stroke="#8895B0" stroke-width=".8" stroke-opacity=".3"/>
+          <text x="358" y="236" text-anchor="middle" font-family="DM Mono,monospace"
+            font-size="7.5" letter-spacing="1.5" fill="#8895B0">DIAGNÓSTICO</text>
+          <text x="358" y="250" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7" fill="#8895B0">Sangre · DEXA</text>
+          <text x="358" y="260" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7" fill="#8895B0">CPET · Genómica</text>
+          <text x="358" y="270" text-anchor="middle" font-family="DM Sans,sans-serif"
+            font-size="7" fill="#8895B0">Tests especializados</text>
+          <!-- arrow meridian → diagnostics -->
+          <line x1="291" y1="195" x2="307" y2="225" stroke="#8895B0"
+            stroke-width=".8" stroke-opacity=".4" marker-end="url(#arr-d)"/>
+
+          <!-- Legend -->
+          <line x1="12" y1="330" x2="28" y2="330" stroke="#C9A84C" stroke-width=".8" stroke-opacity=".6" stroke-dasharray="3,2"/>
+          <text x="32" y="334" font-family="DM Sans,sans-serif" font-size="7" fill="#8895B0">Flujo de valor / reembolso</text>
+          <line x1="140" y1="330" x2="156" y2="330" stroke="#8895B0" stroke-width=".8" stroke-opacity=".4"/>
+          <text x="160" y="334" font-family="DM Sans,sans-serif" font-size="7" fill="#8895B0">Flujo operacional</text>
+          <line x1="250" y1="330" x2="266" y2="330" stroke="#74C69D" stroke-width=".8" stroke-opacity=".5" stroke-dasharray="3,2"/>
+          <text x="270" y="334" font-family="DM Sans,sans-serif" font-size="7" fill="#8895B0">Adquisición / escala</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TIERS -->
+  <div class="tiers-section">
+    <div class="sl">Modelo de ingresos</div>
+    <h2>Cuatro niveles de acceso.<br>Una sola plataforma.</h2>
+    <div class="tiers-grid">
+
+      <div class="tier">
+        <div class="tier-accent accent-green"></div>
+        <div class="tier-num">Nivel 01</div>
+        <div class="tier-name">Programa<br>Base Isapre</div>
+        <div class="tier-tag tag-free">Sin costo neto para el paciente</div>
+        <div class="tier-desc">Panel de biomarcadores esencial. El costo es cubierto por reembolso Isapre vía códigos FONASA MLE. Supervisión médica asincrónica documentada. El laboratorio opera con tarifa preferencial. Puerta de entrada masiva a la plataforma.</div>
+        <div class="tier-rev">
+          <span class="rev-label">Fuente de ingreso</span>
+          <span class="rev-val">Reembolso Isapre · Volumen</span>
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-accent accent-gold"></div>
+        <div class="tier-num">Nivel 02</div>
+        <div class="tier-name">Exámenes<br>Complementarios</div>
+        <div class="tier-tag tag-addon">Add-on · Pago directo</div>
+        <div class="tier-desc">Tests adicionales activados por los resultados del reporte: ApoB elevado → Lp(a) + Omega-3. El upsell es clínico, no comercial. Alta conversión porque la recomendación viene del propio dato del paciente.</div>
+        <div class="tier-rev">
+          <span class="rev-label">Fuente de ingreso</span>
+          <span class="rev-val">Pago directo · Alto margen unitario</span>
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-accent accent-gold2"></div>
+        <div class="tier-num">Nivel 03</div>
+        <div class="tier-name">Panel Premium<br>Completo</div>
+        <div class="tier-tag tag-prem">Premium · Protocolo anual</div>
+        <div class="tier-desc">65+ marcadores, DEXA de cuerpo completo, CPET/VO2 Max y reporte Meridian Age con plan de acción personalizado. Sin llamar subscripción: es un protocolo anual de precisión. El paciente más comprometido con su salud.</div>
+        <div class="tier-rev">
+          <span class="rev-label">Fuente de ingreso</span>
+          <span class="rev-val">Ticket alto · Retención anual</span>
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-accent accent-teal"></div>
+        <div class="tier-num">Nivel 04</div>
+        <div class="tier-name">Programas<br>Corporativos</div>
+        <div class="tier-tag tag-corp">B2B · Escala</div>
+        <div class="tier-desc">Grandes empleadores onboardean cientos de usuarios simultáneamente. Menor ticket por persona, mayor volumen y previsibilidad de ingresos. Posicionamiento en beneficios de salud premium como diferenciador de employer branding.</div>
+        <div class="tier-rev">
+          <span class="rev-label">Fuente de ingreso</span>
+          <span class="rev-val">Contratos anuales · Volumen predecible</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM ROW -->
+  <div class="bottom-row">
+
+    <!-- Partners value -->
+    <div class="partners">
+      <div class="sl">Por qué todos ganan</div>
+      <h3>El ecosistema se alinea<br>cuando los incentivos son correctos.</h3>
+      <div class="partners-grid">
+        <div class="partner-card">
+          <div class="partner-who">Pacientes</div>
+          <div class="partner-benefit">Acceso a medicina preventiva de alto estándar, con datos propios y continuidad longitudinal.</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-who">Laboratorios</div>
+          <div class="partner-benefit">Mayor volumen de exámenes con relación comercial estable y protocolo estandarizado.</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-who">Médicos</div>
+          <div class="partner-benefit">Referidos calificados con datos clínicos ya procesados. Menos fricción, mejor atención.</div>
+        </div>
+        <div class="partner-card">
+          <div class="partner-who">Isapres</div>
+          <div class="partner-benefit">Detección temprana reduce costos de enfermedades crónicas en el largo plazo.</div>
+        </div>
+        <div class="partner-card" style="grid-column: 1 / -1;">
+          <div class="partner-who">Corporativos</div>
+          <div class="partner-benefit">Fuerza laboral más saludable, menor ausentismo y un beneficio de salud diferenciador que atrae y retiene talento.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Regulatory -->
+    <div class="regulatory">
+      <div class="sl">Marco regulatorio Chile</div>
+      <h3>El camino para hacer<br>funcionar el Nivel 01.</h3>
+      <div class="reg-items">
+        <div class="reg-item">
+          <div class="reg-icon">01</div>
+          <div class="reg-text"><strong>Códigos FONASA MLE ya identificados.</strong> Todos los exámenes del protocolo tienen código de prestación vigente (Arancel MLE 2025), habilitando el reembolso bajo Modalidad Libre Elección.</div>
+        </div>
+        <div class="reg-item">
+          <div class="reg-icon">02</div>
+          <div class="reg-text"><strong>Orden médica documentada por examen.</strong> Cada paciente recibe orden firmada por médico habilitado (RCM vigente). La supervisión es real, asincrónica y trazable, no nominal.</div>
+        </div>
+        <div class="reg-item">
+          <div class="reg-icon">03</div>
+          <div class="reg-text"><strong>Modelo de prestador coordinador.</strong> MERIDIAN actúa como coordinador clínico y emisor del informe. El laboratorio es el prestador técnico registrado. Modelo análogo a telemedicina validada en Chile.</div>
+        </div>
+        <div class="reg-item">
+          <div class="reg-icon">04</div>
+          <div class="reg-text"><strong>Opinión legal previa al piloto.</strong> Consulta específica a abogado especializado en Superintendencia de Salud para validar estructura de facturación y reembolso antes del lanzamiento.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand"><span>M</span>ERI<span>D</span>IAN · Medicina de Vitalidad &amp; Rendimiento · Santiago, Chile</div>
+    <div class="footer-note">Documento interno · Confidencial · 2026</div>
+  </footer>
+
+</div>
+</body>
+</html>
