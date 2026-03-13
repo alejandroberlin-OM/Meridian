@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MERIDIAN · Marco Legal & Facturación MLE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #080F1C;
+  --navy2:  #0D1827;
+  --navy3:  #142035;
+  --gold:   #C9A84C;
+  --gold2:  #E2C06A;
+  --green:  #2D6A4F;
+  --green3: #74C69D;
+  --red:    #E05C5C;
+  --white:  #F5F3EF;
+  --dim:    #8895B0;
+  --border: rgba(201,168,76,0.18);
+  --b2:     rgba(255,255,255,0.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.03;pointer-events:none;z-index:1000}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--b2);background:rgba(8,15,28,.92);backdrop-filter:blur(16px)}
+.nav-brand{font-family:'DM Mono',monospace;font-size:.9rem;letter-spacing:.2em;color:var(--white)}
+.nav-brand span{color:var(--gold)}
+.nav-meta{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.15em;color:var(--dim);text-transform:uppercase}
+
+/* HERO */
+.hero{padding:9rem 3rem 5rem;border-bottom:1px solid var(--b2);position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-30%;right:-5%;width:60vw;height:60vw;background:radial-gradient(ellipse,rgba(45,106,79,.1) 0%,transparent 65%);pointer-events:none}
+.hero-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.28em;color:var(--green3);text-transform:uppercase;margin-bottom:1.5rem;opacity:0;animation:fadeUp .7s ease .1s forwards}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,4.2rem);font-weight:300;line-height:1.1;max-width:780px;margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s ease .3s forwards}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero-desc{font-size:.95rem;color:var(--dim);max-width:620px;line-height:1.85;opacity:0;animation:fadeUp .8s ease .5s forwards}
+.hero-chips{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:2rem;opacity:0;animation:fadeUp .8s ease .65s forwards}
+.chip{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:.35rem .9rem;border-radius:2px;border:1px solid}
+.chip-green{color:var(--green3);border-color:rgba(116,198,157,.3);background:rgba(116,198,157,.06)}
+.chip-gold{color:var(--gold);border-color:rgba(201,168,76,.3);background:rgba(201,168,76,.06)}
+.chip-red{color:var(--red);border-color:rgba(224,92,92,.3);background:rgba(224,92,92,.06)}
+
+/* LAYOUT */
+.container{max-width:1100px;margin:0 auto;padding:0 3rem}
+.section{padding:5rem 3rem}
+.section-label{font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,2.8vw,2.4rem);font-weight:300;line-height:1.2;margin-bottom:.5rem}
+.section-title em{color:var(--green3);font-style:italic}
+.section-sub{font-size:.88rem;color:var(--dim);margin-bottom:3rem;max-width:560px;line-height:1.75}
+hr.div{border:none;border-top:1px solid var(--b2);margin:0 3rem}
+
+/* PRINCIPLE CARDS */
+.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:var(--b2);margin-top:2.5rem}
+.p-card{background:var(--navy2);padding:2rem 1.8rem;transition:background .2s}
+.p-card:hover{background:var(--navy3)}
+.p-num{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.2em;color:var(--dim);margin-bottom:1rem}
+.p-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:400;color:var(--white);margin-bottom:.8rem;line-height:1.3}
+.p-body{font-size:.82rem;color:var(--dim);line-height:1.75}
+.p-card.highlight{background:var(--navy3);border-top:2px solid var(--gold)}
+.p-card.risk{border-top:2px solid var(--red)}
+.p-card.risk .p-num{color:var(--red)}
+
+/* WORKFLOW */
+.workflow{margin-top:3rem;display:flex;flex-direction:column;gap:0;border:1px solid var(--b2);border-radius:4px;overflow:hidden;max-width:700px}
+.wf-node{background:var(--navy2);padding:1.4rem 1.8rem;display:grid;grid-template-columns:2.5rem 1fr auto;align-items:center;gap:1.2rem;border-bottom:1px solid var(--b2);transition:background .2s}
+.wf-node:last-child{border-bottom:none}
+.wf-node:hover{background:var(--navy3)}
+.wf-step{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--dim);letter-spacing:.1em}
+.wf-label{font-size:.88rem;color:var(--white);font-weight:400}
+.wf-sub{font-size:.75rem;color:var(--dim);margin-top:.2rem}
+.wf-badge{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .7rem;border-radius:2px;white-space:nowrap}
+.badge-consult{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.25)}
+.badge-auto{background:rgba(116,198,157,.08);color:var(--green3);border:1px solid rgba(116,198,157,.2)}
+.badge-md{background:rgba(201,168,76,.08);color:var(--gold2);border:1px solid rgba(201,168,76,.2)}
+.badge-alert{background:rgba(224,92,92,.1);color:var(--red);border:1px solid rgba(224,92,92,.25)}
+.badge-none{background:var(--b2);color:var(--dim);border:1px solid transparent}
+
+/* TWO-COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:2.5rem}
+.consult-box{background:var(--navy2);border:1px solid var(--b2);border-radius:4px;overflow:hidden}
+.consult-hdr{padding:1.2rem 1.8rem;border-bottom:1px solid var(--b2);display:flex;align-items:center;justify-content:space-between}
+.consult-hdr-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400}
+.consult-num{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:var(--gold);text-transform:uppercase}
+.consult-body{padding:1.5rem 1.8rem;display:flex;flex-direction:column;gap:.8rem}
+.consult-row{display:flex;gap:.8rem;align-items:flex-start}
+.consult-dot{width:6px;height:6px;border-radius:50%;background:var(--green3);margin-top:.45rem;flex-shrink:0}
+.consult-dot.gold{background:var(--gold)}
+.consult-text{font-size:.82rem;color:var(--dim);line-height:1.65}
+.consult-text strong{color:var(--white);font-weight:500}
+.consult-footer{padding:1rem 1.8rem;border-top:1px solid var(--b2);font-family:'DM Mono',monospace;font-size:.65rem;color:var(--gold);letter-spacing:.1em}
+
+/* REQUIREMENTS TABLE */
+.req-table{width:100%;border-collapse:collapse;margin-top:2rem}
+.req-table th{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);text-align:left;padding:.8rem 1.2rem;border-bottom:1px solid var(--b2);font-weight:400}
+.req-table td{padding:.9rem 1.2rem;border-bottom:1px solid var(--b2);font-size:.83rem;vertical-align:top;line-height:1.6}
+.req-table tr:last-child td{border-bottom:none}
+.req-table tr:hover td{background:rgba(255,255,255,.02)}
+.req-item{color:var(--white)}
+.req-detail{color:var(--dim)}
+.req-status{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .7rem;border-radius:2px;white-space:nowrap}
+.status-required{color:var(--gold);background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2)}
+.status-critical{color:var(--red);background:rgba(224,92,92,.1);border:1px solid rgba(224,92,92,.2)}
+.status-recommended{color:var(--green3);background:rgba(116,198,157,.08);border:1px solid rgba(116,198,157,.2)}
+
+/* RISK BOX */
+.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem}
+.risk-box{padding:1.8rem;border-radius:4px;border:1px solid}
+.risk-box.danger{background:rgba(224,92,92,.06);border-color:rgba(224,92,92,.25)}
+.risk-box.safe{background:rgba(116,198,157,.04);border-color:rgba(116,198,157,.2)}
+.risk-box-label{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:1rem}
+.risk-box.danger .risk-box-label{color:var(--red)}
+.risk-box.safe .risk-box-label{color:var(--green3)}
+.risk-box-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;margin-bottom:.8rem}
+.risk-box-body{font-size:.82rem;color:var(--dim);line-height:1.7}
+
+/* ADDED: critical gap box */
+.gap-box{margin-top:3rem;background:rgba(224,92,92,.06);border:1px solid rgba(224,92,92,.3);border-radius:4px;padding:2rem 2.2rem;display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:flex-start}
+.gap-icon{font-family:'DM Mono',monospace;font-size:1.4rem;color:var(--red);line-height:1}
+.gap-label{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.2em;color:var(--red);text-transform:uppercase;margin-bottom:.5rem}
+.gap-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;margin-bottom:.6rem}
+.gap-body{font-size:.83rem;color:var(--dim);line-height:1.75}
+.gap-body strong{color:var(--white);font-weight:500}
+
+/* FOLLOW-UP */
+.followup-box{margin-top:2.5rem;background:var(--navy2);border:1px solid var(--b2);border-radius:4px;padding:2rem 2.2rem}
+.followup-label{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.2em;color:var(--green3);text-transform:uppercase;margin-bottom:.8rem}
+.followup-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;margin-bottom:1rem}
+.followup-body{font-size:.84rem;color:var(--dim);line-height:1.8;max-width:680px}
+.followup-body strong{color:var(--white);font-weight:500}
+
+/* SUMMARY */
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:var(--b2);margin-top:2.5rem}
+.sum-box{background:var(--navy2);padding:2rem 1.8rem}
+.sum-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--gold);line-height:1;margin-bottom:.5rem}
+.sum-label{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:.8rem}
+.sum-body{font-size:.8rem;color:var(--dim);line-height:1.65}
+
+/* FOOTER */
+footer{padding:2.5rem 3rem;border-top:1px solid var(--b2);display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:'DM Mono',monospace;font-size:.8rem;letter-spacing:.2em;color:var(--dim)}
+.footer-brand span{color:var(--gold)}
+.footer-note{font-size:.75rem;color:var(--dim);text-align:right;max-width:400px;line-height:1.7}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.rd1{transition-delay:.1s}.rd2{transition-delay:.2s}.rd3{transition-delay:.3s}.rd4{transition-delay:.4s}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand"><span>M</span>ERIDIAN</div>
+  <div class="nav-meta">Marco Legal & Facturación MLE · Documento de trabajo interno</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label">Documento de trabajo · Borrador para revisión legal</div>
+  <h1>Acto médico, reembolso<br>y <em>escalabilidad</em> en MERIDIAN</h1>
+  <p class="hero-desc">Cómo estructurar el modelo clínico de MERIDIAN para que cada etapa del proceso sea un acto médico legalmente sólido, reembolsable por Isapre bajo MLE, y escalable de forma asincrónica.</p>
+  <div class="hero-chips">
+    <span class="chip chip-green">Consulta asincrónica · Legalmente posible</span>
+    <span class="chip chip-gold">Dos actos médicos por paciente</span>
+    <span class="chip chip-gold">Reembolso MLE por ambos</span>
+    <span class="chip chip-red">Requiere registro médica real</span>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- SECTION 1: PRINCIPIOS REGULATORIOS -->
+<section class="section">
+  <div class="section-label">01 · Fundamentos</div>
+  <h2 class="section-title">Lo que la regulación chilena<br><em>efectivamente permite</em></h2>
+  <p class="section-sub">La ley chilena no exige que una consulta médica sea sincrónica ni presencial. Lo que exige es que exista un acto médico real: evaluación clínica, razonamiento médico, y responsabilidad trazable del médico.</p>
+
+  <div class="principles reveal">
+    <div class="p-card">
+      <div class="p-num">01</div>
+      <div class="p-title">La consulta no requiere ser sincrónica</div>
+      <div class="p-body">La telemedicina en Chile ya permite revisión asincrónica de información del paciente, interpretación de datos diagnósticos y recomendaciones escritas. Una consulta asincrónica bien documentada es un acto médico válido.</div>
+    </div>
+    <div class="p-card">
+      <div class="p-num">02</div>
+      <div class="p-title">Lo que convierte una revisión en acto médico</div>
+      <div class="p-body">Evaluación específica del paciente (cuestionario, historia, resultados), razonamiento clínico del médico (incluso si es asistido por software), un output médico (orden, informe), y el médico responsable debe ser identificable.</div>
+    </div>
+    <div class="p-card highlight">
+      <div class="p-num">03</div>
+      <div class="p-title">La automatización asiste, no reemplaza</div>
+      <div class="p-body">El algoritmo puede preparar el 90% del trabajo. Pero el médico debe revisar, aprobar y firmar con criterio real. La diferencia entre un modelo sólido y uno frágil es exactamente esa revisión.</div>
+    </div>
+    <div class="p-card">
+      <div class="p-num">04</div>
+      <div class="p-title">La pregunta que haría el regulador</div>
+      <div class="p-body">"¿Tomó realmente un médico una decisión sobre este paciente?" Si la respuesta es sí, y hay registro que lo demuestre, el modelo se sostiene. Si el médico solo firma automáticamente lo que genera el sistema, el modelo es frágil.</div>
+    </div>
+    <div class="p-card risk">
+      <div class="p-num">05</div>
+      <div class="p-title">El riesgo regulatorio principal</div>
+      <div class="p-body">Que el modelo sea percibido como "exámenes masivos automatizados facturados como consultas médicas" sin involucramiento real del médico. Eso puede activar a Fonasa, Superintendencia de Salud y normativa de responsabilidad médica.</div>
+    </div>
+    <div class="p-card">
+      <div class="p-num">06</div>
+      <div class="p-title">El posicionamiento correcto</div>
+      <div class="p-body">MERIDIAN se presenta como una <strong>evaluación médica preventiva estructurada</strong>, no como una plataforma de testing. Esa diferencia de lenguaje importa tanto legal como comercialmente.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- SECTION 2: WORKFLOW -->
+<section class="section">
+  <div class="section-label">02 · Flujo clínico</div>
+  <h2 class="section-title">El flujo completo de<br><em>MERIDIAN por paciente</em></h2>
+  <p class="section-sub">Cada paso del proceso está diseñado para que el acto médico sea real, trazable y reembolsable. Los dos momentos de validación médica son el núcleo del modelo.</p>
+
+  <div class="workflow reveal">
+    <div class="wf-node">
+      <div class="wf-step">01</div>
+      <div>
+        <div class="wf-label">Onboarding del paciente</div>
+        <div class="wf-sub">Cuestionario de salud, historia clínica, factores de riesgo</div>
+      </div>
+      <div class="wf-badge badge-none">Plataforma</div>
+    </div>
+    <div class="wf-node">
+      <div class="wf-step">02</div>
+      <div>
+        <div class="wf-label">Revisión médica → Consulta 1</div>
+        <div class="wf-sub">Médico evalúa cuestionario, decide protocolo, emite orden de exámenes</div>
+      </div>
+      <div class="wf-badge badge-consult">Acto médico 1</div>
+    </div>
+    <div class="wf-node">
+      <div class="wf-step">03</div>
+      <div>
+        <div class="wf-label">Toma de exámenes en laboratorio</div>
+        <div class="wf-sub">Panel de sangre, DEXA, CPET según protocolo autorizado</div>
+      </div>
+      <div class="wf-badge badge-none">Laboratorio</div>
+    </div>
+    <div class="wf-node">
+      <div class="wf-step">04</div>
+      <div>
+        <div class="wf-label">Análisis automatizado de resultados</div>
+        <div class="wf-sub">Algoritmo genera borrador de reporte con interpretación estructurada</div>
+      </div>
+      <div class="wf-badge badge-auto">Algoritmo</div>
+    </div>
+    <div class="wf-node">
+      <div class="wf-step">05</div>
+      <div>
+        <div class="wf-label">Validación médica → Consulta 2</div>
+        <div class="wf-sub">Médico revisa borrador, valida o modifica interpretación, firma informe</div>
+      </div>
+      <div class="wf-badge badge-consult">Acto médico 2</div>
+    </div>
+    <div class="wf-node">
+      <div class="wf-step">06</div>
+      <div>
+        <div class="wf-label">Entrega del reporte al paciente</div>
+        <div class="wf-sub">Informe personalizado con Meridian Age, biomarcadores, plan de acción</div>
+      </div>
+      <div class="wf-badge badge-none">Plataforma</div>
+    </div>
+    <div class="wf-node">
+      <div class="wf-step">07</div>
+      <div>
+        <div class="wf-label">Derivación si corresponde</div>
+        <div class="wf-sub">Resultados críticos o anómalos → especialista, urgencia o protocolo de contacto inmediato</div>
+      </div>
+      <div class="wf-badge badge-alert">Ver sección 5</div>
+    </div>
+    <div class="wf-node">
+      <div class="wf-step">08</div>
+      <div>
+        <div class="wf-label">Control longitudinal → Consulta 3</div>
+        <div class="wf-sub">Repetición del panel en 6 a 12 meses · Acto médico adicional · Ver sección 4</div>
+      </div>
+      <div class="wf-badge badge-md">Acto médico 3+</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- SECTION 3: DOS CONSULTAS -->
+<section class="section">
+  <div class="section-label">03 · Estrategia de facturación</div>
+  <h2 class="section-title">Los dos actos médicos<br><em>reembolsables</em></h2>
+  <p class="section-sub">El error de muchos programas preventivos es intentar facturar todo como una sola consulta general. La estructura correcta reconoce dos actos médicos distintos y genuinos, cada uno con su propio código MLE.</p>
+
+  <div class="two-col reveal">
+    <div class="consult-box">
+      <div class="consult-hdr">
+        <div class="consult-hdr-title">Consulta 1: Indicación</div>
+        <div class="consult-num">Acto médico · Código MLE</div>
+      </div>
+      <div class="consult-body">
+        <div class="consult-row">
+          <div class="consult-dot gold"></div>
+          <div class="consult-text"><strong>Propósito:</strong> Evaluación inicial del paciente y decisión clínica sobre qué exámenes solicitar</div>
+        </div>
+        <div class="consult-row">
+          <div class="consult-dot gold"></div>
+          <div class="consult-text"><strong>Input:</strong> Cuestionario de salud, historia clínica, factores de riesgo, edad y contexto del paciente</div>
+        </div>
+        <div class="consult-row">
+          <div class="consult-dot gold"></div>
+          <div class="consult-text"><strong>Acto del médico:</strong> Revisar el cuestionario, evaluar riesgos, decidir el protocolo adecuado para este paciente específico</div>
+        </div>
+        <div class="consult-row">
+          <div class="consult-dot gold"></div>
+          <div class="consult-text"><strong>Output:</strong> Orden médica firmada con los exámenes autorizados</div>
+        </div>
+        <div class="consult-row">
+          <div class="consult-dot gold"></div>
+          <div class="consult-text"><strong>Por qué es un acto médico:</strong> El médico decide qué exámenes corresponden a este paciente. Eso es una decisión médica, no un proceso automático</div>
+        </div>
+      </div>
+      <div class="consult-footer">Evaluación inicial · indicación de exámenes</div>
+    </div>
+    <div class="consult-box">
+      <div class="consult-hdr">
+        <div class="consult-hdr-title">Consulta 2: Interpretación</div>
+        <div class="consult-num">Acto médico · Código MLE</div>
+      </div>
+      <div class="consult-body">
+        <div class="consult-row">
+          <div class="consult-dot"></div>
+          <div class="consult-text"><strong>Propósito:</strong> Interpretación médica de los resultados y entrega de recomendaciones personalizadas</div>
+        </div>
+        <div class="consult-row">
+          <div class="consult-dot"></div>
+          <div class="consult-text"><strong>Input:</strong> Resultados del laboratorio, análisis automatizado del algoritmo, contexto clínico del paciente</div>
+        </div>
+        <div class="consult-row">
+          <div class="consult-dot"></div>
+          <div class="consult-text"><strong>Acto del médico:</strong> Revisar el borrador generado por el algoritmo, validar o modificar la interpretación, asumir responsabilidad profesional sobre el informe</div>
+        </div>
+        <div class="consult-row">
+          <div class="consult-dot"></div>
+          <div class="consult-text"><strong>Output:</strong> Informe médico firmado con interpretación, recomendaciones y plan de seguimiento</div>
+        </div>
+        <div class="consult-row">
+          <div class="consult-dot"></div>
+          <div class="consult-text"><strong>Por qué es un acto médico:</strong> La interpretación de resultados complejos con recomendaciones es un acto clínico real, incluso si el algoritmo prepara el borrador</div>
+        </div>
+      </div>
+      <div class="consult-footer">Interpretación de resultados · control médico</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- SECTION 4: CONSULTA 3 — LONGITUDINAL -->
+<section class="section">
+  <div class="section-label">04 · Seguimiento longitudinal</div>
+  <h2 class="section-title">El tercer acto médico:<br><em>el control longitudinal</em></h2>
+  <p class="section-sub">Este es el elemento que más programas preventivos subestiman. Ahí está buena parte del volumen de reembolso a largo plazo.</p>
+
+  <div class="followup-box reveal">
+    <div class="followup-label">Consulta 3 y siguientes</div>
+    <div class="followup-title">Seguimiento periódico: 6 a 12 meses</div>
+    <div class="followup-body">
+      <p>Cuando un paciente vuelve a realizarse el panel en 6 o 12 meses, <strong>ese no es el mismo acto médico que el primero</strong>. Es una consulta de control con contexto longitudinal: el médico ahora compara resultados previos, evalúa tendencias, y ajusta recomendaciones en función de la evolución.</p>
+      <br>
+      <p>Eso genera un tercer acto médico reembolsable. En la práctica, <strong>es donde está la mayoría del volumen real de un programa de salud preventiva a escala</strong>. Un paciente que repite el panel anualmente genera dos actos médicos por ciclo, todos los años.</p>
+      <br>
+      <p><strong>Para el modelo de negocio:</strong> El valor de vida del paciente (LTV) se construye sobre el seguimiento, no sobre la consulta inicial. Diseñar el protocolo longitudinal desde el primer día, y facturarlo correctamente, es una decisión de negocio, no solo clínica.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- SECTION 5: GAP CRÍTICO — RESULTADOS CRÍTICOS -->
+<section class="section">
+  <div class="section-label">05 · Brecha identificada</div>
+  <h2 class="section-title">Lo que aún falta<br><em>definir</em></h2>
+  <p class="section-sub">El modelo clínico y de facturación está bien fundamentado. Hay una brecha que un abogado o regulador preguntará en la primera reunión y que conviene tener resuelta antes.</p>
+
+  <div class="gap-box reveal">
+    <div class="gap-icon">!</div>
+    <div>
+      <div class="gap-label">Protocolo pendiente · Alta prioridad</div>
+      <div class="gap-title">¿Qué pasa cuando un resultado es crítico?</div>
+      <div class="gap-body">
+        El modelo actual no define qué ocurre cuando un biomarcador arroja un resultado crítico o potencialmente urgente. <strong>Eso es un vacío tanto de seguridad del paciente como de responsabilidad legal del médico firmante.</strong>
+        <br><br>
+        Necesitamos un protocolo explícito que defina: qué umbrales activan contacto inmediato con el paciente, quién hace ese contacto y en qué plazo, qué sucede si el paciente no responde, y cómo queda registrado ese proceso en la historia clínica.
+        <br><br>
+        <strong>Sin ese protocolo, el médico que firma el informe asume una responsabilidad que el sistema no está preparado para gestionar.</strong> Un abogado lo señalará en la primera revisión. Vale definirlo ahora.
+      </div>
+    </div>
+  </div>
+
+  <div class="risk-grid reveal rd2">
+    <div class="risk-box danger">
+      <div class="risk-box-label">Modelo frágil</div>
+      <div class="risk-box-title">Lo que no debería ocurrir</div>
+      <div class="risk-box-body">El algoritmo genera el informe y el médico lo firma automáticamente sin revisión real. No hay registro de la decisión médica. Los resultados críticos no tienen protocolo de derivación. La consulta existe en el papel pero no en la práctica.</div>
+    </div>
+    <div class="risk-box safe">
+      <div class="risk-box-label">Modelo defendible</div>
+      <div class="risk-box-title">Lo que debe ocurrir</div>
+      <div class="risk-box-body">El médico usa un dashboard donde los casos anómalos se destacan automáticamente. Revisa, valida o modifica el borrador del algoritmo. Los resultados críticos tienen protocolo de contacto con plazos definidos. Todo queda registrado con timestamp.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- SECTION 6: TRAZABILIDAD -->
+<section class="section">
+  <div class="section-label">06 · Requisitos operacionales</div>
+  <h2 class="section-title">Lo que debe existir<br><em>para cada consulta</em></h2>
+  <p class="section-sub">El registro no es un requerimiento burocrático. Es lo que convierte un proceso automatizado en algo que el sistema de salud puede reconocer como acto médico. Sin esto, el modelo no se sostiene ante Fonasa ni ante la Superintendencia.</p>
+
+  <table class="req-table reveal">
+    <thead>
+      <tr>
+        <th>Elemento requerido</th>
+        <th>Detalle</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="req-item">Ficha clínica del paciente</td>
+        <td class="req-detail">Historia, cuestionario, factores de riesgo, contexto clínico documentado por consulta</td>
+        <td><span class="req-status status-required">Requerido</span></td>
+      </tr>
+      <tr>
+        <td class="req-item">Identificador del médico responsable</td>
+        <td class="req-detail">RUT, RCM, nombre del médico que revisó y firmó cada consulta específica</td>
+        <td><span class="req-status status-required">Requerido</span></td>
+      </tr>
+      <tr>
+        <td class="req-item">Timestamp de revisión médica</td>
+        <td class="req-detail">Fecha y hora exacta en que el médico accedió, revisó y aprobó el caso</td>
+        <td><span class="req-status status-required">Requerido</span></td>
+      </tr>
+      <tr>
+        <td class="req-item">Output médico firmado</td>
+        <td class="req-detail">Orden de exámenes o informe con firma digital del médico responsable</td>
+        <td><span class="req-status status-required">Requerido</span></td>
+      </tr>
+      <tr>
+        <td class="req-item">Registro de modificaciones al borrador</td>
+        <td class="req-detail">Si el médico modificó la interpretación del algoritmo, eso debe quedar documentado</td>
+        <td><span class="req-status status-recommended">Recomendado</span></td>
+      </tr>
+      <tr>
+        <td class="req-item">Protocolo de resultados críticos</td>
+        <td class="req-detail">Umbral de activación, responsable de contacto, plazo máximo, registro de gestión</td>
+        <td><span class="req-status status-critical">Pendiente</span></td>
+      </tr>
+      <tr>
+        <td class="req-item">Código MLE por consulta</td>
+        <td class="req-detail">Código específico para consulta de indicación y código para consulta de interpretación</td>
+        <td><span class="req-status status-recommended">Confirmar con abogado</span></td>
+      </tr>
+      <tr>
+        <td class="req-item">Consentimiento informado del paciente</td>
+        <td class="req-detail">Que entiende que la evaluación es preventiva, asincrónica, y complementa (no reemplaza) su atención médica habitual</td>
+        <td><span class="req-status status-required">Requerido</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="div">
+
+<!-- SECTION 7: RESUMEN -->
+<section class="section">
+  <div class="section-label">07 · Resumen ejecutivo</div>
+  <h2 class="section-title">El modelo en<br><em>tres números</em></h2>
+  <p class="section-sub">Si la estructura clínica y operacional está bien implementada, este es el resultado para cada paciente de MERIDIAN.</p>
+
+  <div class="summary-grid reveal">
+    <div class="sum-box">
+      <div class="sum-num">2</div>
+      <div class="sum-label">Actos médicos por ciclo inicial</div>
+      <div class="sum-body">Consulta de indicación + consulta de interpretación. Ambas asincróncias, ambas reembolsables bajo MLE, ambas con código propio.</div>
+    </div>
+    <div class="sum-box">
+      <div class="sum-num">+1</div>
+      <div class="sum-label">Acto médico por cada seguimiento</div>
+      <div class="sum-body">Cada repetición del panel en 6 a 12 meses genera dos nuevos actos médicos. El valor de vida del paciente se construye sobre el seguimiento, no sobre la consulta inicial.</div>
+    </div>
+    <div class="sum-box">
+      <div class="sum-num">0</div>
+      <div class="sum-label">Consultas sincrónicas requeridas</div>
+      <div class="sum-body">El modelo completo puede operar de forma asincrónica si el médico toma una decisión real en cada validación y queda registro completo del proceso.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- SECTION 8: PREGUNTAS PARA EL ABOGADO -->
+<section class="section">
+  <div class="section-label">08 · Próximos pasos</div>
+  <h2 class="section-title">Preguntas para<br><em>la reunión con el abogado</em></h2>
+  <p class="section-sub">Este documento es un punto de partida. Las siguientes preguntas son las que deben resolverse con asesoría legal especializada en salud chilena antes de lanzar el modelo de facturación.</p>
+
+  <div class="principles reveal">
+    <div class="p-card">
+      <div class="p-num">P1</div>
+      <div class="p-title">¿Cuáles son los códigos MLE exactos para cada consulta?</div>
+      <div class="p-body">Hay que identificar los códigos correctos del Arancel MLE para "evaluación preventiva con indicación de exámenes" y para "interpretación de resultados / control". El código equivocado puede invalidar el reembolso.</div>
+    </div>
+    <div class="p-card">
+      <div class="p-num">P2</div>
+      <div class="p-title">¿Qué tipo de firma digital es válida para los informes?</div>
+      <div class="p-body">Chile tiene normativa específica sobre firma electrónica en documentos médicos. Necesitamos confirmar qué nivel de firma digital es suficiente para que el informe sea válido como acto médico y como documento reembolsable.</div>
+    </div>
+    <div class="p-card">
+      <div class="p-num">P3</div>
+      <div class="p-title">¿Qué exige la Superintendencia de Salud para modelos asincrónicos?</div>
+      <div class="p-body">Hay regulaciones específicas de telemedicina y atención remota que pueden aplicar. Necesitamos confirmar si el modelo de MERIDIAN cae dentro de alguna categoría regulada específica y qué requisitos operacionales conlleva.</div>
+    </div>
+    <div class="p-card">
+      <div class="p-num">P4</div>
+      <div class="p-title">¿Cómo estructurar correctamente el protocolo de resultados críticos?</div>
+      <div class="p-body">Definir umbrales, plazos y responsabilidades. Confirmar si hay normativa específica que exija derivación o notificación en ciertos casos, como resultados oncológicos o cardiovasculares de alto riesgo.</div>
+    </div>
+    <div class="p-card">
+      <div class="p-num">P5</div>
+      <div class="p-title">¿Qué debe incluir el consentimiento informado del paciente?</div>
+      <div class="p-body">Para que sea válido ante una eventual reclamación, el consentimiento debe incluir el carácter preventivo del servicio, la naturaleza asincrónica, y los límites del alcance clínico de MERIDIAN.</div>
+    </div>
+    <div class="p-card highlight">
+      <div class="p-num">P6</div>
+      <div class="p-title">¿Puede el médico residir extranjero o debe estar radicado en Chile?</div>
+      <div class="p-body">Relevante para el modelo operacional. Si el médico que valida los casos está fuera de Chile, confirmar si su Registro RNPI y/o RCM es suficiente para que el acto médico sea válido y reembolsable en el sistema de salud local.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand"><span>M</span>ERIDIAN · Documento interno de trabajo</div>
+  <div class="footer-note">Este documento es un borrador para discusión interna y preparación de asesoría legal. No constituye opinión jurídica. Los códigos MLE específicos y los requisitos regulatorios deben confirmarse con un abogado especializado en derecho sanitario chileno.</div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);} });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
